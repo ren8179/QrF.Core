@@ -5,7 +5,9 @@ VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{0DE003A3-AC31-4011-B2C5-3BFD12595F36}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QrFrame.Core.Auth", "src\QrFrame.Core.Auth\QrFrame.Core.Auth.csproj", "{7ADEA5CC-FAB0-4868-A2ED-08E5B9FF445B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QrFrame.Core.Auth", "src\QrFrame.Core.Auth\QrFrame.Core.Auth.csproj", "{7ADEA5CC-FAB0-4868-A2ED-08E5B9FF445B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QrFrame.Core.Session", "src\QrFrame.Core.Session\QrFrame.Core.Session.csproj", "{BD0CB630-22C5-4316-872F-D16597643D1E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,11 +19,16 @@ Global
 		{7ADEA5CC-FAB0-4868-A2ED-08E5B9FF445B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7ADEA5CC-FAB0-4868-A2ED-08E5B9FF445B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7ADEA5CC-FAB0-4868-A2ED-08E5B9FF445B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD0CB630-22C5-4316-872F-D16597643D1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD0CB630-22C5-4316-872F-D16597643D1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD0CB630-22C5-4316-872F-D16597643D1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD0CB630-22C5-4316-872F-D16597643D1E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{7ADEA5CC-FAB0-4868-A2ED-08E5B9FF445B} = {0DE003A3-AC31-4011-B2C5-3BFD12595F36}
+		{BD0CB630-22C5-4316-872F-D16597643D1E} = {0DE003A3-AC31-4011-B2C5-3BFD12595F36}
 	EndGlobalSection
 EndGlobal

@@ -1,0 +1,6 @@
+E:\GitProject\QrFrame.Core\src\QrFrame.Core.Session\bin\Debug\netcoreapp1.1\QrFrame.Core.Session.deps.json
+E:\GitProject\QrFrame.Core\src\QrFrame.Core.Session\bin\Debug\netcoreapp1.1\QrFrame.Core.Session.runtimeconfig.json
+E:\GitProject\QrFrame.Core\src\QrFrame.Core.Session\bin\Debug\netcoreapp1.1\QrFrame.Core.Session.runtimeconfig.dev.json
+E:\GitProject\QrFrame.Core\src\QrFrame.Core.Session\bin\Debug\netcoreapp1.1\QrFrame.Core.Session.dll
+E:\GitProject\QrFrame.Core\src\QrFrame.Core.Session\obj\Debug\netcoreapp1.1\QrFrame.Core.Session.csprojResolveAssemblyReference.cache
+E:\GitProject\QrFrame.Core\src\QrFrame.Core.Session\obj\Debug\netcoreapp1.1\QrFrame.Core.Session.AssemblyInfo.cs
