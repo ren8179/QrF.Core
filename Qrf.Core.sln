@@ -9,7 +9,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{AA3CB424-B36
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Qrf.Core.Apis", "src\Qrf.Core.Apis\Qrf.Core.Apis.csproj", "{F6DB8ACF-E7F6-4816-9AA6-A4ECE4F7B72E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qrf.Core.EntityFramework", "src\Qrf.Core.EntityFramework\Qrf.Core.EntityFramework.csproj", "{73ED10FB-7215-41C3-927C-AA22632B86DC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Qrf.Core.EntityFramework", "src\Qrf.Core.EntityFramework\Qrf.Core.EntityFramework.csproj", "{73ED10FB-7215-41C3-927C-AA22632B86DC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BDE10C47-B60E-4CA8-A77A-E8DA7889A2D7}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
