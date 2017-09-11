@@ -3,3 +3,7 @@
 ################################################################################
 
 /src/Qrf.Core.Apis/bin/Debug/netcoreapp2.0
+/src/Qrf.Core.Apis/obj
+/src/Qrf.Core.EntityFramework/bin/Debug/netstandard2.0
+/src/Qrf.Core.EntityFramework/obj
+/.vs
