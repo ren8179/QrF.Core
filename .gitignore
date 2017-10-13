@@ -7,3 +7,5 @@
 /src/Qrf.Core.EntityFramework/bin/Debug/netstandard2.0
 /src/Qrf.Core.EntityFramework/obj
 /.vs
+/src/QrF.Core.IdentityServer/bin/Debug/netcoreapp2.0
+/src/QrF.Core.IdentityServer/obj
