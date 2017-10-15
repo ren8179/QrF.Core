@@ -9,3 +9,13 @@
 /.vs
 /src/QrF.Core.IdentityServer/bin/Debug/netcoreapp2.0
 /src/QrF.Core.IdentityServer/obj
+/src/BuildingBlocks/HealthChecks/src/Microsoft.AspNetCore.HealthChecks/bin/Debug/netstandard2.0
+/src/BuildingBlocks/HealthChecks/src/Microsoft.AspNetCore.HealthChecks/obj
+/src/BuildingBlocks/HealthChecks/src/Microsoft.Extensions.HealthChecks/bin/Debug/netstandard1.3
+/src/BuildingBlocks/HealthChecks/src/Microsoft.Extensions.HealthChecks/obj
+/src/BuildingBlocks/HealthChecks/src/Microsoft.Extensions.HealthChecks.SqlServer/bin/Debug/netstandard1.3
+/src/BuildingBlocks/HealthChecks/src/Microsoft.Extensions.HealthChecks.SqlServer/obj
+/src/BuildingBlocks/WebHostCustomization/WebHost.Customization/bin/Debug/netcoreapp2.0
+/src/BuildingBlocks/WebHostCustomization/WebHost.Customization/obj
+/src/Services/QrF.Core.IdentityServer/bin/Debug/netcoreapp2.0
+/src/Services/QrF.Core.IdentityServer/obj
