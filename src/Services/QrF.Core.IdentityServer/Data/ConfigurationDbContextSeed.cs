@@ -17,7 +17,6 @@ namespace QrF.Core.IdentityServer.Data
 
             clientUrls.Add("Mvc", configuration.GetValue<string>("MvcClient"));
             clientUrls.Add("Spa", configuration.GetValue<string>("SpaClient"));
-            clientUrls.Add("Xamarin", configuration.GetValue<string>("XamarinCallback"));
             clientUrls.Add("LocationsApi", configuration.GetValue<string>("LocationApiClient"));
             clientUrls.Add("MarketingApi", configuration.GetValue<string>("MarketingApiClient"));
             clientUrls.Add("BasketApi", configuration.GetValue<string>("BasketApiClient"));

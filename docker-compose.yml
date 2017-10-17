@@ -1,8 +1,0 @@
-version: '3'
-
-services:
-  qrf.core.apis:
-    image: qrf.core.apis
-    build:
-      context: ./Qrf.Core.Apis
-      dockerfile: Dockerfile

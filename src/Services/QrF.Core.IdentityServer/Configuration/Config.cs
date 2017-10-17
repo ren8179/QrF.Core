@@ -16,10 +16,7 @@ namespace QrF.Core.IdentityServer
         {
             return new List<ApiResource>
             {
-                new ApiResource("orders", "Orders Service"),
-                new ApiResource("basket", "Basket Service"),
-                new ApiResource("marketing", "Marketing Service"),
-                new ApiResource("locations", "Locations Service")
+                new ApiResource("QrF.Core.API", "接口项目"),
             };
         }
 
@@ -42,52 +39,20 @@ namespace QrF.Core.IdentityServer
                 // JavaScript Client
                 new Client
                 {
-                    ClientId = "js",
-                    ClientName = "eShop SPA OpenId Client",
+                    ClientId = "QrF.Core.UI",
+                    ClientName = "QrF.Core.UI",
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
-                    RedirectUris =           { $"{clientsUrl["Spa"]}/" },
+                    RedirectUris =           { $"{clientsUrl["Spa"]}/callback.html" },
                     RequireConsent = false,
-                    PostLogoutRedirectUris = { $"{clientsUrl["Spa"]}/" },
+                    PostLogoutRedirectUris = { $"{clientsUrl["Spa"]}/index.html" },
                     AllowedCorsOrigins =     { $"{clientsUrl["Spa"]}" },
                     AllowedScopes =
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
-                        "orders",
-                        "basket",
-                        "locations",
-                        "marketing"
+                        "QrF.Core.API"
                     }
-                },
-                new Client
-                {
-                    ClientId = "xamarin",
-                    ClientName = "eShop Xamarin OpenId Client",
-                    AllowedGrantTypes = GrantTypes.Hybrid,                    
-                    //Used to retrieve the access token on the back channel.
-                    ClientSecrets =
-                    {
-                        new Secret("secret".Sha256())
-                    },
-                    RedirectUris = { clientsUrl["Xamarin"] },
-                    RequireConsent = false,
-                    RequirePkce = true,
-                    PostLogoutRedirectUris = { $"{clientsUrl["Xamarin"]}/Account/Redirecting" },
-                    AllowedCorsOrigins = { "http://eshopxamarin" },
-                    AllowedScopes = new List<string>
-                    {
-                        IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServerConstants.StandardScopes.Profile,
-                        IdentityServerConstants.StandardScopes.OfflineAccess,
-                        "orders",
-                        "basket",
-                        "locations",
-                        "marketing"
-                    },
-                    //Allow requesting refresh tokens for long lived API access
-                    AllowOfflineAccess = true,
-                    AllowAccessTokensViaBrowser = true
                 },
                 new Client
                 {
@@ -130,7 +95,7 @@ namespace QrF.Core.IdentityServer
                     {
                         new Secret("secret".Sha256())
                     },
-                    ClientUri = $"{clientsUrl["Mvc"]}",                             // public uri of the client
+                    ClientUri = $"{clientsUrl["Mvc"]}",         // public uri of the client
                     AllowedGrantTypes = GrantTypes.Hybrid,
                     AllowAccessTokensViaBrowser = true,
                     RequireConsent = false,

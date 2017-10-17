@@ -19,3 +19,8 @@
 /src/BuildingBlocks/WebHostCustomization/WebHost.Customization/obj
 /src/Services/QrF.Core.IdentityServer/bin/Debug/netcoreapp2.0
 /src/Services/QrF.Core.IdentityServer/obj
+/src/Services/QrF.Core.API/bin/Debug/netcoreapp2.0
+/src/Services/QrF.Core.API/obj
+/src/Services/QrF.Core.UI/bin/Debug/netcoreapp2.0
+/src/Services/QrF.Core.UI/bower_components/oidc-client
+/src/Services/QrF.Core.UI/obj

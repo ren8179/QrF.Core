@@ -3,18 +3,19 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:8600/",
+      "applicationUrl": "http://localhost:8601/",
       "sslPort": 0
     }
   },
   "profiles": {
-    "QrF.Core.IdentityServer": {
+    "QrF.Core.Template": {
       "commandName": "Project",
       "launchBrowser": true,
+      "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "http://localhost:8600/"
+      "applicationUrl": "http://localhost:8601/"
     }
   }
 }
