@@ -24,3 +24,5 @@
 /src/Services/QrF.Core.UI/bin/Debug/netcoreapp2.0
 /src/Services/QrF.Core.UI/bower_components/oidc-client
 /src/Services/QrF.Core.UI/obj
+/src/BuildingBlocks/Base/QrF.Core/bin/Debug/netstandard2.0
+/src/BuildingBlocks/Base/QrF.Core/obj

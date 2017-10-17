@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.16
+VisualStudioVersion = 15.0.26730.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{AA3CB424-B36E-434C-8E49-CE3FD83D0FBB}"
 EndProject
@@ -31,6 +31,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QrF.Core.API", "src\Services\QrF.Core.API\QrF.Core.API.csproj", "{E068898B-ED54-41E7-AC7C-BD6A4612F70F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QrF.Core.UI", "src\Services\QrF.Core.UI\QrF.Core.UI.csproj", "{C5FBA0DC-D3AF-4087-BA73-ADA09E29F4C0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Base", "Base", "{BE193A21-3AA7-47A6-B07B-9D795B8F404A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QrF.Core", "src\BuildingBlocks\Base\QrF.Core\QrF.Core.csproj", "{2902E494-C6F1-4715-96CD-1D45BB3429F0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -66,6 +70,10 @@ Global
 		{C5FBA0DC-D3AF-4087-BA73-ADA09E29F4C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C5FBA0DC-D3AF-4087-BA73-ADA09E29F4C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C5FBA0DC-D3AF-4087-BA73-ADA09E29F4C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2902E494-C6F1-4715-96CD-1D45BB3429F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2902E494-C6F1-4715-96CD-1D45BB3429F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2902E494-C6F1-4715-96CD-1D45BB3429F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2902E494-C6F1-4715-96CD-1D45BB3429F0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -82,6 +90,8 @@ Global
 		{00172A99-BA19-43C7-8EC5-30B52F06D743} = {BCC2FDBD-52CE-4982-8205-D068BC291239}
 		{E068898B-ED54-41E7-AC7C-BD6A4612F70F} = {BCC2FDBD-52CE-4982-8205-D068BC291239}
 		{C5FBA0DC-D3AF-4087-BA73-ADA09E29F4C0} = {BCC2FDBD-52CE-4982-8205-D068BC291239}
+		{BE193A21-3AA7-47A6-B07B-9D795B8F404A} = {E06D7ABF-F7EB-4767-BCC4-5C580D50199F}
+		{2902E494-C6F1-4715-96CD-1D45BB3429F0} = {BE193A21-3AA7-47A6-B07B-9D795B8F404A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2F715BCF-ABB9-4970-BD0E-2A2CC24AD6C9}
