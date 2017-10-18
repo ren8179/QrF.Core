@@ -1,40 +1,41 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Linq;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using QrF.Core.Infrastructure.Cqrs.Commands;
+using QrF.Core.Infrastructure.Cqrs.Queries;
+using System.Threading.Tasks;
 
 namespace QrF.Core.API.Infrastructure
 {
     /// <summary>
     /// 
     /// </summary>
-    public class BaseController : Controller
+    public abstract class BaseController : Controller
     {
-        /// <summary>
-        /// 经销商Key
-        /// </summary>
-        protected string DealerKey
+        private readonly IQueryExecutor _queryExecutor;
+        private readonly IMediator _mediator;
+        private readonly ICommandDispatcher _commandDispatcher;
+
+        protected BaseController(ICommandDispatcher commandDispatcher, IQueryExecutor queryExecutor,
+            IMediator mediator)
         {
-            get
-            {
-                if (Request.Headers.Keys.Contains("dealerkey"))
-                    return Request.Headers.FirstOrDefault(o => o.Key == "dealerkey").Value;
-                return string.Empty;
-            }
+            _mediator = mediator;
+            _queryExecutor = queryExecutor;
+            _commandDispatcher = commandDispatcher;
         }
-        /// <summary>
-        /// 租户Key
-        /// </summary>
-        protected int? TenantKey
+
+        protected async Task DispatchAsync<T>(T command) where T : ICommand
         {
-            get
-            {
-                if (Request.Headers.Keys.Contains("tenantkey"))
-                {
-                    var key = Request.Headers.FirstOrDefault(o => o.Key == "tenantkey").Value;
-                    int? tid = int.Parse(key);
-                    return tid < 1 ? null : tid;
-                }
-                return null;
-            }
+            await _commandDispatcher.DispatchAsync(command);
+        }
+
+        protected async Task<TResult> ExecuteAsync<TResult>(IQuery<TResult> query)
+        {
+            return await _queryExecutor.ExecuteAsync<IQuery<TResult>, TResult>(query);
+        }
+
+        protected async Task<TResponse> SendAsync<TResponse>(IRequest<TResponse> request)
+        {
+            return await _mediator.Send(request);
         }
     }
 }

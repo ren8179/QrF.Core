@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace QrF.Core.Infrastructure.Cqrs.Commands
 {
-    internal class CommandDispatcher : ICommandDispatcher
+    public class CommandDispatcher : ICommandDispatcher
     {
         private readonly IComponentContext _context;
 

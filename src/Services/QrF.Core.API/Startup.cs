@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Configuration;
@@ -6,7 +8,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.PlatformAbstractions;
 using QrF.Core.API.Infrastructure;
+using QrF.Core.Infrastructure.Modules;
+using QrF.Core.Materials;
+using Serilog;
+using Serilog.Events;
+using Serilog.Exceptions;
 using Swashbuckle.AspNetCore.Swagger;
+using System;
 using System.IO;
 using System.Reflection;
 
@@ -17,14 +25,7 @@ namespace QrF.Core.API
     /// </summary>
     public class Startup
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="configuration"></param>
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+        public IContainer ApplicationContainer { get; private set; }
 
         /// <summary>
         /// 
@@ -32,11 +33,23 @@ namespace QrF.Core.API
         public IConfiguration Configuration { get; }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="configuration"></param>
+        public Startup(IConfiguration configuration)
+        {
+            ConfigureSerilog();
+            Configuration = configuration;
+        }
+
+        /// <summary>
         /// This method gets called by the runtime. Use this method to add services to the container.
         /// </summary>
         /// <param name="services"></param>
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(dispose: true));
+
             services.AddMvcCore()
                 .AddAuthorization()
                 .AddJsonFormatters()
@@ -67,17 +80,15 @@ namespace QrF.Core.API
                     {
                         options.SwaggerDoc(description.GroupName, CreateInfoForApiVersion(description));
                     }
-                    options.OperationFilter<SwaggerDefaultValues>();
+                    //options.OperationFilter<SwaggerDefaultValues>();
                     options.IncludeXmlComments(XmlCommentsFilePath);
                 });
+            return GetAutofacServiceProvider(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IApiVersionDescriptionProvider provider)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IApiVersionDescriptionProvider provider, IApplicationLifetime appLifetime)
         {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
-
             app.UseCors("default");
 
             if (env.IsDevelopment())
@@ -86,9 +97,10 @@ namespace QrF.Core.API
             }
             app.UseStaticFiles();
 
-            app.UseAuthentication();
+            app.UseCustomExceptionHandling();
+            app.UseCustomLogging();
 
-            app.UseErrorHandling();
+            app.UseAuthentication();
             app.UseMvc();
             app.UseSwagger();
             app.UseSwaggerUI(
@@ -100,6 +112,7 @@ namespace QrF.Core.API
                     }
                     options.InjectOnCompleteJavaScript("/swagger-ui/swagger.js");
                 });
+            appLifetime.ApplicationStopped.Register(() => ApplicationContainer.Dispose());
         }
 
         static string XmlCommentsFilePath
@@ -128,6 +141,26 @@ namespace QrF.Core.API
                 info.Description += " 当前版本接口已过时";
             }
             return info;
+        }
+        private AutofacServiceProvider GetAutofacServiceProvider(IServiceCollection services)
+        {
+            var builder = new ContainerBuilder();
+            builder.Populate(services);
+            builder.RegisterModule(new MainModule(Configuration));
+            builder.RegisterModule(new MaterialModule());
+            ApplicationContainer = builder.Build();
+            return new AutofacServiceProvider(ApplicationContainer);
+        }
+
+        private void ConfigureSerilog()
+        {
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+                .Enrich.FromLogContext()
+                .Enrich.WithExceptionDetails()
+                .WriteTo.Console()
+                .CreateLogger();
         }
     }
 }

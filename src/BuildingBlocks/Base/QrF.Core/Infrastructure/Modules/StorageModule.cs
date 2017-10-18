@@ -8,8 +8,7 @@ namespace QrF.Core.Infrastructure.Modules
     {
         protected override void Load(ContainerBuilder builder)
         {
-            var assembly = typeof(StorageModule).GetTypeInfo().Assembly;
-            builder.RegisterAssemblyTypes(assembly)
+            builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
                    .Where(x => x.IsAssignableTo<IStorage>())
                    .AsImplementedInterfaces()
                    .SingleInstance();

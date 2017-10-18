@@ -2,7 +2,7 @@
 
 namespace QrF.Core.Infrastructure.Cqrs.Queries
 {
-    internal abstract class BaseQueryHandler
+    public abstract class BaseQueryHandler
     {
         protected readonly IMapper _mapper;
 

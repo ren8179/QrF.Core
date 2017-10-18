@@ -2,7 +2,7 @@
 
 namespace QrF.Core.Infrastructure.Cqrs.Queries
 {
-    internal interface IQueryHandler<T, TResult> where T : IQuery<TResult>
+    public interface IQueryHandler<T, TResult> where T : IQuery<TResult>
     {
         Task<TResult> ExecuteAsync(T query);
     }

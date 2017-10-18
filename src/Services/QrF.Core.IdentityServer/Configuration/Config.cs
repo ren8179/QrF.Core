@@ -11,7 +11,6 @@ namespace QrF.Core.IdentityServer
 {
     public class Config
     {
-        // ApiResources define the apis in your system
         public static IEnumerable<ApiResource> GetApis()
         {
             return new List<ApiResource>
@@ -20,8 +19,6 @@ namespace QrF.Core.IdentityServer
             };
         }
 
-        // Identity resources are data like user ID, name, or email address of a user
-        // see: http://docs.identityserver.io/en/release/configuration/resources.html
         public static IEnumerable<IdentityResource> GetResources()
         {
             return new List<IdentityResource>
@@ -118,66 +115,6 @@ namespace QrF.Core.IdentityServer
                         "locations",
                         "marketing"
                     },
-                },
-                new Client
-                {
-                    ClientId = "locationsswaggerui",
-                    ClientName = "Locations Swagger UI",
-                    AllowedGrantTypes = GrantTypes.Implicit,
-                    AllowAccessTokensViaBrowser = true,
-
-                    RedirectUris = { $"{clientsUrl["LocationsApi"]}/swagger/o2c.html" },
-                    PostLogoutRedirectUris = { $"{clientsUrl["LocationsApi"]}/swagger/" },
-
-                    AllowedScopes =
-                    {
-                        "locations"
-                    }
-                },
-                new Client
-                {
-                    ClientId = "marketingswaggerui",
-                    ClientName = "Marketing Swagger UI",
-                    AllowedGrantTypes = GrantTypes.Implicit,
-                    AllowAccessTokensViaBrowser = true,
-
-                    RedirectUris = { $"{clientsUrl["MarketingApi"]}/swagger/o2c.html" },
-                    PostLogoutRedirectUris = { $"{clientsUrl["MarketingApi"]}/swagger/" },
-
-                    AllowedScopes =
-                    {
-                        "marketing"
-                    }
-                },
-                new Client
-                {
-                    ClientId = "basketswaggerui",
-                    ClientName = "Basket Swagger UI",
-                    AllowedGrantTypes = GrantTypes.Implicit,
-                    AllowAccessTokensViaBrowser = true,
-
-                    RedirectUris = { $"{clientsUrl["BasketApi"]}/swagger/o2c.html" },
-                    PostLogoutRedirectUris = { $"{clientsUrl["BasketApi"]}/swagger/" },
-
-                    AllowedScopes =
-                    {
-                        "basket"
-                    }
-                },
-                new Client
-                {
-                    ClientId = "orderingswaggerui",
-                    ClientName = "Ordering Swagger UI",
-                    AllowedGrantTypes = GrantTypes.Implicit,
-                    AllowAccessTokensViaBrowser = true,
-
-                    RedirectUris = { $"{clientsUrl["OrderingApi"]}/swagger/o2c.html" },
-                    PostLogoutRedirectUris = { $"{clientsUrl["OrderingApi"]}/swagger/" },
-
-                    AllowedScopes =
-                    {
-                        "orders"
-                    }
                 }
             };
         }

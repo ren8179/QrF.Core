@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace QrF.Core.Infrastructure.Cqrs.Queries
 {
-    internal class QueryExecutor : IQueryExecutor
+    public class QueryExecutor : IQueryExecutor
     {
         private readonly IComponentContext _context;
 
@@ -13,15 +13,22 @@ namespace QrF.Core.Infrastructure.Cqrs.Queries
             _context = context;
         }
 
-        public async Task<TResult> ExecuteAsync<TResult>(IQuery<TResult> query)
+        public async Task<TResult> ExecuteAsync<TQuery, TResult>(TQuery query) where TQuery : IQuery<TResult>
+        {
+            var handler = GetHandler<IQueryHandler<TQuery, TResult>, TQuery>(query);
+            return await handler.ExecuteAsync((dynamic)query);
+        }
+        private THandler GetHandler<THandler, TQuery>(TQuery query)
         {
             if (query == null)
-            {
                 throw new ArgumentNullException(nameof(query), $"Query: {query.GetType().Name} cannot be null.");
-            }
-            var handlerType = typeof(IQueryHandler<,>).MakeGenericType(query.GetType(), typeof(TResult));
-            dynamic handler = _context.Resolve(handlerType);
-            return await handler.ExecuteAsync((dynamic)query);
+
+            var queryHandler = _context.Resolve<THandler>();
+
+            if (queryHandler == null)
+                throw new Exception($"No handler found for query '{query.GetType().FullName}'");
+
+            return queryHandler;
         }
     }
 }
