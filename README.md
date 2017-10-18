@@ -2,6 +2,8 @@
 基于.net core 2.0 的微服务框架
 
 服务介绍
+## QrF.Core.Materials material 示例项目
+> 基于CQRS实现的应用
 ## QrF.Core.API webapi接口项目，对外提供数据接口
 
 > 使用 Microsoft.AspNetCore.Mvc.Versioning 来实现版本控制
