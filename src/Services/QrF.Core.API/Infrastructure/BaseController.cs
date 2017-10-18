@@ -30,7 +30,7 @@ namespace QrF.Core.API.Infrastructure
 
         protected async Task<TResult> ExecuteAsync<TResult>(IQuery<TResult> query)
         {
-            return await _queryExecutor.ExecuteAsync<IQuery<TResult>, TResult>(query);
+            return await _queryExecutor.ExecuteAsync<TResult>(query);
         }
 
         protected async Task<TResponse> SendAsync<TResponse>(IRequest<TResponse> request)

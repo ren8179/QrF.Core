@@ -2,9 +2,9 @@
 
 namespace QrF.Core.Common.Extensions
 {
-    internal static class SettingsExtensions
+    public static class SettingsExtensions
     {
-        internal static T GetSettings<T>(this IConfiguration configuration) where T : new()
+        public static T GetSettings<T>(this IConfiguration configuration) where T : new()
         {
             var section = typeof(T).Name.Replace("Settings", string.Empty);
             var configurationValue = new T();

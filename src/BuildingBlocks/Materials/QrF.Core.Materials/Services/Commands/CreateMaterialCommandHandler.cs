@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace QrF.Core.Materials.Services.Commands
 {
-    internal class CreateMaterialCommandHandler : ICommandHandler<CreateMaterialCommand>
+    public class CreateMaterialCommandHandler : ICommandHandler<CreateMaterialCommand>
     {
         private readonly IMaterialStorage _storage;
 

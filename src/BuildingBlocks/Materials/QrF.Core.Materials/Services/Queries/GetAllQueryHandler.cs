@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace QrF.Core.Materials.Services.Queries
 {
-    internal class GetAllQueryHandler : IQueryHandler<GetAllQuery, IEnumerable<MaterialDto>>
+    public class GetAllQueryHandler : IQueryHandler<GetAllQuery, IEnumerable<MaterialDto>>
     {
         private readonly IMaterialStorage _storage;
         private readonly IMapper _mapper;

@@ -146,7 +146,7 @@ namespace QrF.Core.API
         {
             var builder = new ContainerBuilder();
             builder.Populate(services);
-            builder.RegisterModule(new MainModule(Configuration));
+            //builder.RegisterModule(new MainModule(Configuration));
             builder.RegisterModule(new MaterialModule());
             ApplicationContainer = builder.Build();
             return new AutofacServiceProvider(ApplicationContainer);

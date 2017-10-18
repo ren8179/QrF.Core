@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace QrF.Core.Materials.Domain
 {
-    internal class InMemoryMaterialStorage : IMaterialStorage
+    public class InMemoryMaterialStorage : IMaterialStorage
     {
         private readonly ISet<Material> _list = new HashSet<Material>();
 

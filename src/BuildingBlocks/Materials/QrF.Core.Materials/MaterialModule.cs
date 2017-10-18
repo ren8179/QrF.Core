@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using Autofac.Features.Variance;
 using MediatR;
 using QrF.Core.Domain.Contracts;
 using QrF.Core.Infrastructure.Cqrs.Commands;
@@ -21,6 +22,13 @@ namespace QrF.Core.Materials
             builder.RegisterType<QueryExecutor>().As<IQueryExecutor>().InstancePerLifetimeScope();
             builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly()).AsClosedTypesOf(typeof(ICommandHandler<>)).InstancePerLifetimeScope();
             builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly()).AsClosedTypesOf(typeof(IQueryHandler<,>)).InstancePerLifetimeScope();
+            builder.RegisterSource(new ContravariantRegistrationSource());
+            builder.RegisterType<Mediator>().As<IMediator>().SingleInstance();
+            builder.Register<SingleInstanceFactory>(ctx =>
+            {
+                var c = ctx.Resolve<IComponentContext>();
+                return t => { object o; return c.TryResolve(t, out o) ? o : null; };
+            }).InstancePerLifetimeScope();
             builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly()).AsClosedTypesOf(typeof(IAsyncRequestHandler<,>))
                 .InstancePerLifetimeScope();
         }

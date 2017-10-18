@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace QrF.Core.Materials.Services.Queries
 {
-    internal class GetForIdQueryHandler : IQueryHandler<GetForIdQuery, MaterialDto>
+    public class GetForIdQueryHandler : IQueryHandler<GetForIdQuery, MaterialDto>
     {
         private readonly IMaterialStorage _storage;
         private readonly IMapper _mapper;
