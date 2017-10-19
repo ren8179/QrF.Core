@@ -28,3 +28,4 @@
 /src/BuildingBlocks/Base/QrF.Core/obj
 /src/BuildingBlocks/Materials/QrF.Core.Materials/bin/Debug/netstandard2.0
 /src/BuildingBlocks/Materials/QrF.Core.Materials/obj
+/src/Services/QrF.Core.UI/wwwroot/node_modules
