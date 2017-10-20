@@ -101,3 +101,9 @@ export function html2Text(val) {
 export function toThousandslsFilter(num) {
   return (+num || 0).toString().replace(/^-?\d+/g, m => m.replace(/(?=(?!\b)(\d{3})+$)/g, ','))
 }
+
+export function enumName(val, list) {
+  if (!list) return ''
+  var items = list.filter((item) => item.id === val)
+  if (items && items.length > 0 && items[0]) { return items[0].text }
+}

@@ -57,7 +57,13 @@ export default {
     vertical-align: top;
     margin-left: 10px;
     .tabs-view {
-      margin-left: 10px;
+      margin: 2px 4px 2px 0;
+    }
+    .tabs-view .el-tag{
+          padding: 0 18px;
+          height: 30px;
+          line-height: 30px;
+          border: 1px solid #e9eaec!important;
     }
   }
 </style>

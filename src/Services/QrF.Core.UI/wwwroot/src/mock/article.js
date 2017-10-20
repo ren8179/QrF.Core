@@ -14,7 +14,7 @@ for (let i = 0; i < count; i++) {
     forecast: '@float(0, 100, 2, 2)',
     importance: '@integer(1, 3)',
     'type|1': ['CN', 'US', 'JP', 'EU'],
-    'status|1': ['published', 'draft', 'deleted'],
+    'status|1': [1, 2, 3],
     display_time: '@datetime',
     pageviews: '@integer(300, 5000)'
   }))
