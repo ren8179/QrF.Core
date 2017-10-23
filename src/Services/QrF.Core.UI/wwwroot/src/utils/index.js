@@ -34,6 +34,7 @@
    return time_str
  }
 
+// 格式化时间
  export function formatTime(time, option) {
    time = +time * 1000
    const d = new Date(time)
@@ -57,7 +58,7 @@
    }
  }
 
-// 格式化时间
+// 获取查询参数
  export function getQueryObject(url) {
    url = url == null ? window.location.href : url
    const search = url.substring(url.lastIndexOf('?') + 1)

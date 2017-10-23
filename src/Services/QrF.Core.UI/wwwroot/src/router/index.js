@@ -52,15 +52,6 @@ export const asyncRouterMap = [
     children: [{ path: 'index', component: _import('svg-icons/index'), name: '图标' }]
   },
   {
-    path: '/theme',
-    component: Layout,
-    redirect: 'noredirect',
-    name: 'theme',
-    icon: 'theme',
-    noDropdown: true,
-    children: [{ path: 'index', component: _import('theme/index'), name: '换肤' }]
-  },
-  {
     path: '/introduction',
     component: Layout,
     redirect: '/introduction/index',
