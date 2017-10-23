@@ -1,18 +1,23 @@
 <template>
   <div class="app-container calendar-list-container">
     <div class="filter-container">
-      <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="标题" v-model="listQuery.title"></el-input>
-
-      <el-select clearable style="width: 90px" class="filter-item" v-model="listQuery.status" placeholder="状态">
-        <el-option v-for="item in statusOptions" :key="item.id" :label="item.text" :value="item.id"></el-option>
-      </el-select>
-
-      <el-select @change='handleFilter' style="width: 120px" class="filter-item" v-model="listQuery.sort" placeholder="排序">
-        <el-option v-for="item in sortOptions" :key="item.key" :label="item.label" :value="item.key"></el-option>
-      </el-select>
-
-      <el-button class="filter-item" type="primary" v-waves icon="search" @click="handleFilter">搜索</el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" @click="handleUpdate(null,'create')" type="success" v-waves icon="edit">添加</el-button>
+      <el-form :model="q" ref="q" label-width="110px" class="el-form">
+            <el-row :gutter="10">
+                <cl label="标题" code="title">
+                    <el-input @keyup.enter.native="handleFilter" class="filter-item" placeholder="标题" v-model="q.title"></el-input>
+                </cl>
+                <cl label="状态" code="status">
+                    <el-select @change='handleFilter' clearable class="filter-item" v-model="q.status" placeholder="状态">
+                      <el-option v-for="item in statusOptions" :key="item.id" :label="item.text" :value="item.id"></el-option>
+                    </el-select>
+                </cl>
+                <el-col :xs="{span: 12}" :sm="{span: 8, offset: 0}" :md="{span: 6, offset: 6}">
+                  <el-button class="filter-item" style="float:right;" @click="handleUpdate(null,'create')" type="success" v-waves icon="edit">添加</el-button>
+                    <el-button icon="icon-zhongzhi" :plain="true" @@click="resetForm('q')" style="float:right;margin-right:10px;">重置</el-button>
+                    <el-button class="filter-item" type="primary" icon="search" v-waves @@click="handleFilter" style="float:right;">查询</el-button>
+                </el-col>
+            </el-row>
+        </el-form>
     </div>
 
     <el-table :key='tableKey' :data="list" v-loading="listLoading" @row-dblclick="handleUpdate($event,null)" border fit highlight-current-row style="width: 100%">
@@ -79,8 +84,8 @@
     </el-table>
 
     <div v-show="!listLoading" class="pagination-container">
-      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="listQuery.page"
-        :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total">
+      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="q.page"
+        :page-sizes="[10,20,30, 50]" :page-size="q.limit" layout="total, sizes, prev, pager, next, jumper" :total="total">
       </el-pagination>
     </div>
 
@@ -118,22 +123,25 @@
 </template>
 
 <script>
+import cl from '@/components/Form'
 import { fetchList } from '@/api/godownEntry'
 
 export default {
   name: 'table_demo',
+  components: {
+    cl
+  },
   data() {
     return {
       list: null,
       total: null,
       listLoading: true,
-      listQuery: {
+      q: {
         page: 1,
         limit: 10,
         importance: undefined,
         title: undefined,
-        status: undefined,
-        sort: '+id'
+        status: undefined
       },
       temp: {
         id: undefined,
@@ -144,8 +152,6 @@ export default {
         type: '',
         status: 1
       },
-      importanceOptions: [1, 2, 3],
-      sortOptions: [{ label: '按ID升序列', key: '+id' }, { label: '按ID降序', key: '-id' }],
       statusOptions: [{ text: '已保存', spell: null, id: 1 }, { text: '已提交', spell: null, id: 2 }, { text: '审核通过', spell: null, id: 3 }],
       dialogFormVisible: false,
       dialogStatus: '',
@@ -168,23 +174,26 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      fetchList(this.listQuery).then(response => {
+      fetchList(this.q).then(response => {
         this.list = response.data.items
         this.total = response.data.total
         this.listLoading = false
       })
     },
     handleFilter() {
-      this.listQuery.page = 1
+      this.q.page = 1
       this.getList()
     },
     handleSizeChange(val) {
-      this.listQuery.limit = val
+      this.q.limit = val
       this.getList()
     },
     handleCurrentChange(val) {
-      this.listQuery.page = val
+      this.q.page = val
       this.getList()
+    },
+    resetForm(formName) {
+      if (this.$refs[formName]) { this.$refs[formName].resetFields() }
     },
     handleUpdate(row, status) {
       status = status || 'update'
