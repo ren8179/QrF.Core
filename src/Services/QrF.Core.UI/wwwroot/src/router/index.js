@@ -11,8 +11,8 @@ import Layout from '../views/layout/Layout'
 /**
 * icon : the icon show in the sidebar
 * hidden : if `hidden:true` will not show in the sidebar
+* title : the name show in submenu and levelbar
 * redirect : if `redirect:noredirect` will no redirct in the levelbar
-* noDropdown : if `noDropdown:true` will has no submenu
 * meta : { role: ['admin'] }  will control the page role
 **/
 export const constantRouterMap = [
@@ -24,9 +24,13 @@ export const constantRouterMap = [
     path: '/',
     component: Layout,
     redirect: '/dashboard',
-    name: '首页',
     hidden: true,
-    children: [{ path: 'dashboard', component: _import('dashboard/index') }]
+    children: [{
+      path: 'dashboard',
+      component: _import('dashboard/index'),
+      name: 'dashboard',
+      meta: { title: '首页' }
+    }]
   }
 ]
 
@@ -40,24 +44,33 @@ export const asyncRouterMap = [
   {
     path: '/Godown',
     component: Layout,
-    icon: 'instore',
-    noDropdown: true,
-    children: [{ path: 'index', component: _import('instore/index'), name: '入库' }]
+    children: [{
+      path: 'index',
+      component: _import('instore/index'),
+      name: '入库',
+      meta: { title: '入库', icon: 'instore' }
+    }]
   },
   {
     path: '/icon',
     component: Layout,
-    icon: 'icon',
-    noDropdown: true,
-    children: [{ path: 'index', component: _import('svg-icons/index'), name: '图标' }]
+    children: [{
+      path: 'index',
+      component: _import('svg-icons/index'),
+      name: '图标',
+      meta: { title: '图标', icon: 'icon' }
+    }]
   },
   {
     path: '/introduction',
     component: Layout,
     redirect: '/introduction/index',
-    icon: 'people',
-    noDropdown: true,
-    children: [{ path: 'index', component: _import('introduction/index'), name: '教程' }]
+    children: [{
+      path: 'index',
+      component: _import('introduction/index'),
+      name: '教程',
+      meta: { title: '简述', icon: 'people' }
+    }]
   },
   { path: '*', redirect: '/404', hidden: true }
 ]
