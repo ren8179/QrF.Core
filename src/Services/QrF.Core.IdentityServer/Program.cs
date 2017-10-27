@@ -17,21 +17,20 @@ namespace QrF.Core.IdentityServer
             Console.Title = "IdentityServer";
             BuildWebHost(args)
                 .MigrateDbContext<PersistedGrantDbContext>((_, __) => { })
-                .MigrateDbContext<ApplicationDbContext>((context, services) =>
-                {
-                    var env = services.GetService<IHostingEnvironment>();
-                    var logger = services.GetService<ILogger<ApplicationDbContextSeed>>();
-
-                    new ApplicationDbContextSeed()
-                        .SeedAsync(context, env, logger)
-                        .Wait();
-                })
                 .MigrateDbContext<ConfigurationDbContext>((context, services) =>
                 {
                     var configuration = services.GetService<IConfiguration>();
 
                     new ConfigurationDbContextSeed()
                         .SeedAsync(context, configuration)
+                        .Wait();
+                }).MigrateDbContext<ApplicationDbContext>((context, services) =>
+                {
+                    var env = services.GetService<IHostingEnvironment>();
+                    var logger = services.GetService<ILogger<ApplicationDbContextSeed>>();
+
+                    new ApplicationDbContextSeed()
+                        .SeedAsync(context, env, logger)
                         .Wait();
                 }).Run();
         }

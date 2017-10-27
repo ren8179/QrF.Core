@@ -71,7 +71,7 @@ namespace QrF.Core.IdentityServer
                                      {
                                          sqlOptions.MigrationsAssembly(migrationsAssembly);
                                          //Configuring Connection Resiliency: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency 
-                                         sqlOptions.EnableRetryOnFailure(maxRetryCount: 10, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
+                                         sqlOptions.EnableRetryOnFailure(maxRetryCount: 3, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
                                      });
                 })
                 // this adds the operational data from DB (codes, tokens, consents)
