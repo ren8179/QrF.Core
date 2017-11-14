@@ -65,7 +65,6 @@ namespace QrF.Core.IdentityServer.Data
                 NormalizedEmail = "DEMOUSER@MICROSOFT.COM",
                 NormalizedUserName = "DEMOUSER@MICROSOFT.COM",
                 SecurityStamp = Guid.NewGuid().ToString("D"),
-                
             };
 
             user.PasswordHash = _passwordHasher.HashPassword(user, "Pass@word1");

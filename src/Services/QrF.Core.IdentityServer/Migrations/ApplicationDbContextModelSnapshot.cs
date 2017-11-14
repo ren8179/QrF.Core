@@ -19,7 +19,7 @@ namespace QrF.Core.IdentityServer.Migrations
                 .HasAnnotation("ProductVersion", "2.0.0-rtm-26452")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Identity.API.Models.ApplicationUser", b =>
+            modelBuilder.Entity("QrF.Core.IdentityServer.Entities.ApplicationUser", b =>
             {
                 b.Property<string>("Id")
                     .ValueGeneratedOnAdd();
@@ -223,7 +223,7 @@ namespace QrF.Core.IdentityServer.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
             {
-                b.HasOne("Identity.API.Models.ApplicationUser")
+                b.HasOne("QrF.Core.IdentityServer.Entities.ApplicationUser")
                     .WithMany()
                     .HasForeignKey("UserId")
                     .OnDelete(DeleteBehavior.Cascade);
@@ -231,7 +231,7 @@ namespace QrF.Core.IdentityServer.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
             {
-                b.HasOne("Identity.API.Models.ApplicationUser")
+                b.HasOne("QrF.Core.IdentityServer.Entities.ApplicationUser")
                     .WithMany()
                     .HasForeignKey("UserId")
                     .OnDelete(DeleteBehavior.Cascade);
@@ -244,7 +244,7 @@ namespace QrF.Core.IdentityServer.Migrations
                     .HasForeignKey("RoleId")
                     .OnDelete(DeleteBehavior.Cascade);
 
-                b.HasOne("Identity.API.Models.ApplicationUser")
+                b.HasOne("QrF.Core.IdentityServer.Entities.ApplicationUser")
                     .WithMany()
                     .HasForeignKey("UserId")
                     .OnDelete(DeleteBehavior.Cascade);
@@ -252,7 +252,7 @@ namespace QrF.Core.IdentityServer.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
             {
-                b.HasOne("Identity.API.Models.ApplicationUser")
+                b.HasOne("QrF.Core.IdentityServer.Entities.ApplicationUser")
                     .WithMany()
                     .HasForeignKey("UserId")
                     .OnDelete(DeleteBehavior.Cascade);
