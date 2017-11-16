@@ -1,4 +1,6 @@
 # QrF.Core
+[<img src="https://qrframe.visualstudio.com/_apis/public/build/definitions/4623db2c-bf99-42f9-9b5b-ad03240be07a/1/badge">](https://qrframe.visualstudio.com/_apis/public/build/definitions/4623db2c-bf99-42f9-9b5b-ad03240be07a/1/badge)
+
 基于.net core 2.0 的微服务框架
 
 服务介绍
