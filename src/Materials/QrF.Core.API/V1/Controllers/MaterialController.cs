@@ -14,8 +14,8 @@ namespace QrF.Core.API.V1.Controllers
     /// <summary>
     /// 物品管理
     /// </summary>
-    [ApiVersion("1.0")]
-    [Route("api/v{api-version:apiVersion}/[controller]")]
+    [ApiVersion("1")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class MaterialController : BaseController
     {
         public MaterialController(ICommandDispatcher commandDispatcher, IQueryExecutor queryExecutor,

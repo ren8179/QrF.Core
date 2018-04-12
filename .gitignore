@@ -39,3 +39,4 @@ src/Services/QrF.Core.UI/wwwroot/npm-debug.log
 /src/Materials/QrF.Core.API/obj
 /src/Materials/QrF.Core.Materials/bin/Debug/netstandard2.0
 /src/Materials/QrF.Core.Materials/obj
+/src/Materials/QrF.Core.API/internal-nlog.txt

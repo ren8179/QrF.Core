@@ -7,8 +7,8 @@ namespace QrF.Core.API.V1.Controllers
     /// <summary>
     /// 身份认证
     /// </summary>
-    [ApiVersion("1.0")]
-    [Route("api/v{api-version:apiVersion}/[controller]")]
+    [ApiVersion("1")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [Authorize]
     public class IdentityController : ControllerBase
     {

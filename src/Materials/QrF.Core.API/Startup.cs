@@ -66,7 +66,7 @@ namespace QrF.Core.API
                 });
             });
             services.AddMvc();
-            services.AddApiVersioning(o => o.ReportApiVersions = true);
+            services.AddApiVersioning();
             services.AddSwaggerGen(c =>
             {
                 var provider = services.BuildServiceProvider().GetRequiredService<IApiVersionDescriptionProvider>();
@@ -91,12 +91,12 @@ namespace QrF.Core.API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IApiVersionDescriptionProvider provider, IApplicationLifetime appLifetime)
         {
-            app.UseCors("default");
+            loggerFactory.AddConsole();
+            loggerFactory.AddDebug();
 
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            app.UseCors("default");
+            
+            app.UseDeveloperExceptionPage();
             app.UseStaticFiles();
 
             app.UseCustomExceptionHandling();
@@ -119,7 +119,7 @@ namespace QrF.Core.API
         {
             var info = new Info()
             {
-                Title = $"API {description.ApiVersion}",
+                Title = $"API v{description.ApiVersion}",
                 Version = description.ApiVersion.ToString(),
                 Description = "API文档",
                 Contact = new Contact() { Name = "https://github.com/ren8179" },
