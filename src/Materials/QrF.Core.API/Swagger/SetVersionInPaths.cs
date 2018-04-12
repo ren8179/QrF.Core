@@ -10,7 +10,7 @@ namespace QrF.Core.API.Swagger
         {
             swaggerDoc.Paths = swaggerDoc.Paths
                 .ToDictionary(
-                    path => path.Key.Replace("v{version}", swaggerDoc.Info.Version),
+                    path => path.Key.Replace("{version}", swaggerDoc.Info.Version),
                     path => path.Value
                 );
         }
