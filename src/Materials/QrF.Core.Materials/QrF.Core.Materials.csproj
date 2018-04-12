@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Base\QrF.Core\QrF.Core.csproj" />
+    <ProjectReference Include="..\..\Framework\QrF.Core\QrF.Core.csproj" />
   </ItemGroup>
 
 </Project>

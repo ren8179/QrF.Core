@@ -30,3 +30,12 @@
 /src/BuildingBlocks/Materials/QrF.Core.Materials/obj
 /src/Services/QrF.Core.UI/wwwroot/node_modules
 src/Services/QrF.Core.UI/wwwroot/npm-debug.log
+/src/Framework/QrF.Core/bin/Debug/netstandard2.0
+/src/BuildingBlocks/HealthChecks/src/Microsoft.Extensions.HealthChecks/bin/Debug/netstandard2.0
+/src/BuildingBlocks/HealthChecks/src/Microsoft.Extensions.HealthChecks.AzureStorage/obj
+/src/BuildingBlocks/HealthChecks/src/Microsoft.Extensions.HealthChecks.SqlServer/bin/Debug/netstandard2.0
+/src/Framework/QrF.Core/obj
+/src/Materials/QrF.Core.API/bin/Debug/netcoreapp2.0
+/src/Materials/QrF.Core.API/obj
+/src/Materials/QrF.Core.Materials/bin/Debug/netstandard2.0
+/src/Materials/QrF.Core.Materials/obj

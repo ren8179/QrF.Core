@@ -2,21 +2,19 @@
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.PlatformAbstractions;
 using QrF.Core.API.Infrastructure;
+using QrF.Core.API.Swagger;
 using QrF.Core.Infrastructure.Modules;
 using QrF.Core.Materials;
-using Serilog;
-using Serilog.Events;
-using Serilog.Exceptions;
 using Swashbuckle.AspNetCore.Swagger;
+using Swashbuckle.AspNetCore.SwaggerGen;
 using System;
-using System.IO;
-using System.Reflection;
+using System.Linq;
 
 namespace QrF.Core.API
 {
@@ -38,7 +36,6 @@ namespace QrF.Core.API
         /// <param name="configuration"></param>
         public Startup(IConfiguration configuration)
         {
-            ConfigureSerilog();
             Configuration = configuration;
         }
 
@@ -48,8 +45,6 @@ namespace QrF.Core.API
         /// <param name="services"></param>
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(dispose: true));
-
             services.AddMvcCore()
                 .AddAuthorization()
                 .AddJsonFormatters()
@@ -72,17 +67,24 @@ namespace QrF.Core.API
             });
             services.AddMvc();
             services.AddApiVersioning(o => o.ReportApiVersions = true);
-            services.AddSwaggerGen(
-                options =>
+            services.AddSwaggerGen(c =>
+            {
+                var provider = services.BuildServiceProvider().GetRequiredService<IApiVersionDescriptionProvider>();
+                foreach (var description in provider.ApiVersionDescriptions)
                 {
-                    var provider = services.BuildServiceProvider().GetRequiredService<IApiVersionDescriptionProvider>();
-                    foreach (var description in provider.ApiVersionDescriptions)
-                    {
-                        options.SwaggerDoc(description.GroupName, CreateInfoForApiVersion(description));
-                    }
-                    //options.OperationFilter<SwaggerDefaultValues>();
-                    options.IncludeXmlComments(XmlCommentsFilePath);
+                    c.SwaggerDoc(description.GroupName, CreateInfoForApiVersion(description));
+                }
+                c.DocInclusionPredicate((docName, apiDesc) =>
+                {
+                    var versions = apiDesc.ControllerAttributes()
+                        .OfType<ApiVersionAttribute>()
+                        .SelectMany(attr => attr.Versions);
+
+                    return versions.Any(v => $"v{v.ToString()}" == docName);
                 });
+                c.OperationFilter<RemoveVersionParameters>();
+                c.DocumentFilter<SetVersionInPaths>();
+            });
             return GetAutofacServiceProvider(services);
         }
 
@@ -103,26 +105,14 @@ namespace QrF.Core.API
             app.UseAuthentication();
             app.UseMvc();
             app.UseSwagger();
-            app.UseSwaggerUI(
-                options =>
-                {
-                    foreach (var description in provider.ApiVersionDescriptions)
-                    {
-                        options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
-                    }
-                    options.InjectOnCompleteJavaScript("/swagger-ui/swagger.js");
-                });
-            appLifetime.ApplicationStopped.Register(() => ApplicationContainer.Dispose());
-        }
-
-        static string XmlCommentsFilePath
-        {
-            get
+            app.UseSwaggerUI(c =>
             {
-                var basePath = PlatformServices.Default.Application.ApplicationBasePath;
-                var fileName = typeof(Startup).GetTypeInfo().Assembly.GetName().Name + ".xml";
-                return Path.Combine(basePath, fileName);
-            }
+                foreach (var description in provider.ApiVersionDescriptions)
+                {
+                    c.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
+                }
+            });
+            appLifetime.ApplicationStopped.Register(() => ApplicationContainer.Dispose());
         }
 
         static Info CreateInfoForApiVersion(ApiVersionDescription description)
@@ -146,21 +136,10 @@ namespace QrF.Core.API
         {
             var builder = new ContainerBuilder();
             builder.Populate(services);
-            //builder.RegisterModule(new MainModule(Configuration));
             builder.RegisterModule(new MaterialModule());
+            builder.RegisterModule(new MediatRModule());
             ApplicationContainer = builder.Build();
             return new AutofacServiceProvider(ApplicationContainer);
-        }
-
-        private void ConfigureSerilog()
-        {
-            Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Debug()
-                .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
-                .Enrich.FromLogContext()
-                .Enrich.WithExceptionDetails()
-                .WriteTo.Console()
-                .CreateLogger();
         }
     }
 }

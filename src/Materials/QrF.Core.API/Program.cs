@@ -7,6 +7,7 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using NLog.Web;
 
 namespace QrF.Core.API
 {
@@ -22,8 +23,21 @@ namespace QrF.Core.API
         public static void Main(string[] args)
         {
             Console.Title = "QrF.Core.API";
-
-            BuildWebHost(args).Run();
+            var logger = NLog.Web.NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
+            try
+            {
+                logger.Debug("init main");
+                BuildWebHost(args).Run();
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Stopped program because of exception");
+                throw;
+            }
+            finally
+            {
+                NLog.LogManager.Shutdown();
+            }
         }
 
         /// <summary>
@@ -34,6 +48,12 @@ namespace QrF.Core.API
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
+                .ConfigureLogging(logging =>
+                {
+                    logging.ClearProviders();
+                    logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+                })
+                .UseNLog()  // NLog: setup NLog for Dependency injection
                 .Build();
     }
 }

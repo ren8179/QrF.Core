@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
-using Serilog;
+using NLog;
 using System;
 using System.Net;
 using System.Threading.Tasks;
@@ -10,8 +10,6 @@ namespace QrF.Core.API.Middleware
     public class ExceptionHandlingMiddleware
     {
         private readonly RequestDelegate _next;
-
-        private static readonly ILogger Log = Serilog.Log.ForContext<ExceptionHandlingMiddleware>();
 
         public ExceptionHandlingMiddleware(RequestDelegate next)
         {
@@ -32,7 +30,7 @@ namespace QrF.Core.API.Middleware
 
         private static Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
-            Log.Error(exception, "An unexpected fault happened.");
+            LogManager.GetCurrentClassLogger().Error(exception, "An unexpected fault happened.");
             var response = new { code = "error", message = "An unexpected fault happened. Try again later." };
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
