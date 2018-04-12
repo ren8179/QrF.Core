@@ -12,6 +12,10 @@
 
 > 使用 Swashbuckle.AspNetCore 来实现接口文档展示
 
+[<img src="https://github.com/ren8179/QrF.Core/blob/master/doc/20180413064433.png">](https://github.com/ren8179/QrF.Core/blob/master/doc/20180413064433.png)
+
+[<img src="https://github.com/ren8179/QrF.Core/blob/master/doc/20180413064622.png">](https://github.com/ren8179/QrF.Core/blob/master/doc/20180413064622.png)
+
 ## QrF.Core.IdentityServer 身份认证服务，实现单点登录
 
 > 使用 Identity Server4 实现身份认证
