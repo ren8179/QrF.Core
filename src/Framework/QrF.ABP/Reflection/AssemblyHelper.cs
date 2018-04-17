@@ -1,0 +1,23 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+
+namespace QrF.ABP.Reflection
+{
+    internal static class AssemblyHelper
+    {
+        public static List<Assembly> GetAllAssembliesInFolder(string folderPath, SearchOption searchOption)
+        {
+            var assemblyFiles = Directory
+                .EnumerateFiles(folderPath, "*.*", searchOption)
+                .Where(s => s.EndsWith(".dll") || s.EndsWith(".exe"));
+
+            return assemblyFiles.Select(
+                Assembly.LoadFile
+            ).ToList();
+        }
+    }
+}

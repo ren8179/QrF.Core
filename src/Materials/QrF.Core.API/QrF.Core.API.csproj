@@ -34,7 +34,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Framework\QrF.Core\QrF.Core.csproj" />
     <ProjectReference Include="..\..\Materials\QrF.Core.Materials\QrF.Core.Materials.csproj" />
   </ItemGroup>
 

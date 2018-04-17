@@ -40,3 +40,12 @@ src/Services/QrF.Core.UI/wwwroot/npm-debug.log
 /src/Materials/QrF.Core.Materials/bin/Debug/netstandard2.0
 /src/Materials/QrF.Core.Materials/obj
 /src/Materials/QrF.Core.API/internal-nlog.txt
+/src/Tasks/QrF.Core.Tasks/bin/Debug/netstandard2.0
+/src/Tasks/QrF.Core.Tasks/obj/Debug/netstandard2.0
+/src/Tasks/QrF.Core.Tasks/obj
+/src/Framework/QrF.ABP/bin/Debug/netstandard2.0
+/src/Framework/QrF.ABP/obj
+/src/Framework/QrF.Core.Cqrs/bin/Debug/netstandard2.0
+/src/Framework/QrF.Core.Cqrs/obj
+/src/Framework/QrF.Core.EntityFrameworkCore/bin/Debug/netstandard2.0
+/src/Framework/QrF.Core.EntityFrameworkCore/obj

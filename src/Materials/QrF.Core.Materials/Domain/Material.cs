@@ -1,6 +1,4 @@
-﻿using QrF.Core.Common.Extensions;
-using QrF.Core.Domain.Exceptions;
-using System;
+﻿using System;
 
 namespace QrF.Core.Materials.Domain
 {
@@ -28,20 +26,14 @@ namespace QrF.Core.Materials.Domain
         }
         public void SetName(string name)
         {
-            if (name.IsEmpty())
-                throw new DomainException("name cannot be empty.");
             Name = name;
         }
         public void SetSpec(string spec)
         {
-            if (spec.IsEmpty())
-                throw new DomainException("spec cannot be empty.");
             Spec = spec;
         }
         public void SetManufact(string manufact)
         {
-            if (manufact.IsEmpty())
-                throw new DomainException("manufact cannot be empty.");
             Manufact = manufact;
         }
     }

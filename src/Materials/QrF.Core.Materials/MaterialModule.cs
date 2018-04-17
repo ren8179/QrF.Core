@@ -1,6 +1,4 @@
 ﻿using Autofac;
-using Autofac.Features.Variance;
-using MediatR;
 using QrF.Core.Domain.Contracts;
 using QrF.Core.Infrastructure.Cqrs.Commands;
 using QrF.Core.Infrastructure.Cqrs.Queries;
