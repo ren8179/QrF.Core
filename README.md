@@ -1,12 +1,22 @@
 # QrF.Core
 [<img src="https://qrframe.visualstudio.com/_apis/public/build/definitions/4623db2c-bf99-42f9-9b5b-ad03240be07a/1/badge">](https://qrframe.visualstudio.com/_apis/public/build/definitions/4623db2c-bf99-42f9-9b5b-ad03240be07a/1/badge)
 
-基于.net core 2.0 的微服务框架
+基于.net core 2.0 的微服务框架,参考ABP项目，加入个人见解重构项目
 
-服务介绍
-## QrF.Core.Materials material 示例项目
+## 参考的应用框架
+
+[abp](https://github.com/aspnetboilerplate/aspnetboilerplate)
+
+## 开发环境
+> VS2017 / VS Code
+
+> .net core 2.0
+
+## 服务介绍
+
+### QrF.Core.Materials material 示例项目
 > 基于CQRS实现的应用
-## QrF.Core.API webapi接口项目，对外提供数据接口
+### QrF.Core.API webapi接口项目，对外提供数据接口
 
 > 使用 Microsoft.AspNetCore.Mvc.Versioning 来实现版本控制
 
@@ -16,11 +26,11 @@
 
 [<img src="https://github.com/ren8179/QrF.Core/blob/master/doc/20180413064622.png">](https://github.com/ren8179/QrF.Core/blob/master/doc/20180413064622.png)
 
-## QrF.Core.IdentityServer 身份认证服务，实现单点登录
+### QrF.Core.IdentityServer 身份认证服务，实现单点登录
 
 > 使用 Identity Server4 实现身份认证
 
-## QrF.Core.UI 客户端界面
+### QrF.Core.UI 客户端界面
 纯前端项目，使用oidc-client来实现授权认证。
 配置项:
 
