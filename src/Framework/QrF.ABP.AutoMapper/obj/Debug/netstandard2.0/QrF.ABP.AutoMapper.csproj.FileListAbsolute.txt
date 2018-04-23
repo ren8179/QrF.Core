@@ -1,0 +1,14 @@
+F:\Repos\QrF.Core\src\Framework\QrF.ABP.AutoMapper\bin\Debug\netstandard2.0\QrF.ABP.AutoMapper.deps.json
+F:\Repos\QrF.Core\src\Framework\QrF.ABP.AutoMapper\bin\Debug\netstandard2.0\QrF.ABP.AutoMapper.dll
+F:\Repos\QrF.Core\src\Framework\QrF.ABP.AutoMapper\bin\Debug\netstandard2.0\QrF.ABP.dll
+F:\Repos\QrF.Core\src\Framework\QrF.ABP.AutoMapper\bin\Debug\netstandard2.0\System.ComponentModel.Annotations.dll
+F:\Repos\QrF.Core\src\Framework\QrF.ABP.AutoMapper\bin\Debug\netstandard2.0\QrF.ABP.pdb
+F:\Repos\QrF.Core\src\Framework\QrF.ABP.AutoMapper\bin\Debug\netstandard2.0\System.ComponentModel.Annotations.xml
+F:\Repos\QrF.Core\src\Framework\QrF.ABP.AutoMapper\obj\Debug\netstandard2.0\QrF.ABP.AutoMapper.csproj.CoreCompileInputs.cache
+F:\Repos\QrF.Core\src\Framework\QrF.ABP.AutoMapper\obj\Debug\netstandard2.0\QrF.ABP.AutoMapper.AssemblyInfoInputs.cache
+F:\Repos\QrF.Core\src\Framework\QrF.ABP.AutoMapper\obj\Debug\netstandard2.0\QrF.ABP.AutoMapper.AssemblyInfo.cs
+F:\Repos\QrF.Core\src\Framework\QrF.ABP.AutoMapper\obj\Debug\netstandard2.0\QrF.ABP.AutoMapper.csproj.CopyComplete
+F:\Repos\QrF.Core\src\Framework\QrF.ABP.AutoMapper\bin\Debug\netstandard2.0\QrF.ABP.AutoMapper.pdb
+F:\Repos\QrF.Core\src\Framework\QrF.ABP.AutoMapper\obj\Debug\netstandard2.0\QrF.ABP.AutoMapper.csprojResolveAssemblyReference.cache
+F:\Repos\QrF.Core\src\Framework\QrF.ABP.AutoMapper\obj\Debug\netstandard2.0\QrF.ABP.AutoMapper.dll
+F:\Repos\QrF.Core\src\Framework\QrF.ABP.AutoMapper\obj\Debug\netstandard2.0\QrF.ABP.AutoMapper.pdb

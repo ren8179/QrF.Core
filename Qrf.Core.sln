@@ -48,6 +48,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QrF.Core.Tasks", "src\Tasks
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QrF.ABP", "src\Framework\QrF.ABP\QrF.ABP.csproj", "{779CF356-D5EA-481F-A578-F7FFFC47FA1E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QrF.ABP.AutoMapper", "src\Framework\QrF.ABP.AutoMapper\QrF.ABP.AutoMapper.csproj", "{FA6C4E8A-E8EB-4CF6-99EC-B687828954E1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -102,6 +104,10 @@ Global
 		{779CF356-D5EA-481F-A578-F7FFFC47FA1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{779CF356-D5EA-481F-A578-F7FFFC47FA1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{779CF356-D5EA-481F-A578-F7FFFC47FA1E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA6C4E8A-E8EB-4CF6-99EC-B687828954E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA6C4E8A-E8EB-4CF6-99EC-B687828954E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA6C4E8A-E8EB-4CF6-99EC-B687828954E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA6C4E8A-E8EB-4CF6-99EC-B687828954E1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -126,6 +132,7 @@ Global
 		{21C385E5-CC99-47CF-B9D1-7AF5DAFEE3E6} = {AA3CB424-B36E-434C-8E49-CE3FD83D0FBB}
 		{438B7962-E59C-43C6-A6AC-8166BEE75227} = {21C385E5-CC99-47CF-B9D1-7AF5DAFEE3E6}
 		{779CF356-D5EA-481F-A578-F7FFFC47FA1E} = {BE193A21-3AA7-47A6-B07B-9D795B8F404A}
+		{FA6C4E8A-E8EB-4CF6-99EC-B687828954E1} = {BE193A21-3AA7-47A6-B07B-9D795B8F404A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2F715BCF-ABB9-4970-BD0E-2A2CC24AD6C9}

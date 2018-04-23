@@ -6,10 +6,13 @@
 
   <ItemGroup>
     <PackageReference Include="Autofac" Version="4.7.0" />
+    <PackageReference Include="AutoMapper" Version="6.2.2" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="4.4.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Framework\QrF.Core.Cqrs\QrF.Core.Cqrs.csproj" />
+    <ProjectReference Include="..\..\Framework\QrF.ABP.AutoMapper\QrF.ABP.AutoMapper.csproj" />
+    <ProjectReference Include="..\..\Framework\QrF.ABP\QrF.ABP.csproj" />
   </ItemGroup>
 
 </Project>

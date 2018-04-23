@@ -1,28 +1,15 @@
-﻿using Autofac;
-using AutoMapper;
-using QrF.Core.Domain.Contracts;
-using QrF.Core.Infrastructure.Cqrs.Commands;
-using QrF.Core.Infrastructure.Cqrs.Queries;
-using System.Reflection;
+﻿using QrF.ABP.Modules;
+using QrF.ABP.Reflection.Extensions;
+using QrF.ABP.AutoMapper;
 
-namespace QrF.Core.Materials
+namespace QrF.Core.Tasks
 {
-    public class TaskModule: Autofac.Module
+    [DependsOn(typeof(AutoMapperModule))]
+    public class TaskModule : BaseModule
     {
-        protected override void Load(ContainerBuilder builder)
+        public override void Initialize()
         {
-            builder.RegisterInstance(new MapperConfiguration(cfg =>
-            {
-
-            }).CreateMapper());
-            builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
-                   .Where(x => x.IsAssignableTo<IStorage>())
-                   .AsImplementedInterfaces()
-                   .SingleInstance();
-            builder.RegisterType<CommandDispatcher>().As<ICommandDispatcher>().InstancePerLifetimeScope();
-            builder.RegisterType<QueryExecutor>().As<IQueryExecutor>().InstancePerLifetimeScope();
-            builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly()).AsClosedTypesOf(typeof(ICommandHandler<>)).InstancePerLifetimeScope();
-            builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly()).AsClosedTypesOf(typeof(IQueryHandler<,>)).InstancePerLifetimeScope();
+            IocManager.RegisterAssemblyByConvention(typeof(TaskModule).GetAssembly());
         }
     }
 }
