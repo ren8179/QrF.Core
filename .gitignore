@@ -49,3 +49,9 @@ src/Services/QrF.Core.UI/wwwroot/npm-debug.log
 /src/Framework/QrF.Core.Cqrs/obj
 /src/Framework/QrF.Core.EntityFrameworkCore/bin/Debug/netstandard2.0
 /src/Framework/QrF.Core.EntityFrameworkCore/obj
+/src/Framework/QrF.ABP.AspNetCore/bin/Debug/netstandard2.0
+/src/Framework/QrF.ABP.AspNetCore/obj
+/src/Framework/QrF.ABP.Web/bin/Debug/netstandard2.0
+/src/Framework/QrF.ABP.Web/obj
+/src/Tasks/QrF.Core.Tasks.Web/bin/Debug/netcoreapp2.0
+/src/Tasks/QrF.Core.Tasks.Web/obj
