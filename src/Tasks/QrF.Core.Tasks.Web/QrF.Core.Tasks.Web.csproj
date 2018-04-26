@@ -10,6 +10,8 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Framework\QrF.ABP.AspNetCore\QrF.ABP.AspNetCore.csproj" />
+    <ProjectReference Include="..\..\Framework\QrF.ABP.Castle.Log\QrF.ABP.Castle.Log4Net.csproj" />
+    <ProjectReference Include="..\..\Framework\QrF.Core.EntityFrameworkCore\QrF.Core.EntityFrameworkCore.csproj" />
     <ProjectReference Include="..\QrF.Core.Tasks\QrF.Core.Tasks.csproj" />
   </ItemGroup>
 </Project>

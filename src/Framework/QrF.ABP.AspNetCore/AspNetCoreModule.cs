@@ -3,15 +3,15 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.Extensions.Options;
 using QrF.ABP.AspNetCore.Configuration;
+using QrF.ABP.AspNetCore.Security.AntiForgery;
+using QrF.ABP.Configuration.Startup;
 using QrF.ABP.Dependency;
 using QrF.ABP.Modules;
 using QrF.ABP.Reflection.Extensions;
 using QrF.ABP.Web;
 using QrF.ABP.Web.Configuration.Startup;
-using System;
-using System.Collections.Generic;
+using QrF.ABP.Web.Security.AntiForgery;
 using System.Linq;
-using System.Text;
 
 namespace QrF.ABP.AspNetCore
 {
@@ -20,14 +20,13 @@ namespace QrF.ABP.AspNetCore
     {
         public override void PreInitialize()
         {
-            //IocManager.AddConventionalRegistrar(new AspNetCoreConventionalRegistrar());
+            IocManager.AddConventionalRegistrar(new AspNetCoreConventionalRegistrar());
 
-            //IocManager.Register<IAspNetCoreConfiguration, AspNetCoreConfiguration>();
+            IocManager.Register<IAspNetCoreConfiguration, AspNetCoreConfiguration>();
+            
+            Configuration.ReplaceService<IAntiForgeryManager, AspNetCoreAntiForgeryManager>(DependencyLifeStyle.Transient);
 
-            //Configuration.ReplaceService<IPrincipalAccessor, AspNetCorePrincipalAccessor>(DependencyLifeStyle.Transient);
-            //Configuration.ReplaceService<IAntiForgeryManager, AspNetCoreAntiForgeryManager>(DependencyLifeStyle.Transient);
-
-            //Configuration.Modules.AspNetCore().FormBodyBindingIgnoredTypes.Add(typeof(IFormFile));
+            Configuration.Modules.AbpAspNetCore().FormBodyBindingIgnoredTypes.Add(typeof(IFormFile));
         }
 
         public override void Initialize()

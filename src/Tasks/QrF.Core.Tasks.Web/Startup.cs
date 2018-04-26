@@ -1,13 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Castle.Facilities.Logging;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using QrF.ABP.AspNetCore;
+using QrF.ABP.Castle.Log4Net;
+using System;
 
 namespace QrF.Core.Tasks.Web
 {
@@ -41,9 +40,9 @@ namespace QrF.Core.Tasks.Web
             return services.AddAbp<TaskWebModule>(options =>
             {
                 //Configure Log4Net logging
-                //options.IocManager.IocContainer.AddFacility<LoggingFacility>(
-                //    f => f.UseAbpLog4Net().WithConfig("log4net.config")
-                //);
+                options.IocManager.IocContainer.AddFacility<LoggingFacility>(
+                    f => f.UseCastleLog4Net().WithConfig("log4net.config")
+                );
             });
         }
 

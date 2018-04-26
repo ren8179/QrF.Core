@@ -50,11 +50,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QrF.ABP", "src\Framework\Qr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QrF.ABP.AutoMapper", "src\Framework\QrF.ABP.AutoMapper\QrF.ABP.AutoMapper.csproj", "{FA6C4E8A-E8EB-4CF6-99EC-B687828954E1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QrF.Core.Tasks.Web", "src\Tasks\QrF.Core.Tasks.Web\QrF.Core.Tasks.Web.csproj", "{22D9A044-34DF-415D-91F2-131E46BF291A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QrF.Core.Tasks.Web", "src\Tasks\QrF.Core.Tasks.Web\QrF.Core.Tasks.Web.csproj", "{22D9A044-34DF-415D-91F2-131E46BF291A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QrF.ABP.AspNetCore", "src\Framework\QrF.ABP.AspNetCore\QrF.ABP.AspNetCore.csproj", "{1159F5D8-9748-4776-9700-4E85763DECEC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QrF.ABP.AspNetCore", "src\Framework\QrF.ABP.AspNetCore\QrF.ABP.AspNetCore.csproj", "{1159F5D8-9748-4776-9700-4E85763DECEC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QrF.ABP.Web", "src\Framework\QrF.ABP.Web\QrF.ABP.Web.csproj", "{9625FF2E-C37F-4D42-ADD5-3E4551AB6ACB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QrF.ABP.Web", "src\Framework\QrF.ABP.Web\QrF.ABP.Web.csproj", "{9625FF2E-C37F-4D42-ADD5-3E4551AB6ACB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QrF.ABP.Castle.Log4Net", "src\Framework\QrF.ABP.Castle.Log\QrF.ABP.Castle.Log4Net.csproj", "{BCD1D600-2EEC-4BA2-87EC-B70CED07E3A4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -126,6 +128,10 @@ Global
 		{9625FF2E-C37F-4D42-ADD5-3E4551AB6ACB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9625FF2E-C37F-4D42-ADD5-3E4551AB6ACB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9625FF2E-C37F-4D42-ADD5-3E4551AB6ACB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BCD1D600-2EEC-4BA2-87EC-B70CED07E3A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCD1D600-2EEC-4BA2-87EC-B70CED07E3A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCD1D600-2EEC-4BA2-87EC-B70CED07E3A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCD1D600-2EEC-4BA2-87EC-B70CED07E3A4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -154,6 +160,7 @@ Global
 		{22D9A044-34DF-415D-91F2-131E46BF291A} = {21C385E5-CC99-47CF-B9D1-7AF5DAFEE3E6}
 		{1159F5D8-9748-4776-9700-4E85763DECEC} = {BE193A21-3AA7-47A6-B07B-9D795B8F404A}
 		{9625FF2E-C37F-4D42-ADD5-3E4551AB6ACB} = {BE193A21-3AA7-47A6-B07B-9D795B8F404A}
+		{BCD1D600-2EEC-4BA2-87EC-B70CED07E3A4} = {BE193A21-3AA7-47A6-B07B-9D795B8F404A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2F715BCF-ABB9-4970-BD0E-2A2CC24AD6C9}

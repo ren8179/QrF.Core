@@ -7,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using QrF.Core.EntityFrameworkCore.Configuration;
+using Microsoft.EntityFrameworkCore;
 
 namespace QrF.Core.Tasks.Web
 {
@@ -17,22 +19,22 @@ namespace QrF.Core.Tasks.Web
         {
             Configuration.DefaultNameOrConnectionString = IocManager.Resolve<IConfigurationRoot>().GetConnectionString("Default");
 
-            //Configuration.Modules.BaseEfCore().AddDbContext<MyDbContext>(options =>
-            //{
-            //    if (options.ExistingConnection != null)
-            //    {
-            //        options.DbContextOptions.UseSqlServer(options.ExistingConnection);
-            //    }
-            //    else
-            //    {
-            //        options.DbContextOptions.UseSqlServer(options.ConnectionString);
-            //    }
-            //});
+            Configuration.Modules.AbpEfCore().AddDbContext<TaskDbContext>(options =>
+            {
+                if (options.ExistingConnection != null)
+                {
+                    options.DbContextOptions.UseSqlServer(options.ExistingConnection);
+                }
+                else
+                {
+                    options.DbContextOptions.UseSqlServer(options.ConnectionString);
+                }
+            });
 
-            //Configuration.Modules.AbpAspNetCore()
-            //    .CreateControllersForAppServices(
-            //        typeof(TaskWebModule).GetAssembly()
-            //    );
+            Configuration.Modules.AbpAspNetCore()
+                .CreateControllersForAppServices(
+                    typeof(TaskWebModule).GetAssembly()
+                );
 
 
             Configuration.IocManager.Resolve<IAspNetCoreConfiguration>().RouteConfiguration.Add(routes =>

@@ -33,7 +33,7 @@ namespace QrF.ABP.AspNetCore.Mvc.Antiforgery
             //No need to validate if antiforgery cookie is not sent.
             //That means the request is sent from a non-browser client.
             //See https://github.com/aspnet/Antiforgery/issues/115
-            if (!context.HttpContext.Request.Cookies.ContainsKey(_options.CookieName))
+            if (!context.HttpContext.Request.Cookies.ContainsKey(_options.Cookie.Name))
             {
                 return false;
             }
