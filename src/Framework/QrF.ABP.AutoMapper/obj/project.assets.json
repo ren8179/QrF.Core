@@ -1177,6 +1177,15 @@
           "lib/netstandard1.3/System.Xml.XmlDocument.dll": {}
         }
       },
+      "TimeZoneConverter/2.4.1": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/TimeZoneConverter.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/TimeZoneConverter.dll": {}
+        }
+      },
       "QrF.ABP/1.0.0": {
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
@@ -1190,7 +1199,8 @@
           "Nito.AsyncEx.Context": "5.0.0-pre-05",
           "Nito.AsyncEx.Coordination": "5.0.0-pre-05",
           "System.Collections.Immutable": "1.4.0",
-          "System.Configuration.ConfigurationManager": "4.4.1"
+          "System.Configuration.ConfigurationManager": "4.4.1",
+          "TimeZoneConverter": "2.4.1"
         },
         "compile": {
           "bin/placeholder/QrF.ABP.dll": {}
@@ -4509,6 +4519,27 @@
         "ref/xamarinwatchos10/_._",
         "system.xml.xmldocument.4.3.0.nupkg.sha512",
         "system.xml.xmldocument.nuspec"
+      ]
+    },
+    "TimeZoneConverter/2.4.1": {
+      "sha512": "ilkZ1a2u848EZNqv+56FqzJxOQVQRknTwwRxQIEKHHJSsDI1WRtmSMjMTZgub1/hAMf5ZbwYyqWLjeBrHTFu3g==",
+      "type": "package",
+      "path": "timezoneconverter/2.4.1",
+      "files": [
+        "lib/net35/TimeZoneConverter.dll",
+        "lib/net35/TimeZoneConverter.xml",
+        "lib/net40/TimeZoneConverter.dll",
+        "lib/net40/TimeZoneConverter.xml",
+        "lib/net45/TimeZoneConverter.dll",
+        "lib/net45/TimeZoneConverter.xml",
+        "lib/netstandard1.1/TimeZoneConverter.dll",
+        "lib/netstandard1.1/TimeZoneConverter.xml",
+        "lib/netstandard1.3/TimeZoneConverter.dll",
+        "lib/netstandard1.3/TimeZoneConverter.xml",
+        "lib/netstandard2.0/TimeZoneConverter.dll",
+        "lib/netstandard2.0/TimeZoneConverter.xml",
+        "timezoneconverter.2.4.1.nupkg.sha512",
+        "timezoneconverter.nuspec"
       ]
     },
     "QrF.ABP/1.0.0": {

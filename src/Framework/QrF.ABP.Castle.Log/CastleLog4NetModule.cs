@@ -6,7 +6,7 @@ using System.Text;
 namespace QrF.ABP.Castle.Log4Net
 {
     [DependsOn(typeof(KernelModule))]
-    public class AbpCastleLog4NetModule : BaseModule
+    public class CastleLog4NetModule : BaseModule
     {
 
     }

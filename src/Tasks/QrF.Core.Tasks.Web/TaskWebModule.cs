@@ -9,10 +9,17 @@ using System.Linq;
 using System.Threading.Tasks;
 using QrF.Core.EntityFrameworkCore.Configuration;
 using Microsoft.EntityFrameworkCore;
+using QrF.ABP.AspNetCore;
+using QrF.Core.EntityFrameworkCore;
+using QrF.ABP.Castle.Log4Net;
 
 namespace QrF.Core.Tasks.Web
 {
-    [DependsOn(typeof(TaskModule))]
+    [DependsOn(
+        typeof(AspNetCoreModule), 
+        typeof(TaskModule),
+        typeof(EntityFrameworkCoreModule),
+        typeof(CastleLog4NetModule))]
     public class TaskWebModule : BaseModule
     {
         public override void PreInitialize()

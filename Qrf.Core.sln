@@ -7,6 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{AA3CB424-B36
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BDE10C47-B60E-4CA8-A77A-E8DA7889A2D7}"
 	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
 		README.md = README.md
 	EndProjectSection
 EndProject
@@ -56,7 +57,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QrF.ABP.AspNetCore", "src\F
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QrF.ABP.Web", "src\Framework\QrF.ABP.Web\QrF.ABP.Web.csproj", "{9625FF2E-C37F-4D42-ADD5-3E4551AB6ACB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QrF.ABP.Castle.Log4Net", "src\Framework\QrF.ABP.Castle.Log\QrF.ABP.Castle.Log4Net.csproj", "{BCD1D600-2EEC-4BA2-87EC-B70CED07E3A4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QrF.ABP.Castle.Log4Net", "src\Framework\QrF.ABP.Castle.Log\QrF.ABP.Castle.Log4Net.csproj", "{BCD1D600-2EEC-4BA2-87EC-B70CED07E3A4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETStandard,Version=v2.0/",
-    "signature": "2d5adfb5173c369f8e6268ff78e630724946cbb6"
+    "signature": "d0b9d58618280dda5627b375db3890c4b7c98029"
   },
   "compilationOptions": {},
   "targets": {
@@ -827,6 +827,11 @@
           "lib/netstandard1.3/System.Xml.XmlDocument.dll": {}
         }
       },
+      "TimeZoneConverter/2.4.1": {
+        "runtime": {
+          "lib/netstandard2.0/TimeZoneConverter.dll": {}
+        }
+      },
       "QrF.ABP/1.0.0": {
         "dependencies": {
           "Castle.Core": "4.2.1",
@@ -838,7 +843,8 @@
           "Nito.AsyncEx.Context": "5.0.0-pre-05",
           "Nito.AsyncEx.Coordination": "5.0.0-pre-05",
           "System.Collections.Immutable": "1.4.0",
-          "System.Configuration.ConfigurationManager": "4.4.1"
+          "System.Configuration.ConfigurationManager": "4.4.1",
+          "TimeZoneConverter": "2.4.1"
         },
         "runtime": {
           "QrF.ABP.dll": {}
@@ -1397,6 +1403,13 @@
       "sha512": "sha512-lJ8AxvkX7GQxpC6GFCeBj8ThYVyQczx2+f/cWHJU8tjS7YfI6Cv6bon70jVEgs2CiFbmmM8b9j1oZVx0dSI2Ww==",
       "path": "system.xml.xmldocument/4.3.0",
       "hashPath": "system.xml.xmldocument.4.3.0.nupkg.sha512"
+    },
+    "TimeZoneConverter/2.4.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ilkZ1a2u848EZNqv+56FqzJxOQVQRknTwwRxQIEKHHJSsDI1WRtmSMjMTZgub1/hAMf5ZbwYyqWLjeBrHTFu3g==",
+      "path": "timezoneconverter/2.4.1",
+      "hashPath": "timezoneconverter.2.4.1.nupkg.sha512"
     },
     "QrF.ABP/1.0.0": {
       "type": "project",

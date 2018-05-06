@@ -4,7 +4,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using QrF.ABP.AspNetCore;
+using QrF.ABP.AspNetCore.Configuration;
+using QrF.ABP.AspNetCore.Mvc.Extensions;
 using QrF.ABP.Castle.Log4Net;
 using System;
 
@@ -25,7 +28,7 @@ namespace QrF.Core.Tasks.Web
             Configuration = builder.Build();
         }
         
-        public IConfiguration Configuration { get; }
+        public IConfigurationRoot Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
@@ -47,8 +50,13 @@ namespace QrF.Core.Tasks.Web
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            app.UseAbp();
+
+            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+            loggerFactory.AddDebug();
+
             if (env.IsDevelopment())
             {
                 app.UseBrowserLink();
@@ -61,7 +69,10 @@ namespace QrF.Core.Tasks.Web
 
             app.UseStaticFiles();
 
-            app.UseMvc();
+            app.UseMvc(routes =>
+            {
+                app.ApplicationServices.GetRequiredService<IAspNetCoreConfiguration>().RouteConfiguration.ConfigureAll(routes);
+            });
         }
     }
 }
