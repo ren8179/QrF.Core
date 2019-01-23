@@ -12,3 +12,7 @@
 
 > .net core 2.2
 
+```
+旧版本已迁移至  [1.0分支](https://github.com/ren8179/QrF.Core/tree/1.0)
+
+```

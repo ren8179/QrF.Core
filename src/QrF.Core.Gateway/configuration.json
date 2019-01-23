@@ -1,0 +1,86 @@
+{
+  "ReRoutes": [ // 路由规则配置节点，数组形式
+    // 可配置多个路由协议和规则，实现路由、服务聚合、服务发现、认证、鉴权、限流、熔断、缓存、Header头传递等
+    // --> swagger part
+    {
+      "UseServiceDiscovery": false,
+      "DownstreamPathTemplate": "/doc/API/swagger.json",
+      "DownstreamScheme": "http",
+      "ServiceName": "API",
+      "UpstreamPathTemplate": "/doc/API/swagger.json",
+      "UpstreamHttpMethod": [ "GET", "POST", "DELETE", "PUT" ]
+    },
+    {
+      "UseServiceDiscovery": false, // use Consul service discovery
+      /*
+       下游服务配置配置，网关出口，具体指向的服务器
+       /api/values - 使用限定规则的方式配置下游PATH规则
+       /{url} - 使用泛型（万用）规则方式配置下游PATH规则
+       */
+      "DownstreamPathTemplate": "/API/{url}",
+      "DownstreamScheme": "http",
+      "ServiceName": "API",
+      "DownstreamHostAndPorts": [ //下游主机信息，可以配置多个主机信息，需配合LoadBalancer节点进行路由负载均衡
+        {
+          "Host": "127.0.0.1",
+          "Port": "5001"
+        }
+      ],
+      "FileCacheOptions": { // 请求缓存
+        "TtlSeconds": 1,
+        "Region": ""
+      },
+      "AuthenticationOptions": { // 认证
+        "AuthenticationProviderKey": "ClientServiceKey",
+        "AllowedScopes": []
+      },
+      "RouteClaimsRequirement": { // 签权
+        "UserType": "registered"
+      },
+      /*
+       上游服务配置配置，请求和网关的入口。
+       /api/values - 使用限定规则的方式配置上游PATH规则
+       /{url} - 使用泛型（万用）规则方式配置上游PATH规则
+       */
+      "UpstreamPathTemplate": "/AnnualTicketAPI/{url}",
+      "UpstreamHttpMethod": [ "Get", "Post" ],
+      "Priority": 99, // 当前路由节点的优先级
+      /*
+       路由负载均衡:
+       LeastConnection – 将请求发往最空闲的那个服务器
+       RoundRobin – 轮流发送
+       NoLoadBalance – 总是发往第一个请求或者是服务发现
+       */
+      "LoadBalancer": "LeastConnection",
+      "ReRoutesCaseSensitive": false // non case sensitive
+    }
+  ],
+  "GlobalConfiguration": {
+    "UseServiceDiscovery": false,
+    //"BaseUrl": ""
+    // 限流配置（请求限流）
+    // 对请求进行限流可以防止下游服务器因为访问过载而崩溃
+    "RateLimitOptions": {
+      "ClientWhitelist": [ "admin" ], // 白名单
+      "EnableRateLimiting": true, // 是否启用限流
+      "Period": "1m", // 统计时间段：1s, 5m, 1h, 1d
+      "PeriodTimespan": 10, // 多少秒之后客户端可以重试
+      "Limit": 30, // 在统计时间段内允许的最大请求数量
+      // Http头 X-Rate-Limit 和 Retry-After 是否禁用
+      // X-Rate-Limit: 为防止滥用，你应该考虑对您的 API 限流。 例如，您可以限制每个用户 10 分钟内最多调用 API 100 次。
+      // Retry-After: 响应的 HTTP 报头指示所述用户代理应该多长时间使一个后续请求之前等待
+      "DisableRateLimitHeaders": false,
+      "QuotaExceededMessage": "请求太过频繁，请稍后再试", // 当请求过载被截断时返回的消息
+      "HttpStatusCode": 999, // 当请求过载被截断时返回的http status
+      "ClientIdHeader": "client_id" // 用来识别客户端的请求头，默认是 ClientId
+    },
+    // 熔断的意思是停止将请求转发到下游服务。
+    // 当下游服务已经出现故障的时候再请求也是无功而返，并且增加下游服务器和API网关的负担。
+    // 这个功能是用的Pollly来实现的，我们只需要为路由做一些简单配置即可
+    "QoSOptions": {
+      "ExceptionsAllowedBeforeBreaking": 2, // 允许多少个异常请求
+      "DurationOfBreak": 5000, // 熔断的时间，单位为毫秒
+      "TimeoutValue": 30000 // 如果下游请求的处理时间超过多少则视如该请求超时
+    }
+  }
+}
