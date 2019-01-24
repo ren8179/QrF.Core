@@ -7,6 +7,10 @@
 
 [jinyancao](https://github.com/jinyancao/CtrAuthPlatform)
 
+## 参考文章
+
+[.NET Core微服务实战-统一身份认证](https://www.cnblogs.com/jackcao/p/9928879.html)
+
 ## 开发环境
 > VS2017 / VS Code
 

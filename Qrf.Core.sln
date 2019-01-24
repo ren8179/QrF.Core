@@ -18,7 +18,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QrF.Core.Gateway", "src\QrF
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QrF.Core.Utils", "src\libs\QrF.Core.Utils\QrF.Core.Utils.csproj", "{BE4E4C5F-926D-424B-AB53-FCF7189B273B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QrF.Core.Log4Net", "src\libs\QrF.Core.Log4Net\QrF.Core.Log4Net.csproj", "{B546007C-429F-4305-9D96-C0F8E2ADC25F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QrF.Core.Log4Net", "src\libs\QrF.Core.Log4Net\QrF.Core.Log4Net.csproj", "{B546007C-429F-4305-9D96-C0F8E2ADC25F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QrF.Core.GatewayExtension", "src\libs\QrF.Core.GatewayExtension\QrF.Core.GatewayExtension.csproj", "{4873D781-7E02-4699-BC0D-D9AF212EC9DA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QrF.Core.GatewayExtension.Dapper.SqlServer", "src\libs\QrF.Core.GatewayExtension.Dapper.SqlServer\QrF.Core.GatewayExtension.Dapper.SqlServer.csproj", "{8DB428DC-5E3C-43AD-82FB-424B5A0D6E57}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,6 +42,14 @@ Global
 		{B546007C-429F-4305-9D96-C0F8E2ADC25F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B546007C-429F-4305-9D96-C0F8E2ADC25F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B546007C-429F-4305-9D96-C0F8E2ADC25F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4873D781-7E02-4699-BC0D-D9AF212EC9DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4873D781-7E02-4699-BC0D-D9AF212EC9DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4873D781-7E02-4699-BC0D-D9AF212EC9DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4873D781-7E02-4699-BC0D-D9AF212EC9DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DB428DC-5E3C-43AD-82FB-424B5A0D6E57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DB428DC-5E3C-43AD-82FB-424B5A0D6E57}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DB428DC-5E3C-43AD-82FB-424B5A0D6E57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DB428DC-5E3C-43AD-82FB-424B5A0D6E57}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -46,6 +58,8 @@ Global
 		{0EB6488C-42C3-4077-858D-34D6EDE6A317} = {831DD5F3-B4E2-46ED-90C1-81A5D7498590}
 		{BE4E4C5F-926D-424B-AB53-FCF7189B273B} = {17B2BEF1-656F-4CDA-A7EB-B45771317F54}
 		{B546007C-429F-4305-9D96-C0F8E2ADC25F} = {17B2BEF1-656F-4CDA-A7EB-B45771317F54}
+		{4873D781-7E02-4699-BC0D-D9AF212EC9DA} = {17B2BEF1-656F-4CDA-A7EB-B45771317F54}
+		{8DB428DC-5E3C-43AD-82FB-424B5A0D6E57} = {17B2BEF1-656F-4CDA-A7EB-B45771317F54}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2F715BCF-ABB9-4970-BD0E-2A2CC24AD6C9}
