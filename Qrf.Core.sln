@@ -26,13 +26,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QrF.Core.GatewayExtension.D
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{9C861AB9-67BB-46EE-AC18-DD4ADA6C2850}"
 	ProjectSection(SolutionItems) = preProject
-		添加测试数据.sql = 添加测试数据.sql
+		doc\添加测试数据.sql = doc\添加测试数据.sql
 		doc\网关数据库设计.sql = doc\网关数据库设计.sql
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QrF.Core.TestApi1", "src\apis\QrF.Core.TestApi1\QrF.Core.TestApi1.csproj", "{A5F84FA6-0E6D-4C80-BDF0-37A3F6062C39}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QrF.Core.TestApi1", "src\apis\QrF.Core.TestApi1\QrF.Core.TestApi1.csproj", "{A5F84FA6-0E6D-4C80-BDF0-37A3F6062C39}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QrF.Core.TestIds4", "src\apis\QrF.Core.TestIds4\QrF.Core.TestIds4.csproj", "{3804EFD6-2648-4281-8463-2EB84773EBBE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QrF.Core.TestIds4", "src\apis\QrF.Core.TestIds4\QrF.Core.TestIds4.csproj", "{3804EFD6-2648-4281-8463-2EB84773EBBE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

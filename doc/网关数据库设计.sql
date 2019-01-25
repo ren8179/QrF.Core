@@ -1,4 +1,5 @@
 use GatewayDb
+GO
 
 if exists (select 1 from sysindexes where id = object_id('ConfigReRoutes') and name = 'Relationship_5_FK' and indid > 0 AND indid < 255)
    drop index ConfigReRoutes.Relationship_5_FK
