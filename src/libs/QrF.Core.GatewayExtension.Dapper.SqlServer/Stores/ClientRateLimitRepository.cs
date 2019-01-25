@@ -30,11 +30,11 @@ namespace QrF.Core.GatewayExtension.Dapper.SqlServer.Stores
         {
             using (var connection = new SqlConnection(_option.DbConnectionStrings))
             {
-                string sql = @"SELECT DISTINCT UpstreamPathTemplate AS RateLimitPath,LimitPeriod AS Period,LimitNum AS Limit,ClientId FROM AhphReRoute T1 INNER JOIN AhphReRouteLimitRule T2 ON T1.ReRouteId=T2.ReRouteId
-                INNER JOIN AhphLimitRule T3 ON T2.RuleId=T3.RuleId INNER JOIN AhphLimitGroupRule T4 ON
-                T2.ReRouteLimitId=T4.ReRouteLimitId INNER JOIN AhphLimitGroup T5 ON T4.LimitGroupId=T5.LimitGroupId
-                INNER JOIN AhphClientLimitGroup T6 ON T5.LimitGroupId=T6.LimitGroupId INNER JOIN
-                AhphClients T7 ON T6.Id=T7.Id
+                string sql = @"SELECT DISTINCT UpstreamPathTemplate AS RateLimitPath,LimitPeriod AS Period,LimitNum AS Limit,ClientId FROM ReRoute T1 INNER JOIN ReRouteLimitRule T2 ON T1.ReRouteId=T2.ReRouteId
+                INNER JOIN LimitRule T3 ON T2.RuleId=T3.RuleId INNER JOIN LimitGroupRule T4 ON
+                T2.ReRouteLimitId=T4.ReRouteLimitId INNER JOIN LimitGroup T5 ON T4.LimitGroupId=T5.LimitGroupId
+                INNER JOIN ClientLimitGroup T6 ON T5.LimitGroupId=T6.LimitGroupId INNER JOIN
+                Clients T7 ON T6.Id=T7.Id
                 WHERE T1.InfoStatus=1 AND T1.UpstreamPathTemplate=@path AND T3.InfoStatus=1 AND T5.InfoStatus=1
                 AND ClientId=@clientid AND Enabled=1";
                 var result = (await connection.QueryAsync<DiffClientRateLimitOptions>(sql, new { clientid, path }))?.AsList();
@@ -59,8 +59,8 @@ namespace QrF.Core.GatewayExtension.Dapper.SqlServer.Stores
         {
             using (var connection = new SqlConnection(_option.DbConnectionStrings))
             {
-                string sql = @"SELECT COUNT(1) FROM AhphReRoute T1 INNER JOIN AhphClientReRouteWhiteList T2 ON T1.ReRouteId=T2.ReRouteId
-                            INNER JOIN AhphClients T3 ON T2.Id=T3.Id WHERE T1.InfoStatus=1 AND UpstreamPathTemplate=@path AND
+                string sql = @"SELECT COUNT(1) FROM ReRoute T1 INNER JOIN ClientReRouteWhiteList T2 ON T1.ReRouteId=T2.ReRouteId
+                            INNER JOIN Clients T3 ON T2.Id=T3.Id WHERE T1.InfoStatus=1 AND UpstreamPathTemplate=@path AND
                             ClientId=@clientid AND Enabled=1";
                 var result = await connection.QueryFirstOrDefaultAsync<int>(sql, new { clientid, path });
                 return result > 0;
@@ -76,8 +76,8 @@ namespace QrF.Core.GatewayExtension.Dapper.SqlServer.Stores
         {
             using (var connection = new SqlConnection(_option.DbConnectionStrings))
             {
-                string sql = @"SELECT COUNT(1) FROM AhphReRoute T1 INNER JOIN AhphReRouteLimitRule T2 ON T1.ReRouteId=T2.ReRouteId
-                        INNER JOIN AhphLimitRule T3 ON T2.RuleId=T3.RuleId WHERE T1.InfoStatus=1 AND UpstreamPathTemplate=@path
+                string sql = @"SELECT COUNT(1) FROM ReRoute T1 INNER JOIN ReRouteLimitRule T2 ON T1.ReRouteId=T2.ReRouteId
+                        INNER JOIN LimitRule T3 ON T2.RuleId=T3.RuleId WHERE T1.InfoStatus=1 AND UpstreamPathTemplate=@path
                         AND T3.InfoStatus=1";
                 var result = await connection.QueryFirstOrDefaultAsync<int>(sql, new { path });
                 return result > 0;

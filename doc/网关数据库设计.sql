@@ -1,57 +1,30 @@
 use GatewayDb
 
-if exists (select 1
-            from  sysindexes
-           where  id    = object_id('ConfigReRoutes')
-            and   name  = 'Relationship_5_FK'
-            and   indid > 0
-            and   indid < 255)
+if exists (select 1 from sysindexes where id = object_id('ConfigReRoutes') and name = 'Relationship_5_FK' and indid > 0 AND indid < 255)
    drop index ConfigReRoutes.Relationship_5_FK
 go
 
-if exists (select 1
-            from  sysindexes
-           where  id    = object_id('ConfigReRoutes')
-            and   name  = 'Relationship_4_FK'
-            and   indid > 0
-            and   indid < 255)
+if exists (select 1 from sysindexes where id = object_id('ConfigReRoutes') and name = 'Relationship_4_FK' and indid > 0 and indid < 255)
    drop index ConfigReRoutes.Relationship_4_FK
 go
 
-if exists (select 1
-            from  sysobjects
-           where  id = object_id('ConfigReRoutes')
-            and   type = 'U')
+if exists (select 1 from sysobjects where id = object_id('ConfigReRoutes') and type = 'U')
    drop table ConfigReRoutes
 go
 
-if exists (select 1
-            from  sysobjects
-           where  id = object_id('GlobalConfiguration')
-            and   type = 'U')
+if exists (select 1 from sysobjects where  id = object_id('GlobalConfiguration') and type = 'U')
    drop table GlobalConfiguration
 go
 
-if exists (select 1
-            from  sysindexes
-           where  id    = object_id('ReRoute')
-            and   name  = '分类路由信息_FK'
-            and   indid > 0
-            and   indid < 255)
+if exists (select 1 from sysindexes where id = object_id('ReRoute') and name = '分类路由信息_FK' and indid > 0 and indid < 255)
    drop index ReRoute.分类路由信息_FK
 go
 
-if exists (select 1
-            from  sysobjects
-           where  id = object_id('ReRoute')
-            and   type = 'U')
+if exists (select 1 from sysobjects where id = object_id('ReRoute') and type = 'U')
    drop table ReRoute
 go
 
-if exists (select 1
-            from  sysobjects
-           where  id = object_id('ReRoutesItem')
-            and   type = 'U')
+if exists (select 1 from sysobjects where id = object_id('ReRoutesItem') and type = 'U')
    drop table ReRoutesItem
 go
 
@@ -68,46 +41,28 @@ go
 
 declare @CurrentUser sysname
 select @CurrentUser = user_name()
-execute sp_addextendedproperty 'MS_Description', 
-   '网关-路由,可以配置多个网关和多个路由',
-   'user', @CurrentUser, 'table', 'ConfigReRoutes'
+execute sp_addextendedproperty 'MS_Description','网关-路由,可以配置多个网关和多个路由','user', @CurrentUser, 'table', 'ConfigReRoutes'
 go
 
 declare @CurrentUser sysname
 select @CurrentUser = user_name()
-execute sp_addextendedproperty 'MS_Description', 
-   '配置路由主键',
-   'user', @CurrentUser, 'table', 'ConfigReRoutes', 'column', 'CtgRouteId'
+execute sp_addextendedproperty 'MS_Description','配置路由主键','user', @CurrentUser, 'table', 'ConfigReRoutes', 'column', 'CtgRouteId'
 go
 
 declare @CurrentUser sysname
 select @CurrentUser = user_name()
-execute sp_addextendedproperty 'MS_Description', 
-   '网关主键',
-   'user', @CurrentUser, 'table', 'ConfigReRoutes', 'column', 'KeyId'
+execute sp_addextendedproperty 'MS_Description','网关主键','user', @CurrentUser, 'table', 'ConfigReRoutes', 'column', 'KeyId'
 go
 
 declare @CurrentUser sysname
 select @CurrentUser = user_name()
-execute sp_addextendedproperty 'MS_Description', 
-   '路由主键',
-   'user', @CurrentUser, 'table', 'ConfigReRoutes', 'column', 'ReRouteId'
+execute sp_addextendedproperty 'MS_Description','路由主键','user', @CurrentUser, 'table', 'ConfigReRoutes', 'column', 'ReRouteId'
 go
 
-/*==============================================================*/
-/* Index: Relationship_4_FK                                     */
-/*==============================================================*/
-create index Relationship_4_FK on ConfigReRoutes (
-KeyId ASC
-)
+create index Relationship_4_FK on ConfigReRoutes (KeyId ASC)
 go
 
-/*==============================================================*/
-/* Index: Relationship_5_FK                                     */
-/*==============================================================*/
-create index Relationship_5_FK on ConfigReRoutes (
-ReRouteId ASC
-)
+create index Relationship_5_FK on ConfigReRoutes (ReRouteId ASC)
 go
 
 /*==============================================================*/
@@ -131,86 +86,62 @@ go
 
 declare @CurrentUser sysname
 select @CurrentUser = user_name()
-execute sp_addextendedproperty 'MS_Description', 
-   '网关全局配置表',
-   'user', @CurrentUser, 'table', 'GlobalConfiguration'
+execute sp_addextendedproperty 'MS_Description','网关全局配置表','user', @CurrentUser, 'table', 'GlobalConfiguration'
 go
 
 declare @CurrentUser sysname
 select @CurrentUser = user_name()
-execute sp_addextendedproperty 'MS_Description', 
-   '网关主键',
-   'user', @CurrentUser, 'table', 'GlobalConfiguration', 'column', 'KeyId'
+execute sp_addextendedproperty 'MS_Description', '网关主键','user', @CurrentUser, 'table', 'GlobalConfiguration', 'column', 'KeyId'
 go
 
 declare @CurrentUser sysname
 select @CurrentUser = user_name()
-execute sp_addextendedproperty 'MS_Description', 
-   '网关名称',
-   'user', @CurrentUser, 'table', 'GlobalConfiguration', 'column', 'GatewayName'
+execute sp_addextendedproperty 'MS_Description', '网关名称','user', @CurrentUser, 'table', 'GlobalConfiguration', 'column', 'GatewayName'
 go
 
 declare @CurrentUser sysname
 select @CurrentUser = user_name()
-execute sp_addextendedproperty 'MS_Description', 
-   '全局请求默认key',
-   'user', @CurrentUser, 'table', 'GlobalConfiguration', 'column', 'RequestIdKey'
+execute sp_addextendedproperty 'MS_Description', '全局请求默认key','user', @CurrentUser, 'table', 'GlobalConfiguration', 'column', 'RequestIdKey'
 go
 
 declare @CurrentUser sysname
 select @CurrentUser = user_name()
-execute sp_addextendedproperty 'MS_Description', 
-   '请求路由根地址',
-   'user', @CurrentUser, 'table', 'GlobalConfiguration', 'column', 'BaseUrl'
+execute sp_addextendedproperty 'MS_Description', '请求路由根地址','user', @CurrentUser, 'table', 'GlobalConfiguration', 'column', 'BaseUrl'
 go
 
 declare @CurrentUser sysname
 select @CurrentUser = user_name()
-execute sp_addextendedproperty 'MS_Description', 
-   '下游使用架构',
-   'user', @CurrentUser, 'table', 'GlobalConfiguration', 'column', 'DownstreamScheme'
+execute sp_addextendedproperty 'MS_Description', '下游使用架构','user', @CurrentUser, 'table', 'GlobalConfiguration', 'column', 'DownstreamScheme'
 go
 
 declare @CurrentUser sysname
 select @CurrentUser = user_name()
-execute sp_addextendedproperty 'MS_Description', 
-   '服务发现全局配置,值为配置json',
-   'user', @CurrentUser, 'table', 'GlobalConfiguration', 'column', 'ServiceDiscoveryProvider'
+execute sp_addextendedproperty 'MS_Description', '服务发现全局配置,值为配置json','user', @CurrentUser, 'table', 'GlobalConfiguration', 'column', 'ServiceDiscoveryProvider'
 go
 
 declare @CurrentUser sysname
 select @CurrentUser = user_name()
-execute sp_addextendedproperty 'MS_Description', 
-   '全局负载均衡配置',
-   'user', @CurrentUser, 'table', 'GlobalConfiguration', 'column', 'LoadBalancerOptions'
+execute sp_addextendedproperty 'MS_Description','全局负载均衡配置','user', @CurrentUser, 'table', 'GlobalConfiguration', 'column', 'LoadBalancerOptions'
 go
 
 declare @CurrentUser sysname
 select @CurrentUser = user_name()
-execute sp_addextendedproperty 'MS_Description', 
-   'Http请求配置',
-   'user', @CurrentUser, 'table', 'GlobalConfiguration', 'column', 'HttpHandlerOptions'
+execute sp_addextendedproperty 'MS_Description','Http请求配置','user', @CurrentUser, 'table', 'GlobalConfiguration', 'column', 'HttpHandlerOptions'
 go
 
 declare @CurrentUser sysname
 select @CurrentUser = user_name()
-execute sp_addextendedproperty 'MS_Description', 
-   '请求安全配置,超时、重试、熔断',
-   'user', @CurrentUser, 'table', 'GlobalConfiguration', 'column', 'QoSOptions'
+execute sp_addextendedproperty 'MS_Description','请求安全配置,超时、重试、熔断','user', @CurrentUser, 'table', 'GlobalConfiguration', 'column', 'QoSOptions'
 go
 
 declare @CurrentUser sysname
 select @CurrentUser = user_name()
-execute sp_addextendedproperty 'MS_Description', 
-   '是否默认配置, 1 默认 0 默认',
-   'user', @CurrentUser, 'table', 'GlobalConfiguration', 'column', 'IsDefault'
+execute sp_addextendedproperty 'MS_Description', '是否默认配置, 1 默认 0 默认','user', @CurrentUser, 'table', 'GlobalConfiguration', 'column', 'IsDefault'
 go
 
 declare @CurrentUser sysname
 select @CurrentUser = user_name()
-execute sp_addextendedproperty 'MS_Description', 
-   '当前状态, 1 有效 0 无效',
-   'user', @CurrentUser, 'table', 'GlobalConfiguration', 'column', 'InfoStatus'
+execute sp_addextendedproperty 'MS_Description', '当前状态, 1 有效 0 无效','user', @CurrentUser, 'table', 'GlobalConfiguration', 'column', 'InfoStatus'
 go
 
 /*==============================================================*/
@@ -240,128 +171,92 @@ go
 
 declare @CurrentUser sysname
 select @CurrentUser = user_name()
-execute sp_addextendedproperty 'MS_Description', 
-   '路由配置表',
-   'user', @CurrentUser, 'table', 'ReRoute'
+execute sp_addextendedproperty 'MS_Description','路由配置表','user', @CurrentUser, 'table', 'ReRoute'
 go
 
 declare @CurrentUser sysname
 select @CurrentUser = user_name()
-execute sp_addextendedproperty 'MS_Description', 
-   '路由主键',
-   'user', @CurrentUser, 'table', 'ReRoute', 'column', 'ReRouteId'
+execute sp_addextendedproperty 'MS_Description','路由主键','user', @CurrentUser, 'table', 'ReRoute', 'column', 'ReRouteId'
 go
 
 declare @CurrentUser sysname
 select @CurrentUser = user_name()
-execute sp_addextendedproperty 'MS_Description', 
-   '分类主键',
-   'user', @CurrentUser, 'table', 'ReRoute', 'column', 'ItemId'
+execute sp_addextendedproperty 'MS_Description','分类主键','user', @CurrentUser, 'table', 'ReRoute', 'column', 'ItemId'
 go
 
 declare @CurrentUser sysname
 select @CurrentUser = user_name()
-execute sp_addextendedproperty 'MS_Description', 
-   '上游路径模板，支持正则',
-   'user', @CurrentUser, 'table', 'ReRoute', 'column', 'UpstreamPathTemplate'
+execute sp_addextendedproperty 'MS_Description','上游路径模板，支持正则','user', @CurrentUser, 'table', 'ReRoute', 'column', 'UpstreamPathTemplate'
 go
 
 declare @CurrentUser sysname
 select @CurrentUser = user_name()
-execute sp_addextendedproperty 'MS_Description', 
-   '上游请求方法数组格式',
-   'user', @CurrentUser, 'table', 'ReRoute', 'column', 'UpstreamHttpMethod'
+execute sp_addextendedproperty 'MS_Description','上游请求方法数组格式','user', @CurrentUser, 'table', 'ReRoute', 'column', 'UpstreamHttpMethod'
 go
 
 declare @CurrentUser sysname
 select @CurrentUser = user_name()
-execute sp_addextendedproperty 'MS_Description', 
-   '上游域名地址',
-   'user', @CurrentUser, 'table', 'ReRoute', 'column', 'UpstreamHost'
+execute sp_addextendedproperty 'MS_Description','上游域名地址','user', @CurrentUser, 'table', 'ReRoute', 'column', 'UpstreamHost'
 go
 
 declare @CurrentUser sysname
 select @CurrentUser = user_name()
-execute sp_addextendedproperty 'MS_Description', 
-   '下游使用架构',
-   'user', @CurrentUser, 'table', 'ReRoute', 'column', 'DownstreamScheme'
+execute sp_addextendedproperty 'MS_Description','下游使用架构','user', @CurrentUser, 'table', 'ReRoute', 'column', 'DownstreamScheme'
 go
 
 declare @CurrentUser sysname
 select @CurrentUser = user_name()
-execute sp_addextendedproperty 'MS_Description', 
-   '下游路径模板,与上游正则对应',
-   'user', @CurrentUser, 'table', 'ReRoute', 'column', 'DownstreamPathTemplate'
+execute sp_addextendedproperty 'MS_Description','下游路径模板,与上游正则对应','user', @CurrentUser, 'table', 'ReRoute', 'column', 'DownstreamPathTemplate'
 go
 
 declare @CurrentUser sysname
 select @CurrentUser = user_name()
-execute sp_addextendedproperty 'MS_Description', 
-   '下游请求地址和端口,静态负载配置',
-   'user', @CurrentUser, 'table', 'ReRoute', 'column', 'DownstreamHostAndPorts'
+execute sp_addextendedproperty 'MS_Description','下游请求地址和端口,静态负载配置','user', @CurrentUser, 'table', 'ReRoute', 'column', 'DownstreamHostAndPorts'
 go
 
 declare @CurrentUser sysname
 select @CurrentUser = user_name()
-execute sp_addextendedproperty 'MS_Description', 
-   '授权配置,是否需要认证访问',
-   'user', @CurrentUser, 'table', 'ReRoute', 'column', 'AuthenticationOptions'
+execute sp_addextendedproperty 'MS_Description','授权配置,是否需要认证访问','user', @CurrentUser, 'table', 'ReRoute', 'column', 'AuthenticationOptions'
 go
 
 declare @CurrentUser sysname
 select @CurrentUser = user_name()
-execute sp_addextendedproperty 'MS_Description', 
-   '全局请求默认key',
-   'user', @CurrentUser, 'table', 'ReRoute', 'column', 'RequestIdKey'
+execute sp_addextendedproperty 'MS_Description','全局请求默认key','user', @CurrentUser, 'table', 'ReRoute', 'column', 'RequestIdKey'
 go
 
 declare @CurrentUser sysname
 select @CurrentUser = user_name()
-execute sp_addextendedproperty 'MS_Description', 
-   '缓存配置,常用查询和再次配置缓存',
-   'user', @CurrentUser, 'table', 'ReRoute', 'column', 'CacheOptions'
+execute sp_addextendedproperty 'MS_Description','缓存配置,常用查询和再次配置缓存','user', @CurrentUser, 'table', 'ReRoute', 'column', 'CacheOptions'
 go
 
 declare @CurrentUser sysname
 select @CurrentUser = user_name()
-execute sp_addextendedproperty 'MS_Description', 
-   '服务发现名称,启用服务发现时生效',
-   'user', @CurrentUser, 'table', 'ReRoute', 'column', 'ServiceName'
+execute sp_addextendedproperty 'MS_Description','服务发现名称,启用服务发现时生效','user', @CurrentUser, 'table', 'ReRoute', 'column', 'ServiceName'
 go
 
 declare @CurrentUser sysname
 select @CurrentUser = user_name()
-execute sp_addextendedproperty 'MS_Description', 
-   '全局负载均衡配置',
-   'user', @CurrentUser, 'table', 'ReRoute', 'column', 'LoadBalancerOptions'
+execute sp_addextendedproperty 'MS_Description','全局负载均衡配置','user', @CurrentUser, 'table', 'ReRoute', 'column', 'LoadBalancerOptions'
 go
 
 declare @CurrentUser sysname
 select @CurrentUser = user_name()
-execute sp_addextendedproperty 'MS_Description', 
-   '请求安全配置,超时、重试、熔断',
-   'user', @CurrentUser, 'table', 'ReRoute', 'column', 'QoSOptions'
+execute sp_addextendedproperty 'MS_Description','请求安全配置,超时、重试、熔断','user', @CurrentUser, 'table', 'ReRoute', 'column', 'QoSOptions'
 go
 
 declare @CurrentUser sysname
 select @CurrentUser = user_name()
-execute sp_addextendedproperty 'MS_Description', 
-   '委托处理方法,特定路由定义委托单独处理',
-   'user', @CurrentUser, 'table', 'ReRoute', 'column', 'DelegatingHandlers'
+execute sp_addextendedproperty 'MS_Description','委托处理方法,特定路由定义委托单独处理','user', @CurrentUser, 'table', 'ReRoute', 'column', 'DelegatingHandlers'
 go
 
 declare @CurrentUser sysname
 select @CurrentUser = user_name()
-execute sp_addextendedproperty 'MS_Description', 
-   '路由优先级,多个路由匹配上，优先级高的先执行',
-   'user', @CurrentUser, 'table', 'ReRoute', 'column', 'Priority'
+execute sp_addextendedproperty 'MS_Description','路由优先级,多个路由匹配上，优先级高的先执行','user', @CurrentUser, 'table', 'ReRoute', 'column', 'Priority'
 go
 
 declare @CurrentUser sysname
 select @CurrentUser = user_name()
-execute sp_addextendedproperty 'MS_Description', 
-   '当前状态, 1 有效 0 无效',
-   'user', @CurrentUser, 'table', 'ReRoute', 'column', 'InfoStatus'
+execute sp_addextendedproperty 'MS_Description','当前状态, 1 有效 0 无效','user', @CurrentUser, 'table', 'ReRoute', 'column', 'InfoStatus'
 go
 
 /*==============================================================*/
@@ -387,44 +282,32 @@ go
 
 declare @CurrentUser sysname
 select @CurrentUser = user_name()
-execute sp_addextendedproperty 'MS_Description', 
-   '路由分类表',
-   'user', @CurrentUser, 'table', 'ReRoutesItem'
+execute sp_addextendedproperty 'MS_Description','路由分类表','user', @CurrentUser, 'table', 'ReRoutesItem'
 go
 
 declare @CurrentUser sysname
 select @CurrentUser = user_name()
-execute sp_addextendedproperty 'MS_Description', 
-   '分类主键',
-   'user', @CurrentUser, 'table', 'ReRoutesItem', 'column', 'ItemId'
+execute sp_addextendedproperty 'MS_Description', '分类主键','user', @CurrentUser, 'table', 'ReRoutesItem', 'column', 'ItemId'
 go
 
 declare @CurrentUser sysname
 select @CurrentUser = user_name()
-execute sp_addextendedproperty 'MS_Description', 
-   '分类名称',
-   'user', @CurrentUser, 'table', 'ReRoutesItem', 'column', 'ItemName'
+execute sp_addextendedproperty 'MS_Description','分类名称','user', @CurrentUser, 'table', 'ReRoutesItem', 'column', 'ItemName'
 go
 
 declare @CurrentUser sysname
 select @CurrentUser = user_name()
-execute sp_addextendedproperty 'MS_Description', 
-   '分类描述',
-   'user', @CurrentUser, 'table', 'ReRoutesItem', 'column', 'ItemDetail'
+execute sp_addextendedproperty 'MS_Description','分类描述','user', @CurrentUser, 'table', 'ReRoutesItem', 'column', 'ItemDetail'
 go
 
 declare @CurrentUser sysname
 select @CurrentUser = user_name()
-execute sp_addextendedproperty 'MS_Description', 
-   '上级分类,顶级节点为空',
-   'user', @CurrentUser, 'table', 'ReRoutesItem', 'column', 'ItemParentId'
+execute sp_addextendedproperty 'MS_Description','上级分类,顶级节点为空','user', @CurrentUser, 'table', 'ReRoutesItem', 'column', 'ItemParentId'
 go
 
 declare @CurrentUser sysname
 select @CurrentUser = user_name()
-execute sp_addextendedproperty 'MS_Description', 
-   '当前状态, 1 有效 0 无效',
-   'user', @CurrentUser, 'table', 'ReRoutesItem', 'column', 'InfoStatus'
+execute sp_addextendedproperty 'MS_Description','当前状态, 1 有效 0 无效','user', @CurrentUser, 'table', 'ReRoutesItem', 'column', 'InfoStatus'
 go
 
 /*==============================================================*/

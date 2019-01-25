@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Newtonsoft.Json;
 using Ocelot.Configuration.File;
 using Ocelot.Configuration.Repository;
 using Ocelot.Responses;
@@ -7,6 +8,7 @@ using QrF.Core.GatewayExtension.Entities;
 using QrF.Core.Utils.Extension;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
 
@@ -32,7 +34,7 @@ namespace QrF.Core.GatewayExtension.Dapper.SqlServer.Stores
             #region 提取配置信息
             var file = new FileConfiguration();
             //提取默认启用的路由配置信息
-            string glbsql = "select * from AhphGlobalConfiguration where IsDefault=1 and InfoStatus=1";
+            string glbsql = "select * from GlobalConfiguration where IsDefault=1 and InfoStatus=1";
             //提取全局配置信息
             using (var connection = new SqlConnection(_option.DbConnectionStrings))
             {
@@ -44,64 +46,54 @@ namespace QrF.Core.GatewayExtension.Dapper.SqlServer.Stores
                     glb.BaseUrl = result.BaseUrl;
                     glb.DownstreamScheme = result.DownstreamScheme;
                     glb.RequestIdKey = result.RequestIdKey;
-                    //glb.HttpHandlerOptions = result.HttpHandlerOptions?.ToObject<FileHttpHandlerOptions>();
-                    //glb.LoadBalancerOptions = result.LoadBalancerOptions?.ToObject<FileLoadBalancerOptions>();
-                    //glb.QoSOptions = result.QoSOptions?.ToObject<FileQoSOptions>();
-                    //glb.ServiceDiscoveryProvider = result.ServiceDiscoveryProvider?.ToObject<FileServiceDiscoveryProvider>();
-                    if (!String.IsNullOrEmpty(result.HttpHandlerOptions))
+                    if (!result.HttpHandlerOptions.IsNullOrEmpty())
                     {
                         glb.HttpHandlerOptions = result.HttpHandlerOptions.ToObject<FileHttpHandlerOptions>();
                     }
-                    if (!String.IsNullOrEmpty(result.LoadBalancerOptions))
+                    if (!result.LoadBalancerOptions.IsNullOrEmpty())
                     {
                         glb.LoadBalancerOptions = result.LoadBalancerOptions.ToObject<FileLoadBalancerOptions>();
                     }
-                    if (!String.IsNullOrEmpty(result.QoSOptions))
+                    if (!result.QoSOptions.IsNullOrEmpty())
                     {
                         glb.QoSOptions = result.QoSOptions.ToObject<FileQoSOptions>();
                     }
-                    if (!String.IsNullOrEmpty(result.ServiceDiscoveryProvider))
+                    if (!result.ServiceDiscoveryProvider.IsNullOrEmpty())
                     {
                         glb.ServiceDiscoveryProvider = result.ServiceDiscoveryProvider.ToObject<FileServiceDiscoveryProvider>();
                     }
                     file.GlobalConfiguration = glb;
 
                     //提取所有路由信息
-                    string routesql = "select T2.* from AhphConfigReRoutes T1 inner join AhphReRoute T2 on T1.ReRouteId=T2.ReRouteId where AhphId=@AhphId and InfoStatus=1";
-                    var routeresult = (await connection.QueryAsync<ReRoute>(routesql, new { result.AhphId }))?.AsList();
+                    string routesql = "select T2.* from ConfigReRoutes T1 inner join ReRoute T2 on T1.ReRouteId=T2.ReRouteId where KeyId=@KeyId and InfoStatus=1";
+                    var routeresult = (await connection.QueryAsync<ReRoute>(routesql, new { result.KeyId }))?.AsList();
                     if (routeresult != null && routeresult.Count > 0)
                     {
                         var reroutelist = new List<FileReRoute>();
                         foreach (var model in routeresult)
                         {
                             var m = new FileReRoute();
-                            //m.AuthenticationOptions = model.AuthenticationOptions?.ToObject<FileAuthenticationOptions>();
-                            //m.FileCacheOptions = model.CacheOptions?.ToObject<FileCacheOptions>();
-                            //m.DelegatingHandlers = model.DelegatingHandlers?.ToObject<List<string>>();
-                            //m.LoadBalancerOptions = model.LoadBalancerOptions?.ToObject<FileLoadBalancerOptions>();
-                            //m.QoSOptions = model.QoSOptions?.ToObject<FileQoSOptions>();
-                            //m.DownstreamHostAndPorts = model.DownstreamHostAndPorts?.ToObject<List<FileHostAndPort>>();
-                            if (!String.IsNullOrEmpty(model.AuthenticationOptions))
+                            if (!model.AuthenticationOptions.IsNullOrEmpty())
                             {
                                 m.AuthenticationOptions = model.AuthenticationOptions.ToObject<FileAuthenticationOptions>();
                             }
-                            if (!String.IsNullOrEmpty(model.CacheOptions))
+                            if (!model.CacheOptions.IsNullOrEmpty())
                             {
                                 m.FileCacheOptions = model.CacheOptions.ToObject<FileCacheOptions>();
                             }
-                            if (!String.IsNullOrEmpty(model.DelegatingHandlers))
+                            if (!model.DelegatingHandlers.IsNullOrEmpty())
                             {
                                 m.DelegatingHandlers = model.DelegatingHandlers.ToObject<List<string>>();
                             }
-                            if (!String.IsNullOrEmpty(model.LoadBalancerOptions))
+                            if (!model.LoadBalancerOptions.IsNullOrEmpty())
                             {
                                 m.LoadBalancerOptions = model.LoadBalancerOptions.ToObject<FileLoadBalancerOptions>();
                             }
-                            if (!String.IsNullOrEmpty(model.QoSOptions))
+                            if (!model.QoSOptions.IsNullOrEmpty())
                             {
                                 m.QoSOptions = model.QoSOptions.ToObject<FileQoSOptions>();
                             }
-                            if (!String.IsNullOrEmpty(model.DownstreamHostAndPorts))
+                            if (!model.DownstreamHostAndPorts.IsNullOrEmpty())
                             {
                                 m.DownstreamHostAndPorts = model.DownstreamHostAndPorts.ToObject<List<FileHostAndPort>>();
                             }
@@ -132,11 +124,48 @@ namespace QrF.Core.GatewayExtension.Dapper.SqlServer.Stores
             }
             return new OkResponse<FileConfiguration>(file);
         }
-
-        //由于数据库存储可不实现Set接口直接返回
+        
         public async Task<Response> Set(FileConfiguration fileConfiguration)
         {
-            return new OkResponse();
+            using (var con = new SqlConnection(_option.DbConnectionStrings))
+            {
+                var global = fileConfiguration?.GlobalConfiguration;
+                if (global != null && !global.RequestIdKey.IsNullOrEmpty())
+                {
+                    var cmd = "UPDATE GlobalConfiguration SET BaseUrl=@BaseUrl,DownstreamScheme=@DownstreamScheme,ServiceDiscoveryProvider=@ServiceDiscoveryProvider,LoadBalancerOptions=@LoadBalancerOptions,HttpHandlerOptions=@HttpHandlerOptions,QoSOptions=@QoSOptions WHERE RequestIdKey=@RequestIdKey";
+                    var result = await con.ExecuteAsync(cmd, new {
+                        global.BaseUrl,global.DownstreamScheme, ServiceDiscoveryProvider=global.ServiceDiscoveryProvider.ToJson(),
+                        LoadBalancerOptions = global.LoadBalancerOptions.ToJson(),
+                        HttpHandlerOptions = global.HttpHandlerOptions.ToJson(),
+                        QoSOptions = global.QoSOptions.ToJson(),
+                        global.RequestIdKey
+                    }, null, null, CommandType.Text);
+                }
+                var reRoutes = fileConfiguration.ReRoutes;
+                if (reRoutes != null && reRoutes.Count > 0)
+                {
+                    foreach(var item in reRoutes)
+                    {
+                        var cmd = @"UPDATE ReRoute SET UpstreamPathTemplate=@UpstreamPathTemplate,UpstreamHttpMethod=@UpstreamHttpMethod,UpstreamHost=@UpstreamHost,DownstreamScheme=@DownstreamScheme,DownstreamPathTemplate=@DownstreamPathTemplate,
+  DownstreamHostAndPorts=@DownstreamHostAndPorts,AuthenticationOptions=@AuthenticationOptions,CacheOptions=@CacheOptions,LoadBalancerOptions=@LoadBalancerOptions,QoSOptions=@QoSOptions,DelegatingHandlers=@DelegatingHandlers,ServiceName=@ServiceName WHERE RequestIdKey=@RequestIdKey";
+                      var result = await con.ExecuteAsync(cmd, new {
+                            item.UpstreamPathTemplate,item.UpstreamHost,item.DownstreamScheme,item.DownstreamPathTemplate,
+                            UpstreamHttpMethod =item.UpstreamHttpMethod.ToJson(),
+                            DownstreamHostAndPorts = item.DownstreamHostAndPorts.ToJson(),
+                            AuthenticationOptions = item.AuthenticationOptions.ToJson(),
+                            CacheOptions = item.FileCacheOptions.ToJson(),
+                            LoadBalancerOptions = item.LoadBalancerOptions.ToJson(),
+                            QoSOptions = item.QoSOptions.ToJson(),
+                            DelegatingHandlers = item.DelegatingHandlers.ToJson(),
+                            item.ServiceName,
+                            item.RequestIdKey
+                        }, null, null, CommandType.Text);
+                    }
+                }
+            }
+
+
+            return await Task.FromResult<Response>(new OkResponse());
         }
     }
 }

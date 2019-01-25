@@ -2,6 +2,7 @@
 using Ocelot.Logging;
 using Ocelot.Middleware;
 using QrF.Core.GatewayExtension.Configuration;
+using QrF.Core.Utils.Extension;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -39,21 +40,19 @@ namespace QrF.Core.GatewayExtension.Authentication.Middleware
                 else
                 {
                     Logger.LogInformation($"{context.HttpContext.Request.Path} 是认证路由. {MiddlewareName} 开始校验授权信息");
-                    #region 提取客户端ID
-                    var clientId = "client_cjy";
+                    var clientId = _options.ClientKey;
                     var path = context.DownstreamReRoute.UpstreamPathTemplate.OriginalValue; //路由地址
                     var clientClaim = context.HttpContext.User.Claims.FirstOrDefault(p => p.Type == _options.ClientKey);
-                    if (!string.IsNullOrEmpty(clientClaim?.Value))
-                    {//从Claims中提取客户端id
+                    if (!(clientClaim?.Value).IsNullOrEmpty()) // 从Claims中提取客户端id
+                    {
                         clientId = clientClaim?.Value;
                     }
-                    #endregion
                     if (await _processor.CheckClientAuthenticationAsync(clientId, path))
                     {
                         await _next.Invoke(context);
                     }
-                    else
-                    {//未授权直接返回错误
+                    else // 未授权直接返回错误
+                    {
                         var error = new UnauthenticatedError($"请求认证路由 {context.HttpContext.Request.Path}客户端未授权");
                         Logger.LogWarning($"路由地址 {context.HttpContext.Request.Path} 自定义认证管道校验失败. {error}");
                         SetPipelineError(context, error);
@@ -64,7 +63,6 @@ namespace QrF.Core.GatewayExtension.Authentication.Middleware
             {
                 await _next.Invoke(context);
             }
-
         }
         private static bool IsAuthenticatedRoute(DownstreamReRoute reRoute)
         {

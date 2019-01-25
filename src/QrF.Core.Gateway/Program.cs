@@ -53,7 +53,7 @@ namespace QrF.Core.Gateway
                 })
                 .ConfigureAppConfiguration((hostingContext, builder) =>
                 {
-                    builder.AddJsonFile("configuration.json", false, true);
+                    //builder.AddJsonFile("configuration.json", false, true);
                     builder.AddJsonFile("appsettings.json", false, true);
                 });
         }

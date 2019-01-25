@@ -22,7 +22,7 @@ namespace QrF.Core.GatewayExtension.DependencyInjection
         /// </summary>
         /// <param name="builder"></param>
         /// <returns></returns>
-        public static IOcelotBuilder AddCzarOcelot(this IOcelotBuilder builder, Action<CusOcelotConfiguration> option)
+        public static IOcelotBuilder AddExtOcelot(this IOcelotBuilder builder, Action<CusOcelotConfiguration> option)
         {
             var options = new CusOcelotConfiguration();
             builder.Services.AddSingleton(options);
