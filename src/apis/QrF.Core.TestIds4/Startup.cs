@@ -41,6 +41,8 @@ namespace QrF.Core.TestIds4
             }
 
             app.UseIdentityServer();
+            app.UseStaticFiles();
+            app.UseMvcWithDefaultRoute();
         }
     }
     public class Config
@@ -68,7 +70,7 @@ namespace QrF.Core.TestIds4
 
                     ClientSecrets =
                     {
-                        new Secret("secret1".Sha256())
+                        new Secret("gateway_secret1".Sha256())
                     },
                     AllowedScopes = { "gateway" }
                 },
@@ -79,7 +81,7 @@ namespace QrF.Core.TestIds4
 
                     ClientSecrets =
                     {
-                        new Secret("secret2".Sha256())
+                        new Secret("gateway_secret2".Sha256())
                     },
                     AllowedScopes = { "gateway", "gateway_admin" }
                 }

@@ -1,5 +1,4 @@
-﻿using IdentityServer4.AccessTokenValidation;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,11 +26,10 @@ namespace QrF.Core.Gateway
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            var authenticationProviderKey = "TestKey";
             services.AddAuthentication()
-                .AddIdentityServerAuthentication(authenticationProviderKey, o =>
+                .AddIdentityServerAuthentication(Configuration["Auth:ProviderKey"], o =>
                 {
-                    o.Authority = "http://localhost:6666";
+                    o.Authority = Configuration["Auth:ServerUrl"];
                     o.ApiName = "gateway";
                     o.RequireHttpsMetadata = false;
                 });
@@ -43,17 +41,17 @@ namespace QrF.Core.Gateway
                 option.RedisConnectionStrings = new List<string>() {
                     Configuration["OcelotConfig:RedisConnectionStrings"]
                 };
-                option.EnableTimer = true;//启用定时任务
-                option.TimerDelay = 30 * 000;//周期30秒
+                option.EnableTimer = Convert.ToBoolean(Configuration["OcelotConfig:EnableTimer"]);
+                option.TimerDelay = Convert.ToInt32(Configuration["OcelotConfig:TimerDelay"]);
                 option.ClientAuthorization = true;
                 option.ClientRateLimit = true;
             })
             .UseSqlServer()
             .AddAdministration("/ocelot", o =>
             {
-                o.Authority = "http://localhost:6666"; //IdentityServer地址
+                o.Authority = Configuration["Auth:ServerUrl"];
                 o.RequireHttpsMetadata = false;
-                o.ApiName = "gateway_admin"; //网关管理的名称，对应的为客户端授权的scope
+                o.ApiName = Configuration["OcelotConfig:AdminApiScope"];
             });
         }
 
