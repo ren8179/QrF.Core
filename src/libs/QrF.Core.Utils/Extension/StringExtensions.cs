@@ -80,7 +80,18 @@ namespace QrF.Core.Utils.Extension
         {
             return string.IsNullOrWhiteSpace(str);
         }
-
+        public static string FirstCharToLowerCase(this string instance)
+        {
+            if (instance.IsNullOrWhiteSpace() && instance.Length > 2 && char.IsUpper(instance[0]))
+            {
+                return char.ToLower(instance[0]) + instance.Substring(1);
+            }
+            if (instance.Length == 2)
+            {
+                return instance.ToLower();
+            }
+            return instance;
+        }
         /// <summary>
         /// Gets a substring of a string from beginning of the string.
         /// </summary>
