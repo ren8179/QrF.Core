@@ -4,6 +4,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -476,6 +477,14 @@ namespace QrF.Core.Utils.Extension
             Check.NotNull(encoding, nameof(encoding));
 
             return encoding.GetBytes(str);
+        }
+        public static string ToFilePath(this string path)
+        {
+            return Path.Combine(path.Split(new char[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar }, StringSplitOptions.RemoveEmptyEntries));
+        }
+        public static string CombinePath(this string p, string path)
+        {
+            return p.TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar + path.ToFilePath();
         }
     }
 }

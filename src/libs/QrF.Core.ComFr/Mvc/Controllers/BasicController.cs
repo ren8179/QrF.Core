@@ -14,7 +14,7 @@ namespace QrF.Core.ComFr.Mvc.Controllers
     /// <typeparam name="TEntity">实体类型</typeparam>
     /// <typeparam name="TPrimarykey">主键类型</typeparam>
     /// <typeparam name="TService">Service类型</typeparam>
-    public class BasicController<TEntity, TPrimarykey, TService> : Controller
+    public class BasicController<TEntity, TPrimarykey, TService> : ControllerBase
         where TEntity : EditorEntity
         where TService : IService<TEntity>
     {
@@ -36,11 +36,10 @@ namespace QrF.Core.ComFr.Mvc.Controllers
                     {
                         ModelState.AddModelError(item.ParameterName, item.ErrorMessage);
                     }
-                    return View(entity);
+                    return Ok(entity);
                 }
-                return RedirectToAction("Index");
             }
-            return View(entity);
+            return Ok(entity);
         }
         public virtual IActionResult Edit(TPrimarykey Id)
         {
@@ -53,7 +52,7 @@ namespace QrF.Core.ComFr.Mvc.Controllers
             {
                 return NotFound();
             }
-            return View(entity);
+            return Ok(entity);
         }
 
         [HttpPost]
@@ -74,11 +73,11 @@ namespace QrF.Core.ComFr.Mvc.Controllers
                     {
                         ModelState.AddModelError(item.ParameterName, item.ErrorMessage);
                     }
-                    return View(entity);
+                    return Ok(entity);
                 }
                 return RedirectToAction("Index");
             }
-            return View(entity);
+            return Ok(entity);
         }
 
         [HttpPost]
@@ -87,11 +86,11 @@ namespace QrF.Core.ComFr.Mvc.Controllers
             try
             {
                 Service.Remove(id);
-                return Json(new AjaxResult { Status = AjaxStatus.Normal });
+                return Ok(new AjaxResult { Status = AjaxStatus.Normal });
             }
             catch (Exception ex)
             {
-                return Json(new AjaxResult { Status = AjaxStatus.Error, Message = ex.Message });
+                return Ok(new AjaxResult { Status = AjaxStatus.Error, Message = ex.Message });
             }
         }
         [HttpPost]
@@ -112,12 +111,7 @@ namespace QrF.Core.ComFr.Mvc.Controllers
                 }
             }
             var entities = Service.Get(expression, pagin);
-            return Json(new TableData(entities, pagin.RecordCount, query.Draw));
-        }
-        protected override void Dispose(bool disposing)
-        {
-            Service.Dispose();
-            base.Dispose(disposing);
+            return Ok(new TableData(entities, pagin.RecordCount, query.Draw));
         }
     }
 }
