@@ -1,40 +1,31 @@
 import request from '@/utils/request'
 
-export function fetchList(query) {
+export function getNavTree() {
   return request({
-    url: '/Navigation/list',
-    method: 'get',
-    params: query
+    url: '/Navigation/GetNavTree',
+    method: 'get'
   })
 }
 
-export function fetchArticle(id) {
+export function delNav(id) {
   return request({
-    url: '/article/detail',
+    url: '/Navigation/Delete',
     method: 'get',
     params: { id }
   })
 }
 
-export function fetchPv(pv) {
+export function createNav(data) {
   return request({
-    url: '/article/pv',
-    method: 'get',
-    params: { pv }
-  })
-}
-
-export function createArticle(data) {
-  return request({
-    url: '/article/create',
+    url: '/Navigation/Create',
     method: 'post',
     data
   })
 }
 
-export function updateArticle(data) {
+export function editNav(data) {
   return request({
-    url: '/article/update',
+    url: '/Navigation/Edit',
     method: 'post',
     data
   })

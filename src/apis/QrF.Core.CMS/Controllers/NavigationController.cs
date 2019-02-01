@@ -2,6 +2,8 @@
 using QrF.Core.CMS.Entities;
 using QrF.Core.CMS.Service;
 using QrF.Core.ComFr.Mvc.Controllers;
+using System.Linq;
+using QrF.Core.ComFr.ViewPort.ElementUI;
 
 namespace QrF.Core.CMS.Controllers
 {
@@ -11,33 +13,26 @@ namespace QrF.Core.CMS.Controllers
         public NavigationController(INavigationService service)
             : base(service) {}
 
-        /// <summary>
-        /// 检查服务状态
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        public IActionResult Get() => Ok("NavigationController");
-        public IActionResult Create(string ParentID)
+        [HttpGet("GetNavTree")]
+        public IActionResult GetNavTree()
         {
-            var navication = new NavigationEntity
-            {
-                ParentId = ParentID,
-                DisplayOrder = Service.Count(m => m.ParentId == ParentID) + 1
-            };
-            return Ok(navication);
+            var navs = Service.Get().OrderBy(m => m.DisplayOrder);
+            var node = new Tree<NavigationEntity>().Source(navs).ToNode(m => m.ID, m => m.Title, m => m.ParentId, "#");
+            return Ok(node);
         }
-        [HttpPost]
-        public override IActionResult Create(NavigationEntity entity)
+
+        [HttpPost("Create")]
+        public override IActionResult Create([FromBody]NavigationEntity entity)
         {
             return base.Create(entity);
         }
-        [HttpPost]
-        public override IActionResult Edit(NavigationEntity entity)
+        [HttpPost("Edit")]
+        public override IActionResult Edit([FromBody]NavigationEntity entity)
         {
             return base.Edit(entity);
         }
         
-        [HttpPost]
+        [HttpPost("MoveNav")]
         public IActionResult MoveNav(string id, string parentId, int position, int oldPosition)
         {
             Service.Move(id, parentId, position, oldPosition);

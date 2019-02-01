@@ -1,29 +1,28 @@
 import request from '@/utils/request'
 
-export function loginByUsername(username, password) {
+export function loginByUsername(userName, password) {
   const data = {
-    username,
+    userName,
     password
   }
   return request({
-    url: '/login/login',
+    url: '/Account/Login',
     method: 'post',
-    data
+    params: data
   })
 }
 
 export function logout() {
   return request({
-    url: '/login/logout',
-    method: 'post'
+    url: '/Account/Logout',
+    method: 'get'
   })
 }
 
 export function getUserInfo(token) {
   return request({
-    url: '/user/info',
+    url: '/User/GetUserInfo',
     method: 'get',
     params: { token }
   })
 }
-

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using QrF.Core.ComFr.Modules.User.Models;
 using QrF.Core.ComFr.Repositories;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,6 @@ namespace QrF.Core.ComFr
         {
         }
 
-
+        internal DbSet<UserEntity> Users { get; set; }
     }
 }

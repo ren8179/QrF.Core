@@ -24,7 +24,7 @@ namespace QrF.Core.ComFr.Mvc.Controllers
             Service = service;
         }
         
-        [HttpPost]
+        [HttpPost("Create")]
         public virtual IActionResult Create(TEntity entity)
         {
             if (ModelState.IsValid)
@@ -55,7 +55,7 @@ namespace QrF.Core.ComFr.Mvc.Controllers
             return Ok(entity);
         }
 
-        [HttpPost]
+        [HttpPost("Edit")]
         public virtual IActionResult Edit(TEntity entity)
         {
             if (entity.ActionType == ActionType.Delete)
@@ -80,7 +80,7 @@ namespace QrF.Core.ComFr.Mvc.Controllers
             return Ok(entity);
         }
 
-        [HttpPost]
+        [HttpGet("Delete")]
         public virtual IActionResult Delete(TPrimarykey id)
         {
             try
@@ -93,7 +93,7 @@ namespace QrF.Core.ComFr.Mvc.Controllers
                 return Ok(new AjaxResult { Status = AjaxStatus.Error, Message = ex.Message });
             }
         }
-        [HttpPost]
+        [HttpPost("GetList")]
         public virtual IActionResult GetList(DataTableOption query)
         {
             var pagin = new Pagination { PageSize = query.Length, PageIndex = query.Start / query.Length };

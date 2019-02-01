@@ -6,8 +6,10 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BDE10C47-B60E-4CA8-A77A-E8DA7889A2D7}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		Build.cmd = Build.cmd
 		LICENSE = LICENSE
 		README.md = README.md
+		Run.cmd = Run.cmd
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{831DD5F3-B4E2-46ED-90C1-81A5D7498590}"
@@ -36,11 +38,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QrF.Core.TestIds4", "src\ap
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QrF.Core.IdentityServer4.Dapper", "src\libs\QrF.Core.IdentityServer4.Dapper\QrF.Core.IdentityServer4.Dapper.csproj", "{9EF257AC-B488-4908-8C37-D061DE9E97AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QrF.Core.CMS", "src\apis\QrF.Core.CMS\QrF.Core.CMS.csproj", "{658AEF69-9475-4C98-BC8B-6972BBA36DFF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QrF.Core.CMS", "src\apis\QrF.Core.CMS\QrF.Core.CMS.csproj", "{658AEF69-9475-4C98-BC8B-6972BBA36DFF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QrF.Core.Cqrs", "src\libs\QrF.Core.Cqrs\QrF.Core.Cqrs.csproj", "{F0748B8C-09D1-496B-ABD7-8C20146E4ABC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QrF.Core.ComFr", "src\libs\QrF.Core.ComFr\QrF.Core.ComFr.csproj", "{D08AE111-E8F0-4731-B40B-C21447A931A7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QrF.Core.ComFr", "src\libs\QrF.Core.ComFr\QrF.Core.ComFr.csproj", "{D08AE111-E8F0-4731-B40B-C21447A931A7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

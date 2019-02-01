@@ -16,6 +16,10 @@ namespace QrF.Core.Utils.Extension
     /// </summary>
     public static class StringExtensions
     {
+        public static byte[] ToByte(this string value)
+        {
+            return Encoding.UTF8.GetBytes(value);
+        }
         public static object ToJson(this string Json)
         {
             return Json == null ? null : JsonConvert.DeserializeObject(Json);
@@ -83,7 +87,7 @@ namespace QrF.Core.Utils.Extension
         }
         public static string FirstCharToLowerCase(this string instance)
         {
-            if (instance.IsNullOrWhiteSpace() && instance.Length > 2 && char.IsUpper(instance[0]))
+            if (!instance.IsNullOrWhiteSpace() && instance.Length > 2 && char.IsUpper(instance[0]))
             {
                 return char.ToLower(instance[0]) + instance.Substring(1);
             }

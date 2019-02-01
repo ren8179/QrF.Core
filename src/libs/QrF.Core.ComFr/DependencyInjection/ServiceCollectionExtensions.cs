@@ -7,6 +7,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using QrF.Core.ComFr.Cache;
 using QrF.Core.ComFr.DbConnectionPool;
+using QrF.Core.ComFr.Modules.User.Service;
+using QrF.Core.ComFr.Mvc;
+using QrF.Core.ComFr.Mvc.Authorize;
+using QrF.Core.ComFr.Mvc.StateProviders;
 using QrF.Core.ComFr.Options;
 using QrF.Core.ComFr.Storage;
 using System;
@@ -23,6 +27,7 @@ namespace QrF.Core.ComFr.DependencyInjection
         {
 
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.TryAddTransient<IUserService, UserService>();
 
             services.AddTransient<IStorage, WebStorage>();
 
@@ -30,6 +35,10 @@ namespace QrF.Core.ComFr.DependencyInjection
 
             services.AddSingleton<IDatabaseConfiguring, EntityFrameWorkConfigure>();
             services.AddSingleton<IDbConnectionPool, SimpleDbConnectionPool>();
+            
+            services.AddScoped<IApplicationContextStateProvider, CurrentUserStateProvider>();
+            services.AddScoped<IApplicationContextStateProvider, HostingEnvironmentStateProvider>();
+
             //池的配置：
             //MaximumRetained规定池的容量（常态最大保有数量）。
             //MaximumRetained为0时，相当于不使用DbConnection池，

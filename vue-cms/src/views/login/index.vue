@@ -71,7 +71,7 @@
 </template>
 
 <script>
-import { isvalidUsername } from '@/utils/validate'
+import { Message } from 'element-ui'
 import LangSelect from '@/components/LangSelect'
 import SocialSign from './socialsignin'
 
@@ -80,15 +80,15 @@ export default {
   components: { LangSelect, SocialSign },
   data() {
     const validateUsername = (rule, value, callback) => {
-      if (!isvalidUsername(value)) {
-        callback(new Error('Please enter the correct user name'))
+      if (!value) {
+        callback(new Error('请输入有效的账号'))
       } else {
         callback()
       }
     }
     const validatePassword = (rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error('The password can not be less than 6 digits'))
+      if (value.length < 5) {
+        callback(new Error('密码长度最少5位'))
       } else {
         callback()
       }
@@ -96,7 +96,7 @@ export default {
     return {
       loginForm: {
         username: 'admin',
-        password: '1111111'
+        password: 'admin'
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -137,8 +137,10 @@ export default {
           this.$store.dispatch('LoginByUsername', this.loginForm).then(() => {
             this.loading = false
             this.$router.push({ path: this.redirect || '/' })
-          }).catch(() => {
+          }).catch((error) => {
             this.loading = false
+            console.log(error)
+            Message({ message: error, type: 'error', duration: 5 * 1000 })
           })
         } else {
           console.log('error submit!!')

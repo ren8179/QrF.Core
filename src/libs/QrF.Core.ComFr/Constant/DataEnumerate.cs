@@ -16,6 +16,11 @@
         Continue = 7,
         UnAttach = 8
     }
+    public enum UserType
+    {
+        Administrator = 1,
+        Customer = 2
+    }
     public enum DbTypes
     {
         /// <summary>

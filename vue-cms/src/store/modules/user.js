@@ -50,9 +50,13 @@ const user = {
       return new Promise((resolve, reject) => {
         loginByUsername(username, userInfo.password).then(response => {
           const data = response.data
-          commit('SET_TOKEN', data.token)
-          setToken(response.data.token)
-          resolve()
+          if (data.isSuccess) {
+            commit('SET_TOKEN', data.token)
+            setToken(response.data.token)
+            resolve()
+          } else {
+            reject(data.msg)
+          }
         }).catch(error => {
           reject(error)
         })
@@ -67,6 +71,7 @@ const user = {
           if (!response.data) {
             reject('Verification failed, please login again.')
           }
+          response.data.roles = ['admin']
           const data = response.data
 
           if (data.roles && data.roles.length > 0) { // 验证返回的roles是否是一个非空数组
@@ -76,7 +81,7 @@ const user = {
           }
 
           commit('SET_NAME', data.name)
-          commit('SET_AVATAR', data.avatar)
+          commit('SET_AVATAR', 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif')
           commit('SET_INTRODUCTION', data.introduction)
           resolve(response)
         }).catch(error => {

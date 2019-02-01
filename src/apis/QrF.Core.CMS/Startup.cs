@@ -17,6 +17,7 @@ using QrF.Core.ComFr.Options;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Mvc;
 using System.IO;
+using QrF.Core.ComFr.Mvc.Authorize;
 
 namespace QrF.Core.CMS
 {
@@ -33,10 +34,12 @@ namespace QrF.Core.CMS
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-           services.AddMvc()
-            .AddJsonOptions(option => { option.SerializerSettings.DateFormatString = "yyyy-MM-dd"; })
-            .SetCompatibilityVersion(CompatibilityVersion.Latest);
+            services.AddCors()
+                .AddMvc()
+                .AddJsonOptions(option => { option.SerializerSettings.DateFormatString = "yyyy-MM-dd"; })
+                .SetCompatibilityVersion(CompatibilityVersion.Latest);
             services.TryAddScoped<IApplicationContext, CMSApplicationContext>();
+            services.TryAddScoped<IApplicationContextAccessor, ApplicationContextAccessor>();
             services.TryAddTransient<INavigationService, NavigationService>();
             services.AddComFr(Configuration);
             
@@ -45,12 +48,18 @@ namespace QrF.Core.CMS
             services.AddDbContextOptions<CMSDbContext>();
             services.AddDbContext<CMSDbContext>();
             services.AddScoped<ComFrDbContext>((provider) => provider.GetService<CMSDbContext>());
-            
+            services.AddAuthentication(DefaultAuthorizeAttribute.DefaultAuthenticationScheme)
+                .AddCookie(DefaultAuthorizeAttribute.DefaultAuthenticationScheme, o =>
+                {
+                    o.LoginPath = new PathString("/CMSAPI/Account/Login");
+                    o.AccessDeniedPath = new PathString("/Error/Forbidden");
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IHttpContextAccessor httpContextAccessor)
         {
+            app.UseAuthentication();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -58,7 +67,12 @@ namespace QrF.Core.CMS
             app.UseStaticFiles();
             ServiceLocator.Setup(httpContextAccessor);
             Directory.SetCurrentDirectory(env.ContentRootPath);
-            app.UseMvc();
+            app.UseCors(builder => builder
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials())
+                    .UseMvc();
         }
     }
 }
