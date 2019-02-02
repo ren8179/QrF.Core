@@ -39,3 +39,10 @@ export function updateArticle(data) {
     data
   })
 }
+
+export function getArticleTypeTree() {
+  return request({
+    url: '/ArticleType/GetArticleTypeTree',
+    method: 'get'
+  })
+}

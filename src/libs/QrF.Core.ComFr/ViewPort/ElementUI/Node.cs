@@ -7,8 +7,10 @@ namespace QrF.Core.ComFr.ViewPort.ElementUI
     public class Node
     {
         public string id { get; set; }
+        public string parentId { get; set; }
         public string label { get; set; }
         public bool disabled { get; set; }
+        public int order { get; set; }
         public List<Node> children { get; set; }
         public bool isLeaf { get; set; }
     }

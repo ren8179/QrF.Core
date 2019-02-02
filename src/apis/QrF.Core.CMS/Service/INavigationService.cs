@@ -8,6 +8,6 @@ namespace QrF.Core.CMS.Service
 {
     public interface INavigationService : IService<Entities.NavigationEntity>
     {
-        void Move(string id, string parentId, int position, int oldPosition);
+        void Move(string id, string parentId, int position);
     }
 }

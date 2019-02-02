@@ -17,7 +17,7 @@ namespace QrF.Core.CMS.Controllers
         public IActionResult GetNavTree()
         {
             var navs = Service.Get().OrderBy(m => m.DisplayOrder);
-            var node = new Tree<NavigationEntity>().Source(navs).ToNode(m => m.ID, m => m.Title, m => m.ParentId, "#");
+            var node = new Tree<NavigationEntity>().Source(navs).ToNode(m => m.ID, m => m.Title, m => m.ParentId,m =>m.DisplayOrder??0, "#");
             return Ok(node);
         }
 
@@ -33,9 +33,9 @@ namespace QrF.Core.CMS.Controllers
         }
         
         [HttpPost("MoveNav")]
-        public IActionResult MoveNav(string id, string parentId, int position, int oldPosition)
+        public IActionResult MoveNav(string id, string parentId, int position)
         {
-            Service.Move(id, parentId, position, oldPosition);
+            Service.Move(id, parentId, position);
             return Ok(true);
         }
     }

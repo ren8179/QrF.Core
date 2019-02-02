@@ -30,3 +30,11 @@ export function editNav(data) {
     data
   })
 }
+
+export function moveNav(id, parentId, position) {
+  return request({
+    url: '/Navigation/MoveNav',
+    method: 'post',
+    params: { id, parentId, position }
+  })
+}

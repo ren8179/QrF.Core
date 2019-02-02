@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import { getNavTree, delNav, createNav, editNav, moveNav } from '@/api/navigation'
+import { getArticleTypeTree, delNav, createNav, editNav, moveNav } from '@/api/article'
 
 export default{
   data() {
@@ -58,7 +58,7 @@ export default{
     }
   },
   created() {
-    this.getNavTree()
+    this.getArticleTypeTree()
   },
   methods: {
     append(data) {
@@ -127,9 +127,9 @@ export default{
         this.$message({ type: 'error', message: error || '更新失败' })
       })
     },
-    getNavTree() {
+    getArticleTypeTree() {
       this.loading = true
-      getNavTree().then(response => {
+      getArticleTypeTree().then(response => {
         this.loading = false
         this.navlist = response.data
       }).catch(() => {

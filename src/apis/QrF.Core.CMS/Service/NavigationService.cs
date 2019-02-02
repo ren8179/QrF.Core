@@ -49,10 +49,11 @@ namespace QrF.Core.CMS.Service
             base.Remove(filter);
         }
 
-        public void Move(string id, string parentId, int position, int oldPosition)
+        public void Move(string id, string parentId, int position)
         {
             var nav = Get(id);
-            nav.ParentId = parentId;
+            if(!parentId.IsNullOrEmpty())
+                nav.ParentId = parentId;
             nav.DisplayOrder = position;
 
             IEnumerable<NavigationEntity> navs = CurrentDbSet.AsTracking().Where(m => m.ParentId == nav.ParentId && m.ID != nav.ID).OrderBy(m => m.DisplayOrder);

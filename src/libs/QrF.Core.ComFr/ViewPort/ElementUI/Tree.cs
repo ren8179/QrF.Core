@@ -12,6 +12,7 @@ namespace QrF.Core.ComFr.ViewPort.ElementUI
         Func<T, string> valueProperty;
         Func<T, string> parentProperty;
         Func<T, string> textProperty;
+        Func<T, int> orderProperty;
         bool _disabled;
         Dictionary<string, string> _events = new Dictionary<string, string>();
         List<string> _plugins = new List<string>();
@@ -61,7 +62,11 @@ namespace QrF.Core.ComFr.ViewPort.ElementUI
             parentProperty = parent;
             return this;
         }
-
+        public Tree<T> Order(Func<T, int> order)
+        {
+            orderProperty = order;
+            return this;
+        }
         public Tree<T> AddPlugin(string plugin)
         {
             if (!_plugins.Contains(plugin))
@@ -80,15 +85,16 @@ namespace QrF.Core.ComFr.ViewPort.ElementUI
             _check_callback = fun;
             return this;
         }
-        public List<Node> ToNode(Func<T, string> value, Func<T, string> text, Func<T, string> parent, string rootId)
+        public List<Node> ToNode(Func<T, string> value, Func<T, string> text, Func<T, string> parent, Func<T, int> order, string rootId)
         {
-            return ToNode(value, text, parent, rootId, false);
+            return ToNode(value, text, parent, order, rootId, false);
         }
-        public List<Node> ToNode(Func<T, string> value, Func<T, string> text, Func<T, string> parent, string rootId, bool disabled)
+        public List<Node> ToNode(Func<T, string> value, Func<T, string> text, Func<T, string> parent, Func<T, int> order, string rootId, bool disabled)
         {
             valueProperty = value;
             parentProperty = parent;
             textProperty = text;
+            orderProperty = order;
             _rootId = rootId;
             _disabled = disabled;
             InitDode();
@@ -111,7 +117,9 @@ namespace QrF.Core.ComFr.ViewPort.ElementUI
         {
             Node node = new Node();
             node.id = valueProperty(data);
+            node.parentId = parentProperty(data);
             node.label = textProperty(data);
+            node.order = orderProperty(data);
             node.disabled = _disabled;
             node.children = new List<Node>();
             DataSource.Where(m => parentProperty(m) == node.id).Each(m => node.children.Add(InitNode(m)));
