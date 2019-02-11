@@ -27,11 +27,6 @@ namespace QrF.Core.CMS.Controllers
         {
             return base.Edit(entity);
         }
-        [HttpPost("Delete")]
-        public override IActionResult Delete(int id)
-        {
-            return base.Delete(id);
-        }
         [HttpGet("GetArticleTypeTree")]
         public IActionResult GetArticleTypeTree()
         {

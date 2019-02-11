@@ -41,6 +41,9 @@ namespace QrF.Core.CMS
             services.TryAddScoped<IApplicationContext, CMSApplicationContext>();
             services.TryAddScoped<IApplicationContextAccessor, ApplicationContextAccessor>();
             services.TryAddTransient<INavigationService, NavigationService>();
+            services.TryAddTransient<IArticleService, ArticleService>();
+            services.TryAddTransient<IArticleTypeService, ArticleTypeService>();
+
             services.AddComFr(Configuration);
             
             services.AddScoped<IOnModelCreating, EntityFrameWorkModelCreating>();

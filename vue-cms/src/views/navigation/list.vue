@@ -140,10 +140,11 @@ export default{
       this.$refs['formModel'].validate((valid) => {
         if (valid) {
           const tempData = Object.assign({}, this.temp)
-          this.dialogFormVisible = true
-          let opt = createNav(tempData)
-          if (tempData.Id || tempData.Id === '00000000-0000-0000-0000-000000000000') {
+          let opt
+          if (tempData.id && tempData.id !== '00000000-0000-0000-0000-000000000000') {
             opt = editNav(tempData)
+          } else {
+            opt = createNav(tempData)
           }
           opt.then(response => {
             this.dialogFormVisible = false

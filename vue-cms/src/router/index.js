@@ -78,6 +78,62 @@ export const constantRouterMap = [{
   }]
 },
 {
+  path: '/navigation',
+  component: Layout,
+  redirect: '/navigation/list',
+  name: 'Navigation',
+  meta: {
+    title: '导航管理',
+    icon: 'navigation'
+  },
+  children: [{
+    path: 'list',
+    component: () =>
+                import('@/views/navigation/list'),
+    name: 'NavigationList',
+    meta: { title: '导航管理', icon: 'guide' }
+  }]
+},
+{
+  path: '/article',
+  component: Layout,
+  redirect: '/article/typelist',
+  name: 'Article',
+  meta: {
+    title: '文章管理',
+    icon: 'documentation'
+  },
+  children: [{
+    path: 'typelist',
+    component: () =>
+                import('@/views/article/typelist'),
+    name: 'articletypelist',
+    meta: { title: '文章类别', icon: 'component' }
+  },
+  {
+    path: 'list',
+    component: () =>
+                import('@/views/article/list'),
+    name: 'articlelist',
+    meta: { title: '文章列表', icon: 'list' }
+  },
+  {
+    path: 'create',
+    component: () =>
+                    import('@/views/article/create'),
+    name: 'CreateArticle',
+    meta: { title: '创建文章', icon: 'edit' }
+  },
+  {
+    path: 'edit/:id(\\d+)',
+    component: () =>
+                    import('@/views/article/edit'),
+    name: 'EditArticle',
+    meta: { title: '编辑文章', noCache: true },
+    hidden: true
+  }]
+},
+{
   path: '/documentation',
   component: Layout,
   redirect: '/documentation/index',
@@ -159,56 +215,6 @@ componentsRouter,
 chartsRouter,
 nestedRouter,
 tableRouter,
-{
-  path: '/navigation',
-  component: Layout,
-  redirect: '/navigation/list',
-  name: 'Navigation',
-  meta: {
-    title: '导航',
-    icon: 'navigation'
-  },
-  children: [{
-    path: 'list',
-    component: () =>
-                import('@/views/navigation/list'),
-    name: 'NavigationList',
-    meta: { title: '导航', icon: 'list' }
-  }]
-},
-{
-  path: '/example',
-  component: Layout,
-  redirect: '/example/list',
-  name: 'Example',
-  meta: {
-    title: 'example',
-    icon: 'example'
-  },
-  children: [{
-    path: 'create',
-    component: () =>
-                    import('@/views/example/create'),
-    name: 'CreateArticle',
-    meta: { title: 'createArticle', icon: 'edit' }
-  },
-  {
-    path: 'edit/:id(\\d+)',
-    component: () =>
-                    import('@/views/example/edit'),
-    name: 'EditArticle',
-    meta: { title: 'editArticle', noCache: true },
-    hidden: true
-  },
-  {
-    path: 'list',
-    component: () =>
-                    import('@/views/example/list'),
-    name: 'ArticleList',
-    meta: { title: 'articleList', icon: 'list' }
-  }
-  ]
-},
 
 {
   path: '/tab',

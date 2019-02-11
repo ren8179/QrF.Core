@@ -23,7 +23,21 @@ namespace QrF.Core.ComFr.Mvc.Controllers
         {
             Service = service;
         }
-        
+        [HttpGet("GetById")]
+        public virtual IActionResult GetById(TPrimarykey Id)
+        {
+            if (Id == null)
+            {
+                return NotFound();
+            }
+            TEntity entity = Service.Get(Id);
+            if (entity == null)
+            {
+                return NotFound();
+            }
+            return Ok(entity);
+        }
+
         [HttpPost("Create")]
         public virtual IActionResult Create(TEntity entity)
         {
@@ -41,27 +55,14 @@ namespace QrF.Core.ComFr.Mvc.Controllers
             }
             return Ok(entity);
         }
-        public virtual IActionResult Edit(TPrimarykey Id)
-        {
-            if (Id == null)
-            {
-                return NotFound();
-            }
-            TEntity entity = Service.Get(Id);
-            if (entity == null)
-            {
-                return NotFound();
-            }
-            return Ok(entity);
-        }
-
+        
         [HttpPost("Edit")]
         public virtual IActionResult Edit(TEntity entity)
         {
             if (entity.ActionType == ActionType.Delete)
             {
                 Service.Remove(entity);
-                return RedirectToAction("Index");
+                return Ok(entity);
             }
 
             if (ModelState.IsValid)
@@ -75,7 +76,6 @@ namespace QrF.Core.ComFr.Mvc.Controllers
                     }
                     return Ok(entity);
                 }
-                return RedirectToAction("Index");
             }
             return Ok(entity);
         }

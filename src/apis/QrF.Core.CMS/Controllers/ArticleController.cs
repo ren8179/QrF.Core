@@ -43,10 +43,5 @@ namespace QrF.Core.CMS.Controllers
         {
             return base.GetList(query);
         }
-        [HttpPost("Delete")]
-        public override IActionResult Delete(int id)
-        {
-            return base.Delete(id);
-        }
     }
 }
