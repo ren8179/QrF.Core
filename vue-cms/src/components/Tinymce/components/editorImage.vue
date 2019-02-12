@@ -10,8 +10,8 @@
         :on-remove="handleRemove"
         :on-success="handleSuccess"
         :before-upload="beforeUpload"
+        :action="uploadurl"
         class="editor-slide-upload"
-        action="https://httpbin.org/post"
         list-type="picture-card">
         <el-button size="small" type="primary">点击上传</el-button>
       </el-upload>
@@ -34,6 +34,7 @@ export default {
   },
   data() {
     return {
+      uploadurl: process.env.BASE_API + '/CMSAPI/Media/Upload',
       dialogVisible: false,
       listObj: {},
       fileList: []
@@ -44,6 +45,7 @@ export default {
       return Object.keys(this.listObj).every(item => this.listObj[item].hasSuccess)
     },
     handleSubmit() {
+      debugger
       const arr = Object.keys(this.listObj).map(v => this.listObj[v])
       if (!this.checkAllSuccess()) {
         this.$message('请等待所有图片上传成功 或 出现了网络问题，请刷新页面重新上传！')
@@ -55,11 +57,12 @@ export default {
       this.dialogVisible = false
     },
     handleSuccess(response, file) {
+      debugger
       const uid = file.uid
       const objKeyArr = Object.keys(this.listObj)
       for (let i = 0, len = objKeyArr.length; i < len; i++) {
         if (this.listObj[objKeyArr[i]].uid === uid) {
-          this.listObj[objKeyArr[i]].url = response.files.file
+          this.listObj[objKeyArr[i]].url = process.env.BASE_API + response.url
           this.listObj[objKeyArr[i]].hasSuccess = true
           return
         }

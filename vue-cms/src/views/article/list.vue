@@ -3,7 +3,12 @@
     <!-- 查询条件 -->
     <el-form :inline="true" :model="listQuery">
       <el-form-item label="标题:">
-        <el-input v-model="listQuery.name" size="small" class="filter-item" placeholder="标题" />
+        <el-input v-model="name" size="small" class="filter-item" placeholder="标题" />
+      </el-form-item>
+      <el-form-item label="文章类别:">
+        <el-select v-model="articleTypeID" clearable placeholder="请选择">
+          <el-option v-for="item in types" :key="item.id" :label="item.title" :value="item.id" />
+        </el-select>
       </el-form-item>
       <el-form-item>
         <el-button v-waves type="primary" class="filter-item" icon="el-icon-search" size="small" @click="handleFilter">查询</el-button>
@@ -26,7 +31,7 @@
 </template>
 
 <script>
-import { fetchList, createArticle, updateArticle, del } from '@/api/article'
+import { fetchList, del, getTypeList } from '@/api/article'
 import waves from '@/directive/waves'
 
 export default {
@@ -36,13 +41,16 @@ export default {
     return {
       total: null,
       list: null,
+      articleTypeID: null,
+      name: '',
+      types: [],
       listQuery: {
         draw: 1,
         start: 0,
         length: 10,
         columns: [
-          { data: 'title', name: '标题', searchable: true, orderable: true },
-          { data: 'articleTypeID', name: '文章类别', searchable: true, orderable: true },
+          { data: 'title', name: '标题', searchable: true, orderable: true, search: { regex: false, opeartor: 'Contains' }},
+          { data: 'articleTypeID', name: '文章类别', searchable: true, orderable: true, search: { regex: false, opeartor: 'Equal' }},
           { data: 'isPublish', name: '已发布', searchable: true, orderable: true },
           { data: 'createbyName', name: '创建人', searchable: true, orderable: true },
           { data: 'createDate', name: '创建日期', searchable: true, orderable: true }
@@ -58,13 +66,28 @@ export default {
   },
   created() {
     this.handleFilter()
+    getTypeList().then(r => { this.types = r.data })
   },
   methods: {
     getList() {
       this.listLoading = true
+      this.list = []
+      this.listQuery.columns[0].search.value = this.name
+      this.listQuery.columns[1].search.value = this.articleTypeID
       fetchList(this.listQuery).then(response => {
         this.listLoading = false
-        this.list = response.data.data
+        let list = response.data.data
+        if (list && list.length > 0) {
+          list = list.map(item => {
+            const type = this.types.filter(o => { return o.id === item.articleTypeID })
+            if (type && type.length > 0) {
+              item.articleTypeID = type[0].title
+            }
+            item.isPublish = item.isPublish ? '是' : '否'
+            return item
+          })
+          this.list = list
+        }
         this.total = response.data.recordsTotal
       }).catch(() => {
         this.listLoading = false
@@ -106,26 +129,6 @@ export default {
         }).catch(() => {
           this.listLoading = false
         })
-      })
-    },
-    updateData() {
-      this.$refs['formModel'].validate((valid) => {
-        if (valid) {
-          const tempData = Object.assign({}, this.temp)
-          let opt
-          if (tempData.id && tempData.id !== '00000000-0000-0000-0000-000000000000') {
-            opt = updateArticle(tempData)
-          } else {
-            opt = createArticle(tempData)
-          }
-          opt.then(response => {
-            this.dialogFormVisible = false
-            this.handleFilter()
-            this.$notify({ title: '成功', message: '更新成功', type: 'success', duration: 2000 })
-          }).catch(() => {
-            this.dialogFormVisible = false
-          })
-        }
       })
     }
   }

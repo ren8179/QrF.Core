@@ -27,11 +27,11 @@ namespace QrF.Core.ComFr.Mvc.Controllers
                 if (p == null) continue;
                 var realType = Nullable.GetUnderlyingType(p.PropertyType) ?? p.PropertyType;
                 string value = null;
-                if (item.Search != null && item.Search.Value.IsNullOrWhiteSpace())
+                if (item.Search != null && item.Search.Value.IsNotNullAndWhiteSpace())
                 {
                     value = item.Search.Value;
                 }
-                else if (Search != null && Search.Value.IsNullOrWhiteSpace() && realType == typeof(string))
+                else if (Search != null && Search.Value.IsNotNullAndWhiteSpace() && realType == typeof(string))
                 {
                     value = Search.Value;
                 }

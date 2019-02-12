@@ -16,6 +16,19 @@
         Continue = 7,
         UnAttach = 8
     }
+    public enum MediaType
+    {
+        Folder = 1,
+        Image = 2,
+        Video = 3,
+        Zip = 4,
+        Pdf = 5,
+        Txt = 6,
+        Doc = 7,
+        Excel = 8,
+        Ppt = 9,
+        Other = 100
+    }
     public enum UserType
     {
         Administrator = 1,

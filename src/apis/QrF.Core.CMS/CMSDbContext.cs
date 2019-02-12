@@ -17,6 +17,7 @@ namespace QrF.Core.CMS
         }
 
         public DbSet<NavigationEntity> Navigation { get; set; }
+        public DbSet<MediaEntity> Media { get; set; }
 
     }
 }

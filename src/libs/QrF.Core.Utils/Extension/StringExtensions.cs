@@ -85,6 +85,10 @@ namespace QrF.Core.Utils.Extension
         {
             return string.IsNullOrWhiteSpace(str);
         }
+        public static bool IsNotNullAndWhiteSpace(this string str)
+        {
+            return !string.IsNullOrWhiteSpace(str);
+        }
         public static string FirstCharToLowerCase(this string instance)
         {
             if (!instance.IsNullOrWhiteSpace() && instance.Length > 2 && char.IsUpper(instance[0]))

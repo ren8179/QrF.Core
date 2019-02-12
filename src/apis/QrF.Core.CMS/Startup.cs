@@ -43,6 +43,7 @@ namespace QrF.Core.CMS
             services.TryAddTransient<INavigationService, NavigationService>();
             services.TryAddTransient<IArticleService, ArticleService>();
             services.TryAddTransient<IArticleTypeService, ArticleTypeService>();
+            services.TryAddTransient<IMediaService, MediaService>();
 
             services.AddComFr(Configuration);
             

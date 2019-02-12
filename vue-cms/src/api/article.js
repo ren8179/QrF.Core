@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function fetchList(data) {
   return request({
-    url: '/Article/GetList',
+    url: '/Article/GetPageList',
     method: 'post',
     data
   })
@@ -10,7 +10,7 @@ export function fetchList(data) {
 
 export function fetchArticle(id) {
   return request({
-    url: '/Article/detail',
+    url: '/Article/GetById',
     method: 'get',
     params: { id }
   })
@@ -86,3 +86,11 @@ export function getTypeById(id) {
     params: { id }
   })
 }
+
+export function getTypeList() {
+  return request({
+    url: '/ArticleType/GetTypeList',
+    method: 'get'
+  })
+}
+

@@ -14,6 +14,7 @@ namespace QrF.Core.CMS
         {
             
             modelBuilder.Entity<NavigationEntity>();
+            modelBuilder.Entity<MediaEntity>();
             modelBuilder.Entity<ArticleEntity>();
             modelBuilder.Entity<ArticleType>();
         }

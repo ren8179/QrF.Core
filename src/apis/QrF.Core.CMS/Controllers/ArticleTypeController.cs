@@ -34,6 +34,10 @@ namespace QrF.Core.CMS.Controllers
             var node = new Tree<ArticleType>().Source(allNodes).ToNode(m => m.ID.ToString(), m => m.Title, m => m.ParentID.ToString(),m =>0, "0");
             return Ok(node);
         }
-
+        [HttpGet("GetTypeList")]
+        public virtual IActionResult GetTypeList()
+        {
+            return Ok(Service.Get());
+        }
     }
 }

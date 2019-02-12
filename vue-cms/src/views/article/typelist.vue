@@ -7,7 +7,7 @@
           <el-button style="float: right; padding: 3px 0" type="text" @click="handleAddClick">添加类别</el-button>
           <el-button style="float: right; padding: 3px 10px 3px 0" type="text" @click="getTrees">刷新</el-button>
         </div>
-        <el-tree v-loading="loading" :data="navlist" node-key="id" default-expand-all>
+        <el-tree v-loading="loading" :data="treelist" node-key="id" default-expand-all>
           <span slot-scope="{ node, data }" class="custom-tree-node">
             <span>{{ node.label }}</span>
             <span>
@@ -48,7 +48,7 @@ import { getArticleTypeTree, delType, createType, editType, getTypeById } from '
 export default{
   data() {
     return {
-      navlist: [],
+      treelist: [],
       loading: false,
       dialogFormVisible: false,
       editTitle: '',
@@ -118,7 +118,7 @@ export default{
       this.loading = true
       getArticleTypeTree().then(response => {
         this.loading = false
-        this.navlist = response.data
+        this.treelist = response.data
       }).catch(() => {
         this.loading = false
       })

@@ -93,8 +93,8 @@ namespace QrF.Core.ComFr.Mvc.Controllers
                 return Ok(new AjaxResult { Status = AjaxStatus.Error, Message = ex.Message });
             }
         }
-        [HttpPost("GetList")]
-        public virtual IActionResult GetList(DataTableOption query)
+        [HttpPost("GetPageList")]
+        public virtual IActionResult GetPageList([FromBody]DataTableOption query)
         {
             var pagin = new Pagination { PageSize = query.Length, PageIndex = query.Start / query.Length };
             var expression = query.AsExpression<TEntity>();

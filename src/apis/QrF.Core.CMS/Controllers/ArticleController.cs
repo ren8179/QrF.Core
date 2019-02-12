@@ -16,7 +16,7 @@ namespace QrF.Core.CMS.Controllers
         public ArticleController(IArticleService service)
             : base(service)
         {
-           
+
         }
         [HttpPost("Create")]
         public override IActionResult Create([FromBody]ArticleEntity entity)
@@ -38,10 +38,11 @@ namespace QrF.Core.CMS.Controllers
             }
             return result;
         }
-        [HttpPost("GetList")]
-        public override IActionResult GetList([FromBody]DataTableOption query)
+        [HttpGet("GetList")]
+        public IActionResult GetList(int typeId)
         {
-            return base.GetList(query);
+            var entities = Service.Get(o => o.ArticleTypeID == typeId && o.IsPublish).OrderByDescending(o => o.PublishDate);
+            return Ok(entities);
         }
     }
 }

@@ -1,103 +1,91 @@
 <template>
   <div class="createPost-container">
     <el-form ref="postForm" :model="postForm" :rules="rules" class="form-container">
-
       <sticky :class-name="'sub-navbar '+postForm.status">
-        <!-- <CommentDropdown v-model="postForm.comment_disabled" />
-        <PlatformDropdown v-model="postForm.platforms" />
-        <SourceUrlDropdown v-model="postForm.source_uri" /> -->
-        <el-button v-loading="loading" style="margin-left: 10px;" type="success" @click="submitForm">发布
-        </el-button>
-        <el-button v-loading="loading" type="warning" @click="draftForm">草稿</el-button>
+        <el-button v-loading="loading" style="margin-left: 10px;" type="success" @click="submitForm">发布</el-button>
+        <el-button v-loading="loading" type="warning" @click="draftForm">保存</el-button>
       </sticky>
-
       <div class="createPost-main-container">
         <el-row>
-
           <el-col :span="24">
             <el-form-item style="margin-bottom: 40px;" prop="title">
-              <MDinput v-model="postForm.title" :maxlength="100" name="name" required>
-                标题
-              </MDinput>
+              <MDinput v-model="postForm.title" :maxlength="100" name="name" required>标题</MDinput>
             </el-form-item>
-
             <div class="postInfo-container">
               <el-row>
+                <el-col :span="16">
+                  <el-form-item label-width="110px" label="URL:">
+                    <el-input :rows="1" v-model="postForm.url" type="textarea" class="article-textarea" autosize placeholder="请输入URL"/>
+                  </el-form-item>
+                </el-col>
                 <el-col :span="8">
-                  <el-form-item label-width="45px" label="作者:" class="postInfo-container-item">
-                    <el-select v-model="postForm.author" :remote-method="getRemoteUserList" filterable remote placeholder="搜索用户">
-                      <el-option v-for="(item,index) in userListOptions" :key="item+index" :label="item" :value="item"/>
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-
-                <el-col :span="10">
-                  <el-form-item label-width="80px" label="发布时间:" class="postInfo-container-item">
-                    <el-date-picker v-model="postForm.display_time" type="datetime" format="yyyy-MM-dd HH:mm:ss" placeholder="选择日期时间"/>
-                  </el-form-item>
-                </el-col>
-
-                <el-col :span="6">
-                  <el-form-item label-width="60px" label="重要性:" class="postInfo-container-item">
-                    <el-rate
-                      v-model="postForm.importance"
-                      :max="3"
-                      :colors="['#99A9BF', '#F7BA2A', '#FF9900']"
-                      :low-threshold="1"
-                      :high-threshold="3"
-                      style="margin-top:8px;"/>
+                  <el-form-item label-width="80px" label="阅读次数:" class="postInfo-container-item">
+                    <el-input v-model="postForm.counter" size="small" class="filter-item" placeholder="请输入阅读次数" />
                   </el-form-item>
                 </el-col>
               </el-row>
             </div>
           </el-col>
         </el-row>
-
-        <el-form-item style="margin-bottom: 40px;" label-width="45px" label="摘要:">
-          <el-input :rows="1" v-model="postForm.content_short" type="textarea" class="article-textarea" autosize placeholder="请输入内容"/>
+        <el-form-item style="margin-bottom: 40px;" label-width="110px" label="SEO关键字:">
+          <el-input :rows="1" v-model="postForm.metaKeyWords" type="textarea" class="article-textarea" autosize placeholder="请输入SEO关键字"/>
+        </el-form-item>
+        <el-form-item style="margin-bottom: 40px;" label-width="110px" label="SEO描述:">
+          <el-input :rows="1" v-model="postForm.metaDescription" type="textarea" class="article-textarea" autosize placeholder="请输入SEO描述"/>
+        </el-form-item>
+        <el-form-item style="margin-bottom: 40px;" label-width="110px" label="概述:">
+          <el-input :rows="1" v-model="postForm.summary" type="textarea" class="article-textarea" autosize placeholder="请输入概述"/>
           <span v-show="contentShortLength" class="word-counter">{{ contentShortLength }}字</span>
         </el-form-item>
-
         <el-form-item prop="content" style="margin-bottom: 30px;">
-          <Tinymce ref="editor" :height="400" v-model="postForm.content" />
+          <Tinymce ref="editor" :height="400" v-model="postForm.articleContent" />
         </el-form-item>
-
-        <el-form-item prop="image_uri" style="margin-bottom: 30px;">
-          <Upload v-model="postForm.image_uri" />
+        <el-form-item label-width="110px" label="文章类别:">
+          <el-tree v-loading="loading" ref="typeTree" :data="treelist" :props="defaultProps" node-key="id" highlight-current default-expand-all />
+        </el-form-item>
+        <el-form-item label-width="110px" label="状态:">
+          <el-select v-model="postForm.status" class="filter-item" placeholder="请选择">
+            <el-option v-for="item in opts" :key="item.Id" :label="item.Title" :value="item.Id" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label-width="110px" prop="imageUrl" label="图片:" style="margin-bottom: 30px;">
+          <Upload v-model="postForm.imageUrl" />
+        </el-form-item>
+        <el-form-item label-width="110px" prop="imageThumbUrl" label="缩略图:" style="margin-bottom: 30px;">
+          <Upload v-model="postForm.imageThumbUrl" />
         </el-form-item>
       </div>
     </el-form>
-
   </div>
 </template>
 
 <script>
 import Tinymce from '@/components/Tinymce'
-import Upload from '@/components/Upload/singleImage3'
+import Upload from '@/components/Upload/singleImage'
 import MDinput from '@/components/MDinput'
 import Sticky from '@/components/Sticky' // 粘性header组件
-import { validateURL } from '@/utils/validate'
-import { fetchArticle } from '@/api/article'
-import { userSearch } from '@/api/remoteSearch'
-// import { CommentDropdown, PlatformDropdown, SourceUrlDropdown } from './Dropdown'
+import { fetchArticle, getArticleTypeTree, createArticle, updateArticle } from '@/api/article'
 
 const defaultForm = {
-  status: 'draft',
+  url: '',
   title: '', // 文章题目
-  content: '', // 文章内容
-  content_short: '', // 文章摘要
-  source_uri: '', // 文章外链
-  image_uri: '', // 文章图片
-  display_time: undefined, // 前台展示时间
+  counter: 0,
+  articleContent: '', // 文章内容
+  metaKeyWords: '', // SEO关键字
+  metaDescription: '', // SEO描述
+  summary: '', // 概述
   id: undefined,
-  platforms: ['a-platform'],
-  comment_disabled: false,
-  importance: 0
+  articleTypeID: null,
+  status: 1,
+  isPublish: false,
+  actionType: 1,
+  imageUrl: '',
+  imageThumbUrl: ''
 }
 
 export default {
   name: 'ArticleDetail',
-  components: { Tinymce, MDinput, Upload, Sticky }, // ,  CommentDropdown, PlatformDropdown, SourceUrlDropdown
+  components: { Tinymce, MDinput, Upload, Sticky },
   props: {
     isEdit: {
       type: Boolean,
@@ -107,26 +95,7 @@ export default {
   data() {
     const validateRequire = (rule, value, callback) => {
       if (value === '') {
-        this.$message({
-          message: rule.field + '为必传项',
-          type: 'error'
-        })
-        callback(new Error(rule.field + '为必传项'))
-      } else {
-        callback()
-      }
-    }
-    const validateSourceUri = (rule, value, callback) => {
-      if (value) {
-        if (validateURL(value)) {
-          callback()
-        } else {
-          this.$message({
-            message: '外链url填写不正确',
-            type: 'error'
-          })
-          callback(new Error('外链url填写不正确'))
-        }
+        callback(new Error('必填项，请输入'))
       } else {
         callback()
       }
@@ -134,32 +103,29 @@ export default {
     return {
       postForm: Object.assign({}, defaultForm),
       loading: false,
-      userListOptions: [],
+      opts: [{ Id: 1, Title: '有效' }, { Id: 0, Title: '无效' }],
+      treelist: [],
+      defaultProps: { children: 'children', label: 'label' },
       rules: {
-        image_uri: [{ validator: validateRequire }],
         title: [{ validator: validateRequire }],
-        content: [{ validator: validateRequire }],
-        source_uri: [{ validator: validateSourceUri, trigger: 'blur' }]
+        articleContent: [{ validator: validateRequire }]
       },
       tempRoute: {}
     }
   },
   computed: {
     contentShortLength() {
-      return this.postForm.content_short.length
-    },
-    lang() {
-      return this.$store.getters.language
+      return this.postForm.summary.length
     }
   },
   created() {
+    this.getTrees()
     if (this.isEdit) {
       const id = this.$route.params && this.$route.params.id
       this.fetchData(id)
     } else {
       this.postForm = Object.assign({}, defaultForm)
     }
-
     // Why need to make a copy of this.$route here?
     // Because if you enter this page and quickly switch tag, may be in the execution of the setTagsViewTitle function, this.$route is no longer pointing to the current page
     // https://github.com/PanJiaChen/vue-element-admin/issues/1221
@@ -169,35 +135,48 @@ export default {
     fetchData(id) {
       fetchArticle(id).then(response => {
         this.postForm = response.data
-        // Just for test
-        this.postForm.title += `   Article Id:${this.postForm.id}`
-        this.postForm.content_short += `   Article Id:${this.postForm.id}`
-
-        // Set tagsview title
+        this.$nextTick(() => {
+          this.$refs.typeTree.setCurrentKey(this.postForm.articleTypeID)
+        })
         this.setTagsViewTitle()
       }).catch(err => {
         console.log(err)
       })
     },
+    getTrees() {
+      this.loading = true
+      getArticleTypeTree().then(response => {
+        this.loading = false
+        this.treelist = response.data
+        this.$nextTick(() => {
+          this.$refs.typeTree.setCurrentKey(this.postForm.articleTypeID)
+        })
+      }).catch(() => {
+        this.loading = false
+      })
+    },
     setTagsViewTitle() {
-      const title = this.lang === 'zh' ? '编辑文章' : 'Edit Article'
+      const title = '编辑文章'
       const route = Object.assign({}, this.tempRoute, { title: `${title}-${this.postForm.id}` })
       this.$store.dispatch('updateVisitedView', route)
     },
     submitForm() {
-      this.postForm.display_time = parseInt(this.display_time / 1000)
-      console.log(this.postForm)
       this.$refs.postForm.validate(valid => {
         if (valid) {
           this.loading = true
-          this.$notify({
-            title: '成功',
-            message: '发布文章成功',
-            type: 'success',
-            duration: 2000
+          const currkey = this.$refs.typeTree.getCurrentKey()
+          if (currkey) {
+            this.postForm.articleTypeID = currkey
+          }
+          this.postForm.actionType = 5
+          const opt = this.isEdit ? updateArticle(this.postForm) : createArticle(this.postForm)
+          opt.then(response => {
+            this.loading = false
+            this.$notify({ title: '成功', message: '发布文章成功', type: 'success', duration: 2000 })
+          }).catch(err => {
+            this.loading = false
+            console.log(err)
           })
-          this.postForm.status = 'published'
-          this.loading = false
         } else {
           console.log('error submit!!')
           return false
@@ -205,25 +184,18 @@ export default {
       })
     },
     draftForm() {
-      if (this.postForm.content.length === 0 || this.postForm.title.length === 0) {
-        this.$message({
-          message: '请填写必要的标题和内容',
-          type: 'warning'
-        })
+      if (this.postForm.articleContent.length === 0 || this.postForm.title.length === 0) {
+        this.$message({ message: '请填写必要的标题和内容', type: 'warning' })
         return
       }
-      this.$message({
-        message: '保存成功',
-        type: 'success',
-        showClose: true,
-        duration: 1000
-      })
-      this.postForm.status = 'draft'
-    },
-    getRemoteUserList(query) {
-      userSearch(query).then(response => {
-        if (!response.data.items) return
-        this.userListOptions = response.data.items.map(v => v.name)
+      const currkey = this.$refs.typeTree.getCurrentKey()
+      if (currkey) {
+        this.postForm.articleTypeID = currkey
+      }
+      this.postForm.actionType = this.isEdit ? 2 : 1
+      const opt = this.isEdit ? updateArticle(this.postForm) : createArticle(this.postForm)
+      opt.then(response => {
+        this.$notify({ title: '成功', message: '保存成功', type: 'success', duration: 2000 })
       })
     }
   }
