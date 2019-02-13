@@ -15,4 +15,8 @@
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\libs\QrF.Core.IdentityServer4.Dapper.SqlServer\QrF.Core.IdentityServer4.Dapper.SqlServer.csproj" />
+  </ItemGroup>
+
 </Project>

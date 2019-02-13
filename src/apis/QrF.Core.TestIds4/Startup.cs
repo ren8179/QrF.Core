@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using IdentityServer4.Models;
+﻿using IdentityServer4.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+using QrF.Core.IdentityServer4.Dapper;
+using QrF.Core.IdentityServer4.Dapper.SqlServer;
+using System.Collections.Generic;
 
 namespace QrF.Core.TestIds4
 {
@@ -28,8 +23,8 @@ namespace QrF.Core.TestIds4
         {
             services.AddIdentityServer()
                 .AddDeveloperSigningCredential()
-                .AddInMemoryApiResources(Config.GetApiResources())
-                .AddInMemoryClients(Config.GetClients());
+                .AddDapperStore(o => o.DbConnectionStrings = "Server=.;Database=GatewayDb;User ID=sa;Password=pass;")
+                .UseSqlServer();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

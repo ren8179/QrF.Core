@@ -5,11 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="8.0.0" />
     <PackageReference Include="IdentityServer4" Version="2.3.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Stores\" />
+    <ProjectReference Include="..\QrF.Core.Storage\QrF.Core.Storage.csproj" />
   </ItemGroup>
 
 </Project>
