@@ -28,7 +28,7 @@ namespace QrF.Core.GatewayExtension.Configuration
 
         public static ResultMsg SuccessMsg(object data)
         {
-            return new ResultMsg { Code = 200, Success = true, Result = data };
+            return new ResultMsg { Code = 200, Success = true, Msg = "成功", Result = data };
         }
         public static ResultMsg ErrorMsg(string msg = "", int code = 500)
         {

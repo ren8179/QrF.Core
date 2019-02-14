@@ -10,6 +10,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Autofac" Version="4.9.0" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.3.1" />
     <PackageReference Include="IdentityServer4" Version="2.3.2" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
@@ -17,6 +19,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\libs\QrF.Core.IdentityServer4.Dapper.SqlServer\QrF.Core.IdentityServer4.Dapper.SqlServer.csproj" />
+    <ProjectReference Include="..\..\libs\QrF.Core.Utils\QrF.Core.Utils.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Infrastructure\Modules\" />
   </ItemGroup>
 
 </Project>

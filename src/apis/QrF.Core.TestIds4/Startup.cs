@@ -1,11 +1,20 @@
-﻿using IdentityServer4.Models;
+﻿using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using IdentityServer4.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using QrF.Core.IdentityServer4.Dapper;
 using QrF.Core.IdentityServer4.Dapper.SqlServer;
+using QrF.Core.IdentityServer4.Validations;
+using QrF.Core.TestIds4.Infrastructure.Config;
+using QrF.Core.TestIds4.Infrastructure.Repositories;
+using QrF.Core.TestIds4.Services;
+using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace QrF.Core.TestIds4
 {
@@ -19,12 +28,21 @@ namespace QrF.Core.TestIds4
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton(Configuration);
+            services.Configure<ApiOptions>(Configuration);
             services.AddIdentityServer()
                 .AddDeveloperSigningCredential()
-                .AddDapperStore(o => o.DbConnectionStrings = "Server=.;Database=GatewayDb;User ID=sa;Password=pass;")
-                .UseSqlServer();
+                .AddDapperStore(o => o.DbConnectionStrings = Configuration["DbConnectionStrings"])
+                .UseSqlServer()
+                .AddResourceOwnerValidator<ResourceOwnerPasswordValidator>()
+                .AddProfileService<ProfileService>();
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            var container = new ContainerBuilder();
+            container.RegisterModule<AutofacModuleRegister>();
+            container.Populate(services);
+            return new AutofacServiceProvider(container.Build());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -37,50 +55,28 @@ namespace QrF.Core.TestIds4
 
             app.UseIdentityServer();
             app.UseStaticFiles();
-            app.UseMvcWithDefaultRoute();
+            app.UseCookiePolicy();
+
+            app.UseMvc();
         }
-    }
-    public class Config
-    {
-        // scopes define the API resources in your system
-        public static IEnumerable<ApiResource> GetApiResources()
+        /// <summary>
+        /// Autofac扩展注册
+        /// </summary>
+        public class AutofacModuleRegister : Autofac.Module
         {
-            return new List<ApiResource>
+            /// <summary>
+            /// 装载autofac方式注册
+            /// </summary>
+            /// <param name="builder"></param>
+            protected override void Load(ContainerBuilder builder)
             {
-                new ApiResource("gateway", "gateway API"),
-                new ApiResource("gateway_admin", "gateway admin API")
-            };
-        }
-
-        // clients want to access resources (aka scopes)
-        public static IEnumerable<Client> GetClients()
-        {
-            // client credentials client
-            return new List<Client>
-            {
-                new Client
-                {
-                    ClientId = "client1",
-                    AllowedGrantTypes = GrantTypes.ClientCredentials,
-
-                    ClientSecrets =
-                    {
-                        new Secret("gateway_secret1".Sha256())
-                    },
-                    AllowedScopes = { "gateway" }
-                },
-                new Client
-                {
-                    ClientId = "client2",
-                    AllowedGrantTypes = GrantTypes.ClientCredentials,
-
-                    ClientSecrets =
-                    {
-                        new Secret("gateway_secret2".Sha256())
-                    },
-                    AllowedScopes = { "gateway", "gateway_admin" }
-                }
-            };
+                builder.RegisterAssemblyTypes(typeof(UsersBusServices).GetTypeInfo().Assembly)
+                    .Where(t => !t.IsAbstract && !t.IsInterface && t.Name.EndsWith("BusServices"))
+                    .AsImplementedInterfaces().InstancePerLifetimeScope();
+                builder.RegisterAssemblyTypes(typeof(UsersRepository).GetTypeInfo().Assembly)
+                    .Where(t => !t.IsAbstract && !t.IsInterface && t.Name.EndsWith("Repository"))
+                    .AsImplementedInterfaces().InstancePerLifetimeScope();
+            }
         }
     }
 }

@@ -21,6 +21,7 @@ namespace QrF.Core.TestApi1.Controllers
         [HttpGet("{id}")]
         public ActionResult<string> Get(int id)
         {
+            throw new Exception("测试异常");
             return id + "-" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
         }
 

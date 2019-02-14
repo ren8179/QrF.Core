@@ -28,6 +28,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QrF.Core.GatewayExtension.D
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{9C861AB9-67BB-46EE-AC18-DD4ADA6C2850}"
 	ProjectSection(SolutionItems) = preProject
+		doc\授权数据库设计.sql = doc\授权数据库设计.sql
 		doc\添加测试数据.sql = doc\添加测试数据.sql
 		doc\网关数据库设计.sql = doc\网关数据库设计.sql
 	EndProjectSection
@@ -44,9 +45,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QrF.Core.Cqrs", "src\libs\Q
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QrF.Core.ComFr", "src\libs\QrF.Core.ComFr\QrF.Core.ComFr.csproj", "{D08AE111-E8F0-4731-B40B-C21447A931A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QrF.Core.IdentityServer4.Dapper.SqlServer", "src\libs\QrF.Core.IdentityServer4.Dapper.SqlServer\QrF.Core.IdentityServer4.Dapper.SqlServer.csproj", "{805D95A5-044E-4BEB-9899-2A2DF3F0EB5B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QrF.Core.IdentityServer4.Dapper.SqlServer", "src\libs\QrF.Core.IdentityServer4.Dapper.SqlServer\QrF.Core.IdentityServer4.Dapper.SqlServer.csproj", "{805D95A5-044E-4BEB-9899-2A2DF3F0EB5B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QrF.Core.Storage", "src\libs\QrF.Core.Storage\QrF.Core.Storage.csproj", "{819B6F37-150D-4F58-8C0B-1A381788A557}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QrF.Core.Storage", "src\libs\QrF.Core.Storage\QrF.Core.Storage.csproj", "{819B6F37-150D-4F58-8C0B-1A381788A557}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

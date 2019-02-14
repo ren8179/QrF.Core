@@ -18,6 +18,7 @@ using Ocelot.Security.Middleware;
 using Ocelot.WebSockets.Middleware;
 using QrF.Core.GatewayExtension.Authentication.Middleware;
 using QrF.Core.GatewayExtension.RateLimit.Middleware;
+using QrF.Core.GatewayExtension.Requester.Middleware;
 using QrF.Core.GatewayExtension.Responder.Middleware;
 using System;
 using System.Threading.Tasks;
@@ -135,7 +136,7 @@ namespace QrF.Core.GatewayExtension.Middleware.Pipeline
             builder.UseOutputCacheMiddleware();
 
             //We fire off the request and set the response on the scoped data repo
-            builder.UseHttpRequesterMiddleware();
+            builder.UseCusHttpRequesterMiddleware();
 
             return builder.Build();
         }
