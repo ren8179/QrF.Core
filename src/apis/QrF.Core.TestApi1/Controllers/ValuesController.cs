@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using QrF.Core.TestApi1.Filters;
 
 namespace QrF.Core.TestApi1.Controllers
 {
@@ -11,6 +12,7 @@ namespace QrF.Core.TestApi1.Controllers
     public class ValuesController : ControllerBase
     {
         // GET api/values
+        [CusAuth("http://localhost:6000", "gateway")]
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {

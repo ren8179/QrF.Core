@@ -1,7 +1,13 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using IdentityServer4.ResponseHandling;
+using IdentityServer4.Services;
+using IdentityServer4.Validation;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using QrF.Core.IdentityServer4.Dapper.Caches;
 using QrF.Core.IdentityServer4.Dapper.HostedServices;
 using QrF.Core.IdentityServer4.Dapper.Options;
+using QrF.Core.IdentityServer4.Dapper.ResponseHandling;
+using QrF.Core.IdentityServer4.Dapper.Validation;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -25,9 +31,9 @@ namespace QrF.Core.IdentityServer4.Dapper
             storeOptionsAction?.Invoke(options);
             builder.Services.AddSingleton<TokenCleanup>();
             builder.Services.AddSingleton<IHostedService, TokenCleanupHost>();
-            //builder.Services.AddSingleton<ITokenResponseGenerator, CzarTokenResponseGenerator>();
-            //builder.Services.AddTransient(typeof(ICache<>), typeof(CzarRedisCache<>));
-            //builder.Services.AddTransient<IIntrospectionRequestValidator, CzarIntrospectionRequestValidator>();
+            builder.Services.AddSingleton<ITokenResponseGenerator, CusTokenResponseGenerator>();
+            builder.Services.AddTransient(typeof(ICache<>), typeof(RedisCache<>));
+            builder.Services.AddTransient<IIntrospectionRequestValidator, IntrospectionRequestValidator>();
             return builder;
         }
     }

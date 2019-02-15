@@ -22,8 +22,4 @@
     <ProjectReference Include="..\..\libs\QrF.Core.Utils\QrF.Core.Utils.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Infrastructure\Modules\" />
-  </ItemGroup>
-
 </Project>

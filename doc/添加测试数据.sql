@@ -67,4 +67,6 @@ insert into ReRoute values(1,'/.well-known/openid-configuration/jwks','[ "GET" ]
 --6、加入全局配置
 INSERT INTO ConfigReRoutes VALUES(1,5);
 
-
+-- 添加测试用户 admin/admin
+INSERT [dbo].[Users] ([Uid], [uAccount], [uPassword], [uNickName], [uMobile], [uEmail], [uRealName], [uStatus]) VALUES (1, N'admin', N'21232F297A57A5A743894A0E4A801FC3', N'管理员', NULL, NULL, N'管理员', 1)
+GO

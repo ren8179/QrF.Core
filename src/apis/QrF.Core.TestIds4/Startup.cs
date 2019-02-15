@@ -1,6 +1,5 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using IdentityServer4.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -32,9 +31,15 @@ namespace QrF.Core.TestIds4
         {
             services.AddSingleton(Configuration);
             services.Configure<ApiOptions>(Configuration);
-            services.AddIdentityServer()
+            services.AddIdentityServer(option => {
+                        option.PublicOrigin = Configuration["PublicOrigin"];
+                    })
                 .AddDeveloperSigningCredential()
-                .AddDapperStore(o => o.DbConnectionStrings = Configuration["DbConnectionStrings"])
+                .AddDapperStore(o => {
+                    o.DbConnectionStrings = Configuration["DbConnectionStrings"];
+                     o.EnableForceExpire = true;
+                    o.RedisConnectionStrings = new List<string>() { Configuration["RedisConnectionStrings"] };
+                })
                 .UseSqlServer()
                 .AddResourceOwnerValidator<ResourceOwnerPasswordValidator>()
                 .AddProfileService<ProfileService>();

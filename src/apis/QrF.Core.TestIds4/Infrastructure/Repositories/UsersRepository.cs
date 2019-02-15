@@ -26,7 +26,7 @@ namespace QrF.Core.TestIds4.Infrastructure.Repositories
         {
             using (var connection = new SqlConnection(DbConn))
             {
-                string sql = @"SELECT * from Users where uAccount=@uaccount and uPassword=upassword and uStatus=1";
+                string sql = @"SELECT * from Users where uAccount=@uaccount and uPassword=@upassword and uStatus=1";
                 var result = connection.QueryFirstOrDefault<Users>(sql, new { uaccount, upassword=upassword.ToMd5() });
                 return result;
             }
