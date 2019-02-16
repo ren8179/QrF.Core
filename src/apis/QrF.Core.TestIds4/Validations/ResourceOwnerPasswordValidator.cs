@@ -29,7 +29,7 @@ namespace QrF.Core.IdentityServer4.Validations
             if (user != null)
             {
                 context.Result = new GrantValidationResult(
-                    user.Uid.ToString(),
+                    user.KeyId.ToString(),
                     OidcConstants.AuthenticationMethods.Password,
                     DateTime.UtcNow,
                     user.Claims);

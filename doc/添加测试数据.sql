@@ -68,5 +68,5 @@ insert into ReRoute values(1,'/.well-known/openid-configuration/jwks','[ "GET" ]
 INSERT INTO ConfigReRoutes VALUES(1,5);
 
 -- 添加测试用户 admin/admin
-INSERT [dbo].[Users] ([Uid], [uAccount], [uPassword], [uNickName], [uMobile], [uEmail], [uRealName], [uStatus]) VALUES (1, N'admin', N'21232F297A57A5A743894A0E4A801FC3', N'管理员', NULL, NULL, N'管理员', 1)
+INSERT [dbo].[Sys_User] ([KeyId], [DeptId], [Account], [Password], [NickName], [Mobile], [Email], [RealName], [Sex], [Status], [HeadPic], [UpLoginDate], [Remark], [CreateId], [CreateTime]) VALUES (N'bc3831d7-db35-4898-8f3d-3744ed95569b', N'd64e7820-eb33-428a-9cf9-df08b63b186e', N'admin', N'21232F297A57A5A743894A0E4A801FC3', N'管理员', NULL, NULL, N'管理员', NULL, 1, NULL, NULL, NULL, NULL, getdate())
 GO

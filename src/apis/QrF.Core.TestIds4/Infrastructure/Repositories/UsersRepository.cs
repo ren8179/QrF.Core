@@ -22,12 +22,12 @@ namespace QrF.Core.TestIds4.Infrastructure.Repositories
         /// <param name="uaccount">账号</param>
         /// <param name="upassword">密码</param>
         /// <returns></returns>
-        public Users FindUserByuAccount(string uaccount, string upassword)
+        public SysUser FindUserByuAccount(string uaccount, string upassword)
         {
             using (var connection = new SqlConnection(DbConn))
             {
-                string sql = @"SELECT * from Users where uAccount=@uaccount and uPassword=@upassword and uStatus=1";
-                var result = connection.QueryFirstOrDefault<Users>(sql, new { uaccount, upassword=upassword.ToMd5() });
+                string sql = @"SELECT * from Sys_User where Account=@uaccount and Password=@upassword and Status=1";
+                var result = connection.QueryFirstOrDefault<SysUser>(sql, new { uaccount, upassword=upassword.ToMd5() });
                 return result;
             }
         }
@@ -37,12 +37,12 @@ namespace QrF.Core.TestIds4.Infrastructure.Repositories
         /// </summary>
         /// <param name="sub">用户标识</param>
         /// <returns></returns>
-        public Users FindUserByUid(string sub)
+        public SysUser FindUserByUid(string sub)
         {
             using (var connection = new SqlConnection(DbConn))
             {
-                string sql = @"SELECT * from Users where uid=@uid";
-                var result = connection.QueryFirstOrDefault<Users>(sql, new { uid = sub });
+                string sql = @"SELECT * from Sys_User where KeyId=@uid";
+                var result = connection.QueryFirstOrDefault<SysUser>(sql, new { uid = sub });
                 return result;
             }
         }

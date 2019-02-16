@@ -172,14 +172,35 @@ GO
 
 
 -- 创建用户表
-CREATE TABLE Users
+
+CREATE TABLE [dbo].[Sys_User](
+	[KeyId] [uniqueidentifier] NOT NULL,
+	[DeptId] [uniqueidentifier] NOT NULL,
+	[Account] [varchar](11) NULL,
+	[Password] [varchar](200) NULL,
+	[NickName] [varchar](50) NULL,
+	[Mobile] [varchar](11) NULL,
+	[Email] [varchar](100) NULL,
+	[RealName] [varchar](20) NULL,
+	[Sex] [varchar](10) NULL,
+	[Status] [int] NOT NULL,
+	[HeadPic] [nvarchar](256) NULL,
+	[UpLoginDate] [datetime] NULL,
+	[Remark] [nvarchar](256) NULL,
+	[CreateId] [uniqueidentifier] NULL,
+	[CreateTime] [datetime] NOT NULL,
+ CONSTRAINT [PK_Sys_User] PRIMARY KEY CLUSTERED 
 (
-    Uid INT IDENTITY(1,1),            --用户主键    
-    uAccount varchar(11),             --用户账号
-    uPassword varchar(200),           --用户密码
-    uNickName varchar(50),            --用户昵称
-    uMobile varchar(11),              --用户手机号
-    uEmail varchar(100),              --用户邮箱
-	uRealName varchar(20),			  --姓名
-    uStatus int not null default(1)   -- 用户状态 1 正常 0 不可用
-)
+	[KeyId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[Sys_User] ADD  CONSTRAINT [DF_Sys_User_KeyId]  DEFAULT (newid()) FOR [KeyId]
+GO
+
+ALTER TABLE [dbo].[Sys_User] ADD  CONSTRAINT [DF__Users__uStatus__14270015]  DEFAULT ((1)) FOR [Status]
+GO
+
+ALTER TABLE [dbo].[Sys_User] ADD  CONSTRAINT [DF_Sys_User_CreateTime]  DEFAULT (getdate()) FOR [CreateTime]
+GO

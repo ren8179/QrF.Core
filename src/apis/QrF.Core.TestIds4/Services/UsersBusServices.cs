@@ -18,7 +18,7 @@ namespace QrF.Core.TestIds4.Services
         /// <param name="uaccount">账号</param>
         /// <param name="upassword">密码</param>
         /// <returns></returns>
-        public Users FindUserByuAccount(string uaccount, string upassword)
+        public SysUser FindUserByuAccount(string uaccount, string upassword)
         {
             return _repository.FindUserByuAccount(uaccount, upassword);
         }
@@ -28,7 +28,7 @@ namespace QrF.Core.TestIds4.Services
         /// </summary>
         /// <param name="sub">用户标识</param>
         /// <returns></returns>
-        public Users FindUserByUid(string sub)
+        public SysUser FindUserByUid(string sub)
         {
             return _repository.FindUserByUid(sub);
         }

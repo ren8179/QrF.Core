@@ -10,13 +10,13 @@ namespace QrF.Core.TestIds4.Services.Interfaces
         /// <param name="uaccount">账号</param>
         /// <param name="upassword">密码</param>
         /// <returns></returns>
-        Users FindUserByuAccount(string uaccount, string upassword);
+        SysUser FindUserByuAccount(string uaccount, string upassword);
 
         /// <summary>
         /// 根据用户主键获取用户实体
         /// </summary>
         /// <param name="sub">用户标识</param>
         /// <returns></returns>
-        Users FindUserByUid(string sub);
+        SysUser FindUserByUid(string sub);
     }
 }
