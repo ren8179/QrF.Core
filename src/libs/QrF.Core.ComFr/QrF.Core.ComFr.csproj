@@ -2,6 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>ren8179</Authors>
+    <Company>ren8179</Company>
+    <PackageLicenseUrl></PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/ren8179/QrF.Core/tree/master/src/libs/QrF.Core.ComFr</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/ren8179/QrF.Core/tree/master/src/libs/QrF.Core.ComFr</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,11 +22,8 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.2.0" />
+    <PackageReference Include="QrF.Core.Utils" Version="1.0.0" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="4.5.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\QrF.Core.Utils\QrF.Core.Utils.csproj" />
   </ItemGroup>
 
 </Project>
