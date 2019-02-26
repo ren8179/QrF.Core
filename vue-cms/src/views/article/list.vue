@@ -95,6 +95,7 @@ export default {
     },
     handleFilter() {
       this.listQuery.draw = 1
+      this.listQuery.start = 0
       this.getList()
     },
     handleSizeChange(val) {
@@ -103,6 +104,7 @@ export default {
     },
     handleCurrentChange(val) {
       this.listQuery.draw = val
+      this.listQuery.start = (val - 1) * this.listQuery.length
       this.getList()
     },
     handleBtnClick(domid, row) {
