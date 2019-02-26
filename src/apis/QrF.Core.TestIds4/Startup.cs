@@ -37,7 +37,7 @@ namespace QrF.Core.TestIds4
                 .AddDeveloperSigningCredential()
                 .AddDapperStore(o => {
                     o.DbConnectionStrings = Configuration["DbConnectionStrings"];
-                     o.EnableForceExpire = true;
+                    o.EnableForceExpire = true;
                     o.RedisConnectionStrings = new List<string>() { Configuration["RedisConnectionStrings"] };
                 })
                 .UseSqlServer()

@@ -1,15 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace QrF.Core.TestApi1.Controllers
+namespace QrF.Core.TestIds4.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/values")]
     [ApiController]
     public class ValuesController : ControllerBase
     {
         // GET api/values
-        //[CusAuth("http://localhost:6000", "gateway")]
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
