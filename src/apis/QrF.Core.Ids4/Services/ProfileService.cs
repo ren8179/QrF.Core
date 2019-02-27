@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace QrF.Core.TestIds4.Services
+namespace QrF.Core.Ids4.Services
 {
     public class ProfileService : IProfileService
     {

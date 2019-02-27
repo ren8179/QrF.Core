@@ -1,8 +1,8 @@
 ﻿using QrF.Core.Storage.Entities;
-using QrF.Core.TestIds4.Infrastructure.Interfaces;
-using QrF.Core.TestIds4.Services.Interfaces;
+using QrF.Core.Ids4.Infrastructure.Interfaces;
+using QrF.Core.Ids4.Services.Interfaces;
 
-namespace QrF.Core.TestIds4.Services
+namespace QrF.Core.Ids4.Services
 {
     public class UsersBusServices : IUsersBusServices
     {

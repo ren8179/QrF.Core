@@ -8,7 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace QrF.Core.TestIds4
+namespace QrF.Core.Ids4
 {
     public class Program
     {

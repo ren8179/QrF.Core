@@ -8,14 +8,14 @@ using Microsoft.Extensions.DependencyInjection;
 using QrF.Core.IdentityServer4.Dapper;
 using QrF.Core.IdentityServer4.Dapper.SqlServer;
 using QrF.Core.IdentityServer4.Validations;
-using QrF.Core.TestIds4.Infrastructure.Config;
-using QrF.Core.TestIds4.Infrastructure.Repositories;
-using QrF.Core.TestIds4.Services;
+using QrF.Core.Ids4.Infrastructure.Config;
+using QrF.Core.Ids4.Infrastructure.Repositories;
+using QrF.Core.Ids4.Services;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace QrF.Core.TestIds4
+namespace QrF.Core.Ids4
 {
     public class Startup
     {

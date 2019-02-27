@@ -1,12 +1,12 @@
 ﻿using Dapper;
 using Microsoft.Extensions.Options;
 using QrF.Core.Storage.Entities;
-using QrF.Core.TestIds4.Infrastructure.Config;
-using QrF.Core.TestIds4.Infrastructure.Interfaces;
+using QrF.Core.Ids4.Infrastructure.Config;
+using QrF.Core.Ids4.Infrastructure.Interfaces;
 using QrF.Core.Utils.Extension;
 using System.Data.SqlClient;
 
-namespace QrF.Core.TestIds4.Infrastructure.Repositories
+namespace QrF.Core.Ids4.Infrastructure.Repositories
 {
     public class UsersRepository: IUsersRepository
     {

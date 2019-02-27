@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace QrF.Core.TestIds4.Infrastructure.Config
+namespace QrF.Core.Ids4.Infrastructure.Config
 {
     public class ApiOptions
     {

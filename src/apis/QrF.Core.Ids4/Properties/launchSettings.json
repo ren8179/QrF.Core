@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "QrF.Core.TestIds4": {
+    "QrF.Core.Ids4": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "api/values",

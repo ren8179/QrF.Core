@@ -1,6 +1,6 @@
 ﻿using QrF.Core.Storage.Entities;
 
-namespace QrF.Core.TestIds4.Services.Interfaces
+namespace QrF.Core.Ids4.Services.Interfaces
 {
     public interface IUsersBusServices
     {

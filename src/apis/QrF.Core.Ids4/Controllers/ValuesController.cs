@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace QrF.Core.TestIds4.Controllers
+namespace QrF.Core.Ids4.Controllers
 {
     [Route("api/values")]
     [ApiController]
@@ -21,7 +21,6 @@ namespace QrF.Core.TestIds4.Controllers
         [HttpGet("{id}")]
         public ActionResult<string> Get(int id)
         {
-            throw new Exception("测试异常");
             return id + "-" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
         }
 

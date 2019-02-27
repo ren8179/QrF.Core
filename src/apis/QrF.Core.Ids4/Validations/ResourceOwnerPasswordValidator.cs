@@ -1,6 +1,6 @@
 ﻿using IdentityModel;
 using IdentityServer4.Validation;
-using QrF.Core.TestIds4.Services.Interfaces;
+using QrF.Core.Ids4.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;

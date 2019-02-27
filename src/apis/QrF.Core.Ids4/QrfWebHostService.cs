@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.ServiceProcess;
 
-namespace QrF.Core.TestIds4
+namespace QrF.Core.Ids4
 {
     internal class QrfWebHostService : WebHostService
     {
