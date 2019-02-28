@@ -126,6 +126,22 @@ export const constantRouterMap = [{
     meta: { title: '编辑文章', noCache: true },
     hidden: true
   }]
+},
+{
+  path: '/adv',
+  component: Layout,
+  redirect: '/adv/list',
+  name: 'Package',
+  meta: {
+    title: '功能组件',
+    icon: 'documentation'
+  },
+  children: [{
+    path: 'list',
+    component: () => import('@/views/adv/list'),
+    name: 'Advs',
+    meta: { title: '广告管理', icon: 'component' }
+  }]
 }
 ]
 

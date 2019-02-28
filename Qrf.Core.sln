@@ -28,6 +28,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QrF.Core.GatewayExtension.D
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{9C861AB9-67BB-46EE-AC18-DD4ADA6C2850}"
 	ProjectSection(SolutionItems) = preProject
+		doc\CMS.sql = doc\CMS.sql
 		doc\授权数据库设计.sql = doc\授权数据库设计.sql
 		doc\添加测试数据.sql = doc\添加测试数据.sql
 		doc\网关数据库设计.sql = doc\网关数据库设计.sql

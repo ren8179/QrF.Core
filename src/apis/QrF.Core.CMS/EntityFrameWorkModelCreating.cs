@@ -17,6 +17,8 @@ namespace QrF.Core.CMS
             modelBuilder.Entity<MediaEntity>();
             modelBuilder.Entity<ArticleEntity>();
             modelBuilder.Entity<ArticleType>();
+            modelBuilder.Entity<AdvClassEntity>();
+            modelBuilder.Entity<AdvListEntity>();
         }
     }
 }
