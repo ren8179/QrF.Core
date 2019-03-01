@@ -262,3 +262,4 @@ __pycache__/
 /src/apis/QrF.Core.CMS/wwwroot/UpLoad/Images/201902
 /src/apis/QrF.Core.CMS/Properties/PublishProfiles
 *.pubxml
+/src/apis/QrF.Core.CMS/wwwroot/UpLoad/Images/201903

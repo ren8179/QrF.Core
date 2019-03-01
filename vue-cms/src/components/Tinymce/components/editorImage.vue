@@ -57,7 +57,6 @@ export default {
       this.dialogVisible = false
     },
     handleSuccess(response, file) {
-      debugger
       const uid = file.uid
       const objKeyArr = Object.keys(this.listObj)
       for (let i = 0, len = objKeyArr.length; i < len; i++) {

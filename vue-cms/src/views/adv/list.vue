@@ -2,17 +2,13 @@
   <div class="components-container">
     <split-pane :default-percent="15" split="vertical">
       <template slot="paneL">
-        <div class="left-container">
-          <div class="tree-nav-title">广告栏位</div>
-          <el-menu default-active="2" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose">
-            <el-menu-item v-for="item in types" :key="item.iD" index="2"><i class="el-icon-menu" /><span slot="title">导航二</span></el-menu-item>
-          </el-menu>
-        </div>
+        <el-menu default-active="1" class="el-menu-vertical-demo" @select="HandleMenuSelect">
+          <el-menu-item v-for="item in types" :key="item.id" :index="item.flag"><i class="el-icon-menu" /><span slot="title">{{ item.title }}</span></el-menu-item>
+        </el-menu>
       </template>
       <template slot="paneR">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
-            <!-- <el-button v-waves type="primary" class="filter-item" icon="el-icon-search" size="small" style="float:right;" @click="handleFilter">查询</el-button> -->
             <el-button v-for="item in btns.filter(item => item.Type==='button')" :type="item.Class" :id="item.DomId" :icon="'el-icon-' + item.Icon" :key="item.DomId" size="small" @click="handleBtnClick(item.DomId)">{{ item.Name }}</el-button>
           </div>
           <el-table v-loading="listLoading" :data="list" size="mini" border fit height="520" highlight-current-row style="width: 100%;min-height:500px;">
@@ -29,13 +25,55 @@
         </el-card>
       </template>
     </split-pane>
+    <!-- 编辑页 -->
+    <el-dialog :visible.sync="dialogFormVisible" :title="editTitle">
+      <el-form ref="formModel" :model="temp" :rules="rules" label-position="right" label-width="120px" style="width: 100%; margin: 0;">
+        <el-row>
+          <el-col :span="12"><el-form-item label="标题:" prop="title"><el-input v-model="temp.title" /></el-form-item></el-col>
+          <el-col :span="12">
+            <el-form-item label="类型:" prop="classId">
+              <el-select v-model="temp.classId" placeholder="请选择">
+                <el-option v-for="item in types" :key="item.id" :label="item.title" :value="item.id" />
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="链接方式:" prop="target">
+              <el-select v-model="temp.target" placeholder="请选择">
+                <el-option v-for="item in targets" :key="item.value" :label="item.label" :value="item.value" />
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12"><el-form-item label="权重:" prop="sort"><el-input v-model="temp.sort" /></el-form-item></el-col>
+          <el-col :span="12"><el-form-item label="点击量:" prop="hits"><el-input v-model="temp.hits" /></el-form-item></el-col>
+          <el-col :span="12">
+            <el-form-item label="时间限制:" prop="isTimeLimit">
+              <el-switch v-model="temp.isTimeLimit" active-text="启用" inactive-text="停用" />
+            </el-form-item>
+          </el-col>
+          <el-col v-show="temp.isTimeLimit" :span="12"><el-form-item label="上线日期:" prop="beginTime"><el-date-picker v-model="temp.beginTime" type="datetime" placeholder="选择日期时间" /></el-form-item></el-col>
+          <el-col v-show="temp.isTimeLimit" :span="12"><el-form-item label="下线日期:" prop="endTime"><el-date-picker v-model="temp.endTime" type="datetime" placeholder="选择日期时间" /></el-form-item></el-col>
+        </el-row>
+        <el-form-item label="图片地址:" prop="imgUrl">
+          <el-upload :action="uploadurl" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload" class="avatar-uploader">
+            <img v-if="temp.imgUrl" :src="temp.imgUrl" class="avatar">
+            <i v-else class="el-icon-plus avatar-uploader-icon" />
+          </el-upload>
+        </el-form-item>
+        <el-form-item label="链接地址:" prop="linkUrl"><el-input v-model="temp.linkUrl" /></el-form-item>
+        <el-form-item label="文字描述:" prop="description"><el-input v-model="temp.description" type="textarea" /></el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取消</el-button>
+        <el-button type="primary" @click="updateData">保存</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import splitPane from 'vue-splitpane'
-import { getClassList } from '@/api/adv'
-import { fetchList, del } from '@/api/article'
+import { fetchList, getClassList, del, create, update } from '@/api/adv'
 import waves from '@/directive/waves'
 
 export default {
@@ -48,16 +86,19 @@ export default {
       list: null,
       classId: null,
       types: [],
+      targets: [{ value: '_blank', label: '新窗口' }, { value: '_self', label: '原窗口' }],
       listQuery: {
         draw: 1,
         start: 0,
         length: 10,
         columns: [
           { data: 'title', name: '标题', searchable: true, orderable: true },
-          { data: 'articleTypeID', name: '文章类别', searchable: true, orderable: true, search: { regex: false, opeartor: 'Equal' }},
-          { data: 'isPublish', name: '已发布', searchable: true, orderable: true },
-          { data: 'createbyName', name: '创建人', searchable: true, orderable: true },
-          { data: 'createDate', name: '创建日期', searchable: true, orderable: true }
+          { data: 'classId', name: '类型', searchable: true, orderable: true, search: { regex: false, opeartor: 'Equal' }},
+          { data: 'imgUrl', name: '图片地址', searchable: true, orderable: true },
+          { data: 'linkUrl', name: '链接地址', searchable: true, orderable: true },
+          { data: 'status', name: '状态', searchable: true, orderable: true },
+          { data: 'sort', name: '权重', searchable: true, orderable: true },
+          { data: 'lastUpdateDate', name: '更新日期', searchable: true, orderable: true }
         ]
       },
       listLoading: true,
@@ -65,7 +106,15 @@ export default {
         { DomId: 'btnAdd', Name: '新增', Type: 'button', Class: 'primary', Icon: 'plus' },
         { DomId: 'btnEdit', Name: '编辑', Type: 'inline', Class: 'success', Icon: 'edit' },
         { DomId: 'btnDel', Name: '删除', Type: 'inline', Class: 'danger', Icon: 'delete' }
-      ]
+      ],
+      dialogFormVisible: false,
+      editTitle: '',
+      temp: {},
+      rules: {
+        title: [{ required: true, message: '请输入名称', trigger: 'blur' }],
+        classId: [{ required: true, message: '请选择类型', trigger: 'change' }]
+      },
+      uploadurl: process.env.BASE_API + '/CMSAPI/Media/Upload'
     }
   },
   created() {
@@ -82,11 +131,11 @@ export default {
         let list = response.data.data
         if (list && list.length > 0) {
           list = list.map(item => {
-            const type = this.types.filter(o => { return o.id === item.articleTypeID })
+            const type = this.types.filter(o => { return o.id === item.classId })
             if (type && type.length > 0) {
-              item.articleTypeID = type[0].title
+              item.classId = type[0].title
             }
-            item.isPublish = item.isPublish ? '是' : '否'
+            item.status = item.status ? '启用' : '停用'
             return item
           })
           this.list = list
@@ -113,15 +162,28 @@ export default {
     handleBtnClick(domid, row) {
       switch (domid) {
         case 'btnAdd':
-          this.$router.push('/article/create')
+          this.editTitle = '新增'
+          this.temp = { classId: this.classId }
+          this.dialogFormVisible = true
+          this.$nextTick(() => {
+            this.$refs['formModel'].clearValidate()
+          })
           break
         case 'btnEdit':
-          this.$router.push('/article/edit/' + row.id)
+          this.editTitle = '编辑'
+          this.handleUpdate(row)
           break
         case 'btnDel':
           this.handleDelete(row)
           break
       }
+    },
+    handleUpdate(row) {
+      this.temp = Object.assign({}, row)
+      this.dialogFormVisible = true
+      this.$nextTick(() => {
+        this.$refs['formModel'].clearValidate()
+      })
     },
     handleDelete(row) {
       this.$confirm('确定要删除当前数据?', '提示', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }).then(() => {
@@ -135,7 +197,66 @@ export default {
           this.listLoading = false
         })
       })
+    },
+    updateData() {
+      this.$refs['formModel'].validate((valid) => {
+        if (valid) {
+          const tempData = Object.assign({}, this.temp)
+          tempData.id = tempData.id || '00000000-0000-0000-0000-000000000000'
+          const opt = tempData.id !== '00000000-0000-0000-0000-000000000000' ? update(this.postForm) : create(this.postForm)
+          opt.then(response => {
+            this.dialogFormVisible = false
+            if (response && response.data.success) {
+              this.handleFilter()
+              this.$notify({ title: '成功', message: '更新成功', type: 'success', duration: 2000 })
+            } else {
+              this.$message({ type: 'error', message: response.data.msg || '更新失败' })
+            }
+          }).catch(() => { this.dialogFormVisible = false })
+        }
+      })
+    },
+    HandleMenuSelect(index, indexPath) {
+      this.classId = index
+      this.handleFilter()
+    },
+    handleAvatarSuccess(res, file) {
+      this.temp.imgUrl = process.env.BASE_API + res.url
+    },
+    beforeAvatarUpload(file) {
+      const isLt2M = file.size / 1024 / 1024 < 2
+      if (!isLt2M) {
+        this.$message.error('上传图片大小不能超过 2MB!')
+      }
+      return isLt2M
     }
   }
 }
 </script>
+
+<style>
+  .avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+  }
+  .avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
+  }
+</style>
