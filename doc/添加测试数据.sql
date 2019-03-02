@@ -48,11 +48,13 @@ INSERT INTO ClientGrantTypes VALUES('client_credentials', 2);
 --4、增加客户端能够访问scope
 INSERT INTO ClientScopes VALUES('gateway', 1);
 INSERT INTO ClientScopes VALUES('gateway', 2);
+INSERT INTO ClientScopes VALUES('gateway_admin', 1);
 
 INSERT INTO ApiResources VALUES(1,'gateway','gateway',NULL,getdate(),NULL,NULL,0);
+INSERT INTO ApiResources VALUES(1,'gateway_admin','gateway_admin',NULL,getdate(),NULL,NULL,0);
 
 INSERT INTO ApiScopes VALUES('gateway','gateway',NULL,0,0,1,1);
-
+INSERT INTO ApiScopes VALUES('gateway_admin','gateway_admin',NULL,0,0,1,1);
 
 -- 1、插入认证路由(使用默认分类)
 insert into ReRoute values(1,'/connect/token','[ "POST" ]','','http','/connect/token','[{"Host": "localhost","Port": 6666 }]','','','','','','','',0,1);
