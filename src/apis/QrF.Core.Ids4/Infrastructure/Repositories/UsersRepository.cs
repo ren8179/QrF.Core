@@ -26,8 +26,13 @@ namespace QrF.Core.Ids4.Infrastructure.Repositories
         {
             using (var connection = new SqlConnection(DbConn))
             {
-                string sql = @"SELECT * from Sys_User where Account=@uaccount and Password=@upassword and Status=1";
-                var result = connection.QueryFirstOrDefault<SysUser>(sql, new { uaccount, upassword=upassword.ToMd5() });
+                string sql = @"SELECT * from Sys_User where Account=@uaccount and Status=1";
+                var result = connection.QueryFirstOrDefault<SysUser>(sql, new { uaccount });
+                if (result != null)
+                {
+                    var pwd = $"{upassword}{result.Salt}".ToMd5();
+                    if (result.Password != pwd) return null;
+                }
                 return result;
             }
         }

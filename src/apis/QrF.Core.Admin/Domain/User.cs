@@ -1,15 +1,17 @@
-﻿using System;
+﻿using SqlSugar;
+using System;
 using System.Collections.Generic;
 using System.Security.Claims;
-using System.Text;
 
-namespace QrF.Core.Storage.Entities
+namespace QrF.Core.Admin.Domain
 {
-    public class SysUser
+    [SugarTable("Sys_User")]
+    public class User
     {
         /// <summary>
-        /// 
+        /// 资源唯一标示符
         /// </summary>
+        [SugarColumn(IsPrimaryKey = true, IsIdentity = true)]
         public Guid KeyId { get; set; }
         /// <summary>
         /// 归属部门
@@ -75,7 +77,7 @@ namespace QrF.Core.Storage.Entities
         /// 
         /// </summary>
         public DateTime CreateTime { get; set; }
-
+        [SugarColumn(IsIgnore = true)]
         public List<Claim> Claims
         {
             get

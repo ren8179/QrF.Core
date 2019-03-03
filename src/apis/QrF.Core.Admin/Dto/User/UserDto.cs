@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Security.Claims;
-using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace QrF.Core.Storage.Entities
+namespace QrF.Core.Admin.Dto
 {
-    public class SysUser
+    public class UserDto
     {
         /// <summary>
-        /// 
+        ///  
         /// </summary>
-        public Guid KeyId { get; set; }
+        public Guid? KeyId { set; get; }
         /// <summary>
         /// 归属部门
         /// </summary>
@@ -52,9 +52,9 @@ namespace QrF.Core.Storage.Entities
         /// </summary>
         public bool Status { get; set; }
         /// <summary>
-        /// 盐值
+        /// 备注
         /// </summary>
-        public string Salt { set; get; }
+        public string Remark { get; set; }
         /// <summary>
         /// 上次登录时间
         /// </summary>
@@ -64,28 +64,8 @@ namespace QrF.Core.Storage.Entities
         /// </summary>
         public DateTime? UpdateTime { set; get; }
         /// <summary>
-        /// 备注
-        /// </summary>
-        public string Remark { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public Guid? CreateId { get; set; }
-        /// <summary>
         /// 
         /// </summary>
         public DateTime CreateTime { get; set; }
-
-        public List<Claim> Claims
-        {
-            get
-            {
-                return new List<Claim>() {
-                    new Claim("nickname",NickName??""),
-                    new Claim("email",Email??""),
-                    new Claim("mobile",Mobile??"")
-                };
-            }
-        }
     }
 }

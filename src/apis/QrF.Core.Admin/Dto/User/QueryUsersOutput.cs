@@ -1,16 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Security.Claims;
-using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace QrF.Core.Storage.Entities
+namespace QrF.Core.Admin.Dto
 {
-    public class SysUser
+    public class QueryUsersOutput : BasePageOutput
+    {
+        public List<QueryUserDTO> Data { set; get; }
+    }
+    public class QueryUserDTO
     {
         /// <summary>
-        /// 
+        ///  
         /// </summary>
-        public Guid KeyId { get; set; }
+        public Guid KeyId { set; get; }
         /// <summary>
         /// 归属部门
         /// </summary>
@@ -19,10 +23,6 @@ namespace QrF.Core.Storage.Entities
         /// 登录账号
         /// </summary>
         public string Account { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string Password { get; set; }
         /// <summary>
         /// 昵称
         /// </summary>
@@ -52,10 +52,6 @@ namespace QrF.Core.Storage.Entities
         /// </summary>
         public bool Status { get; set; }
         /// <summary>
-        /// 盐值
-        /// </summary>
-        public string Salt { set; get; }
-        /// <summary>
         /// 上次登录时间
         /// </summary>
         public DateTime? UpLoginDate { get; set; }
@@ -64,28 +60,8 @@ namespace QrF.Core.Storage.Entities
         /// </summary>
         public DateTime? UpdateTime { set; get; }
         /// <summary>
-        /// 备注
-        /// </summary>
-        public string Remark { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public Guid? CreateId { get; set; }
-        /// <summary>
         /// 
         /// </summary>
         public DateTime CreateTime { get; set; }
-
-        public List<Claim> Claims
-        {
-            get
-            {
-                return new List<Claim>() {
-                    new Claim("nickname",NickName??""),
-                    new Claim("email",Email??""),
-                    new Claim("mobile",Mobile??"")
-                };
-            }
-        }
     }
 }

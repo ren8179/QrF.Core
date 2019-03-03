@@ -50,6 +50,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QrF.Core.Storage", "src\lib
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QrF.Core.Ids4", "src\apis\QrF.Core.Ids4\QrF.Core.Ids4.csproj", "{576A1190-F1D2-4326-8318-56FA4156B129}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QrF.Core.Admin", "src\apis\QrF.Core.Admin\QrF.Core.Admin.csproj", "{B6A0B15F-ED8C-4AF9-95F8-D89280275018}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -108,6 +110,10 @@ Global
 		{576A1190-F1D2-4326-8318-56FA4156B129}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{576A1190-F1D2-4326-8318-56FA4156B129}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{576A1190-F1D2-4326-8318-56FA4156B129}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6A0B15F-ED8C-4AF9-95F8-D89280275018}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6A0B15F-ED8C-4AF9-95F8-D89280275018}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6A0B15F-ED8C-4AF9-95F8-D89280275018}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6A0B15F-ED8C-4AF9-95F8-D89280275018}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -126,6 +132,7 @@ Global
 		{805D95A5-044E-4BEB-9899-2A2DF3F0EB5B} = {17B2BEF1-656F-4CDA-A7EB-B45771317F54}
 		{819B6F37-150D-4F58-8C0B-1A381788A557} = {17B2BEF1-656F-4CDA-A7EB-B45771317F54}
 		{576A1190-F1D2-4326-8318-56FA4156B129} = {831DD5F3-B4E2-46ED-90C1-81A5D7498590}
+		{B6A0B15F-ED8C-4AF9-95F8-D89280275018} = {831DD5F3-B4E2-46ED-90C1-81A5D7498590}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2F715BCF-ABB9-4970-BD0E-2A2CC24AD6C9}
