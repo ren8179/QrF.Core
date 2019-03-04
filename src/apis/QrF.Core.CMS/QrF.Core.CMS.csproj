@@ -23,7 +23,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\libs\QrF.Core.ComFr\QrF.Core.ComFr.csproj" />
-    <ProjectReference Include="..\..\libs\QrF.Core.Utils\QrF.Core.Utils.csproj" />
   </ItemGroup>
 
   <ItemGroup>
