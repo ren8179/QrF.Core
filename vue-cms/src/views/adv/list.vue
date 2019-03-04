@@ -44,8 +44,8 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="12"><el-form-item label="权重:" prop="sort"><el-input v-model="temp.sort" /></el-form-item></el-col>
-          <el-col :span="12"><el-form-item label="点击量:" prop="hits"><el-input v-model="temp.hits" /></el-form-item></el-col>
+          <el-col :span="12"><el-form-item label="权重:" prop="sort"><el-input-number v-model="temp.sort" :min="0" controls-position="right" /></el-form-item></el-col>
+          <el-col :span="12"><el-form-item label="点击量:" prop="hits"><el-input-number v-model="temp.hits" :min="0" controls-position="right" /></el-form-item></el-col>
           <el-col :span="12">
             <el-form-item label="时间限制:" prop="isTimeLimit">
               <el-switch v-model="temp.isTimeLimit" active-text="启用" inactive-text="停用" />
@@ -60,6 +60,9 @@
             <i v-else class="el-icon-plus avatar-uploader-icon" />
           </el-upload>
         </el-form-item>
+        <el-form-item label="状态:" prop="status">
+          <el-switch v-model="temp.status" active-text="启用" inactive-text="停用" />
+        </el-form-item>
         <el-form-item label="链接地址:" prop="linkUrl"><el-input v-model="temp.linkUrl" /></el-form-item>
         <el-form-item label="文字描述:" prop="description"><el-input v-model="temp.description" type="textarea" /></el-form-item>
       </el-form>
@@ -73,7 +76,7 @@
 
 <script>
 import splitPane from 'vue-splitpane'
-import { fetchList, getClassList, del, create, update } from '@/api/adv'
+import { fetchList, getClassList, del, getAdv, create, update } from '@/api/adv'
 import waves from '@/directive/waves'
 
 export default {
@@ -94,7 +97,6 @@ export default {
         columns: [
           { data: 'title', name: '标题', searchable: true, orderable: true },
           { data: 'classId', name: '类型', searchable: true, orderable: true, search: { regex: false, opeartor: 'Equal' }},
-          { data: 'imgUrl', name: '图片地址', searchable: true, orderable: true },
           { data: 'linkUrl', name: '链接地址', searchable: true, orderable: true },
           { data: 'status', name: '状态', searchable: true, orderable: true },
           { data: 'sort', name: '权重', searchable: true, orderable: true },
@@ -118,8 +120,13 @@ export default {
     }
   },
   created() {
-    this.handleFilter()
-    getClassList().then(r => { this.types = r.data })
+    getClassList().then(r => {
+      this.types = r.data
+      if (this.types) {
+        this.classId = this.types[0].id
+        this.handleFilter()
+      }
+    })
   },
   methods: {
     getList() {
@@ -163,7 +170,7 @@ export default {
       switch (domid) {
         case 'btnAdd':
           this.editTitle = '新增'
-          this.temp = { classId: this.classId }
+          this.temp = { classId: this.classId, types: 1, isTimeLimit: false, hits: 0, sort: 0 }
           this.dialogFormVisible = true
           this.$nextTick(() => {
             this.$refs['formModel'].clearValidate()
@@ -179,10 +186,15 @@ export default {
       }
     },
     handleUpdate(row) {
-      this.temp = Object.assign({}, row)
-      this.dialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs['formModel'].clearValidate()
+      getAdv(row.id).then(response => {
+        this.temp = response.data
+        this.temp.status = this.temp.status > 0
+        this.dialogFormVisible = true
+        this.$nextTick(() => {
+          this.$refs['formModel'].clearValidate()
+        })
+      }).catch(err => {
+        console.log(err)
       })
     },
     handleDelete(row) {
@@ -202,22 +214,20 @@ export default {
       this.$refs['formModel'].validate((valid) => {
         if (valid) {
           const tempData = Object.assign({}, this.temp)
-          tempData.id = tempData.id || '00000000-0000-0000-0000-000000000000'
-          const opt = tempData.id !== '00000000-0000-0000-0000-000000000000' ? update(this.postForm) : create(this.postForm)
+          tempData.id = tempData.id || 0
+          tempData.actionType = tempData.id !== 0 ? 2 : 1
+          tempData.status = tempData.status ? 1 : 0
+          const opt = tempData.id !== 0 ? update(tempData) : create(tempData)
           opt.then(response => {
             this.dialogFormVisible = false
-            if (response && response.data.success) {
-              this.handleFilter()
-              this.$notify({ title: '成功', message: '更新成功', type: 'success', duration: 2000 })
-            } else {
-              this.$message({ type: 'error', message: response.data.msg || '更新失败' })
-            }
+            this.handleFilter()
+            this.$notify({ title: '成功', message: '更新成功', type: 'success', duration: 2000 })
           }).catch(() => { this.dialogFormVisible = false })
         }
       })
     },
     HandleMenuSelect(index, indexPath) {
-      this.classId = index
+      this.classId = Number(index)
       this.handleFilter()
     },
     handleAvatarSuccess(res, file) {

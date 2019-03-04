@@ -23,6 +23,14 @@ export function del(id) {
   })
 }
 
+export function getAdv(id) {
+  return request({
+    url: '/AdvList/GetById',
+    method: 'get',
+    params: { id }
+  })
+}
+
 export function create(data) {
   return request({
     url: '/AdvList/Create',
