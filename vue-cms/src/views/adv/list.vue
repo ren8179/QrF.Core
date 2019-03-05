@@ -60,9 +60,14 @@
             <i v-else class="el-icon-plus avatar-uploader-icon" />
           </el-upload>
         </el-form-item>
-        <el-form-item label="状态:" prop="status">
-          <el-switch v-model="temp.status" active-text="启用" inactive-text="停用" />
-        </el-form-item>
+        <el-col :span="12">
+          <el-form-item label="展示类型:" prop="types"><el-input-number v-model="temp.types" :min="1" controls-position="right" /></el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="状态:" prop="status">
+            <el-switch v-model="temp.status" active-text="启用" inactive-text="停用" />
+          </el-form-item>
+        </el-col>
         <el-form-item label="链接地址:" prop="linkUrl"><el-input v-model="temp.linkUrl" /></el-form-item>
         <el-form-item label="文字描述:" prop="description"><el-input v-model="temp.description" type="textarea" /></el-form-item>
       </el-form>
