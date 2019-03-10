@@ -12,7 +12,7 @@ using QrF.Core.Utils.Helpers;
 
 namespace QrF.Core.Admin.Business
 {
-    public class UserBusiness : IUserBusiness
+    public class RoleBusiness : IRoleBusiness
     {
         /// <summary>
         /// 数据库操作
@@ -20,18 +20,18 @@ namespace QrF.Core.Admin.Business
         private readonly QrfSqlSugarClient _dbContext;
         private readonly IMapper _mapper;
 
-        public UserBusiness(QrfSqlSugarClient dbContext, IMapper mapper)
+        public RoleBusiness(QrfSqlSugarClient dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
             _mapper = mapper;
         }
 
         /// <summary>
-        /// 分页列表
+        /// 查询用户列表
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public async Task<QueryUsersOutput> GetPageList(QueryUsersInput input)
+        public async Task<QueryUsersOutput> QueryUsers(QueryUsersInput input)
         {
             var list = new List<QueryUserDTO>();
             var totalNumber = 0;

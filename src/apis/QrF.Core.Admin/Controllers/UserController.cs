@@ -28,7 +28,7 @@ namespace QrF.Core.Admin.Controllers
         [HttpGet("QueryUsers")]
         public async Task<QueryUsersOutput> QueryUsersAsync([FromQuery] QueryUsersInput input)
         {
-            return await _userBusiness.QueryUsers(input);
+            return await _userBusiness.GetPageList(input);
         }
         /// <summary>
         /// 编辑用户信息
