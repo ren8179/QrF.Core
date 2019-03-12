@@ -6,17 +6,13 @@ using System.Threading.Tasks;
 
 namespace QrF.Core.Admin.Interfaces
 {
-    public interface IUserBusiness
+    public interface IOrganizeBusiness
     {
         /// <summary>
         /// 分页查询
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        Task<BasePageQueryOutput<QueryUserDto>> GetPageList(QueryUsersInput input);
-        /// <summary>
-        /// 编辑用户信息
-        /// </summary>
-        Task EditUser(UserDto input);
+        Task<BasePageQueryOutput<QueryOrganizeDto>> GetPageList(QueryOrganizesInput input);
     }
 }

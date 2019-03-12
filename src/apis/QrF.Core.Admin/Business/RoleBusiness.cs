@@ -1,22 +1,18 @@
-﻿using QrF.Core.Admin.Domain;
+﻿using AutoMapper;
+using QrF.Core.Admin.Domain;
 using QrF.Core.Admin.Dto;
 using QrF.Core.Admin.Infrastructure.DbContext;
 using QrF.Core.Admin.Interfaces;
+using QrF.Core.Utils.Extension;
+using QrF.Core.Utils.Helpers;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using QrF.Core.Utils.Extension;
-using AutoMapper;
-using QrF.Core.Utils.Helpers;
 
 namespace QrF.Core.Admin.Business
 {
     public class RoleBusiness : IRoleBusiness
     {
-        /// <summary>
-        /// 数据库操作
-        /// </summary>
         private readonly QrfSqlSugarClient _dbContext;
         private readonly IMapper _mapper;
 
@@ -27,40 +23,29 @@ namespace QrF.Core.Admin.Business
         }
 
         /// <summary>
-        /// 查询用户列表
+        /// 分页列表
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public async Task<QueryUsersOutput> QueryUsers(QueryUsersInput input)
+        public async Task<BasePageQueryOutput<QueryRoleDto>> GetPageList(QueryRolesInput input)
         {
-            var list = new List<QueryUserDTO>();
+            var list = new List<QueryRoleDto>();
             var totalNumber = 0;
-            var query = await _dbContext.Queryable<User>()
+            var query = await _dbContext.Queryable<Role>()
                 .WhereIF(input.DeptId.HasValue, o => o.DeptId == input.DeptId.Value)
-                .WhereIF(input.Account.IsNotNullAndWhiteSpace(), o => o.Account == input.Account)
-                .WhereIF(input.RealName.IsNotNullAndWhiteSpace(), o => o.RealName == input.RealName)
-                .WhereIF(input.Mobile.IsNotNullAndWhiteSpace(), o => o.Mobile == input.Mobile)
-                .WhereIF(input.Email.IsNotNullAndWhiteSpace(), o => o.Email == input.Email)
-                .WhereIF(input.Status.HasValue, o => o.Status == input.Status.Value)
-                .Select(o => new QueryUserDTO
+                .Select(o => new QueryRoleDto
                 {
                     KeyId = o.KeyId,
-                    Account = o.Account,
                     CreateTime = o.CreateTime,
                     DeptId = o.DeptId,
-                    Email = o.Email,
-                    HeadPic = o.HeadPic,
-                    Mobile = o.Mobile,
-                    NickName = o.NickName,
-                    RealName = o.RealName,
-                    Sex = o.Sex,
-                    Status = o.Status,
-                    UpLoginDate = o.UpLoginDate
+                    Name = o.Name,
+                    Codes = o.Codes,
+                    CreateId = o.CreateId,
                 })
                 .ToPageListAsync(input.PageIndex, input.PageSize, totalNumber);
             list = query.Key;
             totalNumber = query.Value;
-            return new QueryUsersOutput { CurrentPage = input.PageIndex, Data = list, Total = totalNumber };
+            return new BasePageQueryOutput<QueryRoleDto> { CurrentPage = input.PageIndex, Data = list, Total = totalNumber };
         }
         /// <summary>
         /// 编辑用户信息

@@ -5,28 +5,32 @@ using System.Threading.Tasks;
 
 namespace QrF.Core.Admin.Dto
 {
-    public class QueryRolesOutput : BasePageOutput
-    {
-        public List<QueryRoleDTO> Data { set; get; }
-    }
-    public class QueryRoleDTO
+    public class QueryOrganizeDto
     {
         /// <summary>
         ///  
         /// </summary>
         public Guid KeyId { set; get; }
         /// <summary>
-        /// 归属部门
-        /// </summary>
-        public Guid DeptId { get; set; }
-        /// <summary>
-        /// 角色名称
+        /// 组织名称
         /// </summary>
         public string Name { get; set; }
         /// <summary>
-        /// 角色编号
+        /// 父节点
         /// </summary>
-        public string Codes { get; set; }
+        public Guid? ParentId { get; set; }
+        /// <summary>
+        /// 机构编码
+        /// </summary>
+        public string BizCode { get; set; }
+        /// <summary>
+        /// 排序
+        /// </summary>           
+        public int Sort { get; set; }
+        /// <summary>
+        /// 状态
+        /// </summary>
+        public bool Status { get; set; }
         /// <summary>
         /// 
         /// </summary>

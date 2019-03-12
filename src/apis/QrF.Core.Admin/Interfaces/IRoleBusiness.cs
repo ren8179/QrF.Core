@@ -13,6 +13,6 @@ namespace QrF.Core.Admin.Interfaces
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        //Task<QueryRolesOutput> QueryRoles(QueryRolesInput input);
+        Task<BasePageQueryOutput<QueryRoleDto>> GetPageList(QueryRolesInput input);
     }
 }

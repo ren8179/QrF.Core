@@ -5,11 +5,7 @@ using System.Threading.Tasks;
 
 namespace QrF.Core.Admin.Dto
 {
-    public class QueryUsersOutput : BasePageOutput
-    {
-        public List<QueryUserDTO> Data { set; get; }
-    }
-    public class QueryUserDTO
+    public class QueryUserDto
     {
         /// <summary>
         ///  

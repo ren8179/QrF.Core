@@ -9,16 +9,16 @@ using QrF.Core.Admin.Interfaces;
 namespace QrF.Core.Admin.Controllers
 {
     /// <summary>
-    /// 服务状态监测
+    /// 用户管理
     /// </summary>
     [Route("AdminAPI/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IUserBusiness _userBusiness;
-        public UserController(IUserBusiness userBusiness)
+        private readonly IUserBusiness _business;
+        public UserController(IUserBusiness business)
         {
-            _userBusiness = userBusiness;
+            _business = business;
         }
         /// <summary>
         /// 查询用户列表
@@ -26,9 +26,9 @@ namespace QrF.Core.Admin.Controllers
         /// <param name="input"></param>
         /// <returns></returns>
         [HttpGet("QueryUsers")]
-        public async Task<QueryUsersOutput> QueryUsersAsync([FromQuery] QueryUsersInput input)
+        public async Task<BasePageQueryOutput<QueryUserDto>> QueryUsersAsync([FromQuery] QueryUsersInput input)
         {
-            return await _userBusiness.GetPageList(input);
+            return await _business.GetPageList(input);
         }
         /// <summary>
         /// 编辑用户信息
@@ -38,7 +38,7 @@ namespace QrF.Core.Admin.Controllers
         [HttpPost("EditUser")]
         public async Task EditUserAsync([FromBody] UserDto input)
         {
-            await _userBusiness.EditUser(input);
+            await _business.EditUser(input);
         }
     }
 }

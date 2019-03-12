@@ -1,22 +1,18 @@
-﻿using QrF.Core.Admin.Domain;
+﻿using AutoMapper;
+using QrF.Core.Admin.Domain;
 using QrF.Core.Admin.Dto;
 using QrF.Core.Admin.Infrastructure.DbContext;
 using QrF.Core.Admin.Interfaces;
+using QrF.Core.Utils.Extension;
+using QrF.Core.Utils.Helpers;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using QrF.Core.Utils.Extension;
-using AutoMapper;
-using QrF.Core.Utils.Helpers;
 
 namespace QrF.Core.Admin.Business
 {
     public class UserBusiness : IUserBusiness
     {
-        /// <summary>
-        /// 数据库操作
-        /// </summary>
         private readonly QrfSqlSugarClient _dbContext;
         private readonly IMapper _mapper;
 
@@ -31,9 +27,9 @@ namespace QrF.Core.Admin.Business
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public async Task<QueryUsersOutput> GetPageList(QueryUsersInput input)
+        public async Task<BasePageQueryOutput<QueryUserDto>> GetPageList(QueryUsersInput input)
         {
-            var list = new List<QueryUserDTO>();
+            var list = new List<QueryUserDto>();
             var totalNumber = 0;
             var query = await _dbContext.Queryable<User>()
                 .WhereIF(input.DeptId.HasValue, o => o.DeptId == input.DeptId.Value)
@@ -42,7 +38,7 @@ namespace QrF.Core.Admin.Business
                 .WhereIF(input.Mobile.IsNotNullAndWhiteSpace(), o => o.Mobile == input.Mobile)
                 .WhereIF(input.Email.IsNotNullAndWhiteSpace(), o => o.Email == input.Email)
                 .WhereIF(input.Status.HasValue, o => o.Status == input.Status.Value)
-                .Select(o => new QueryUserDTO
+                .Select(o => new QueryUserDto
                 {
                     KeyId = o.KeyId,
                     Account = o.Account,
@@ -60,7 +56,7 @@ namespace QrF.Core.Admin.Business
                 .ToPageListAsync(input.PageIndex, input.PageSize, totalNumber);
             list = query.Key;
             totalNumber = query.Value;
-            return new QueryUsersOutput { CurrentPage = input.PageIndex, Data = list, Total = totalNumber };
+            return new BasePageQueryOutput<QueryUserDto> { CurrentPage = input.PageIndex, Data = list, Total = totalNumber };
         }
         /// <summary>
         /// 编辑用户信息
