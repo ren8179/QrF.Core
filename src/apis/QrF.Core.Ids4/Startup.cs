@@ -31,9 +31,7 @@ namespace QrF.Core.Ids4
         {
             services.AddSingleton(Configuration);
             services.Configure<ApiOptions>(Configuration);
-            services.AddIdentityServer(option => {
-                        option.PublicOrigin = Configuration["PublicOrigin"];
-                    })
+            services.AddIdentityServer(o => o.PublicOrigin = Configuration["PublicOrigin"])
                 .AddDeveloperSigningCredential()
                 .AddDapperStore(o => {
                     o.DbConnectionStrings = Configuration["DbConnectionStrings"];

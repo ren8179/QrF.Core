@@ -204,3 +204,21 @@ GO
 
 ALTER TABLE [dbo].[Sys_User] ADD  CONSTRAINT [DF_Sys_User_CreateTime]  DEFAULT (getdate()) FOR [CreateTime]
 GO
+
+CREATE TABLE [Logs] (
+
+   [Id] int IDENTITY(1,1) NOT NULL,
+   [Message] nvarchar(max) NULL,
+   [MessageTemplate] nvarchar(max) NULL,
+   [Level] nvarchar(128) NULL,
+   [TimeStamp] datetime NOT NULL,
+   [Exception] nvarchar(max) NULL,
+   [Properties] xml NULL,
+   [BusinessId] int NULL,
+   [BusinessType] nvarchar(32) NULL,
+   [Application] nvarchar(32) NULL,
+   [SourceContext] nvarchar(256) NULL
+
+   CONSTRAINT [PK_Logs] PRIMARY KEY CLUSTERED ([Id] ASC) 
+)
+GO
