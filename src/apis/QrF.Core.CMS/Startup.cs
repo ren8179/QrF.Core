@@ -18,6 +18,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Mvc;
 using System.IO;
 using QrF.Core.ComFr.Mvc.Authorize;
+using QrF.Core.ComFr.Extension;
 
 namespace QrF.Core.CMS
 {
@@ -70,6 +71,7 @@ namespace QrF.Core.CMS
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseErrorHandling();
             app.UseStaticFiles();
             ServiceLocator.Setup(httpContextAccessor);
             Directory.SetCurrentDirectory(env.ContentRootPath);

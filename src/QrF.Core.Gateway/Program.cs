@@ -22,6 +22,7 @@ namespace QrF.Core.Gateway
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             var isService = !(Debugger.IsAttached || args.Contains("--console"));
+            isService = false;
             var bud = new ConfigurationBuilder();
             var basepath = AppContext.BaseDirectory;
             if (isService)
