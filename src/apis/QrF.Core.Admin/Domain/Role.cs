@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace QrF.Core.Admin.Domain
 {
-    [SugarTable("Sys_User")]
+    [SugarTable("Sys_Role")]
     public class Role
     {
         /// <summary>

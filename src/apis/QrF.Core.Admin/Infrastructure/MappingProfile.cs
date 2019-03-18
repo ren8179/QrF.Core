@@ -13,6 +13,8 @@ namespace QrF.Core.Admin.Infrastructure
         public MappingProfile()
         {
             CreateMap<UserDto, User>();
+            CreateMap<RoleDto, Role>();
+            CreateMap<OrgDto, Organize>();
         }
     }
 }

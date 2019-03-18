@@ -7,10 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="wwwroot\UpLoad\**" />
-    <Content Remove="wwwroot\UpLoad\**" />
-    <EmbeddedResource Remove="wwwroot\UpLoad\**" />
-    <None Remove="wwwroot\UpLoad\**" />
+    <Compile Remove="Filters\**" />
+    <Compile Remove="wwwroot\**" />
+    <EmbeddedResource Remove="Filters\**" />
+    <EmbeddedResource Remove="wwwroot\**" />
+    <None Remove="Filters\**" />
+    <None Remove="wwwroot\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,11 +39,6 @@
     <Content Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\" />
-    <Folder Include="Filters\" />
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JSONSchema="" /></VisualStudio></ProjectExtensions>

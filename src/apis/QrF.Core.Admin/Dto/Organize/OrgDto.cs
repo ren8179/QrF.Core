@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 
 namespace QrF.Core.Admin.Dto
 {
-    public class QueryOrganizeDto
+    public class OrgDto
     {
         /// <summary>
-        ///  
+        /// 
         /// </summary>
-        public Guid KeyId { set; get; }
+        public Guid? KeyId { get; set; }
         /// <summary>
         /// 组织名称
         /// </summary>
@@ -19,7 +19,6 @@ namespace QrF.Core.Admin.Dto
         /// 父节点
         /// </summary>
         public Guid? ParentId { get; set; }
-        public string ParentName { get; set; }
         /// <summary>
         /// 机构编码
         /// </summary>
@@ -32,14 +31,5 @@ namespace QrF.Core.Admin.Dto
         /// 状态
         /// </summary>
         public bool Status { get; set; }
-        public string StatusText { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public Guid? CreateId { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public DateTime CreateTime { get; set; }
     }
 }

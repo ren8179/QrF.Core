@@ -63,9 +63,5 @@ namespace QrF.Core.Admin.Dto
         /// 更新时间
         /// </summary>
         public DateTime? UpdateTime { set; get; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public DateTime CreateTime { get; set; }
     }
 }

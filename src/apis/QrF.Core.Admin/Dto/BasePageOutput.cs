@@ -13,7 +13,7 @@ namespace QrF.Core.Admin.Dto
         /// <summary>
         /// 当前页
         /// </summary>
-        public int CurrentPage { set; get; }
+        public int Page { set; get; }
         /// <summary>
         /// 总条数
         /// </summary>

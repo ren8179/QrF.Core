@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace QrF.Core.Admin.Dto
 {
-    public class BasePageQueryOutput<T>: BasePageOutput
+    public class DelInput
     {
-        public List<T> Rows { set; get; }
+        public Guid? KeyId { get; set; }
     }
 }

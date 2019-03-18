@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Serialization;
+using QrF.Core.Admin.Extension;
 using QrF.Core.Admin.Infrastructure.DbContext;
 using QrF.Core.Admin.Interfaces;
 using System;
@@ -32,9 +33,10 @@ namespace QrF.Core.Admin
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSqlSugarDbContext();
             services.AddAutoMapper();
+            services.AddCors();
             services.AddMvc().AddJsonOptions(options =>
             {
-                options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+                //options.SerializerSettings.ContractResolver = new DefaultContractResolver();
                 options.SerializerSettings.DateFormatString = "yyyy-MM-dd HH:mm:ss";
             }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
@@ -51,7 +53,13 @@ namespace QrF.Core.Admin
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseStaticFiles();
+            app.UseErrorHandling();
+            app.UseCors(builder => builder
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials());
             app.UseMvc();
         }
         /// <summary>

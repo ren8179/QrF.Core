@@ -1,24 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using QrF.Core.CMS.Entities;
 using QrF.Core.CMS.Service;
 using QrF.Core.ComFr;
-using QrF.Core.ComFr.DbConnectionPool;
-using QrF.Core.ComFr.Repositories;
 using QrF.Core.ComFr.DependencyInjection;
-using QrF.Core.ComFr.Options;
-using Microsoft.Extensions.Configuration;
-using Microsoft.AspNetCore.Mvc;
-using System.IO;
-using QrF.Core.ComFr.Mvc.Authorize;
 using QrF.Core.ComFr.Extension;
+using QrF.Core.ComFr.Mvc.Authorize;
+using QrF.Core.ComFr.Repositories;
+using System.IO;
 
 namespace QrF.Core.CMS
 {

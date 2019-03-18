@@ -15,6 +15,7 @@ namespace QrF.Core.Admin.Dto
         /// 归属部门
         /// </summary>
         public Guid DeptId { get; set; }
+        public string DeptName { get; set; }
         /// <summary>
         /// 角色名称
         /// </summary>

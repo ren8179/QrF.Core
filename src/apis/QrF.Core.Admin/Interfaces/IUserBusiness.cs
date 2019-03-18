@@ -15,8 +15,14 @@ namespace QrF.Core.Admin.Interfaces
         /// <returns></returns>
         Task<BasePageQueryOutput<QueryUserDto>> GetPageList(QueryUsersInput input);
         /// <summary>
-        /// 编辑用户信息
+        /// 编辑信息
         /// </summary>
-        Task EditUser(UserDto input);
+        Task EditModel(UserDto input);
+        /// <summary>
+        /// 删除
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        Task DelModel(Guid input);
     }
 }

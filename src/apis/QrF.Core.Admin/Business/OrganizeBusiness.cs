@@ -3,6 +3,7 @@ using QrF.Core.Admin.Domain;
 using QrF.Core.Admin.Dto;
 using QrF.Core.Admin.Infrastructure.DbContext;
 using QrF.Core.Admin.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -26,25 +27,85 @@ namespace QrF.Core.Admin.Business
         /// <returns></returns>
         public async Task<BasePageQueryOutput<QueryOrganizeDto>> GetPageList(QueryOrganizesInput input)
         {
-            var list = new List<QueryOrganizeDto>();
+            var list = new List<Organize>();
             var totalNumber = 0;
             var query = await _dbContext.Queryable<Organize>()
                 .WhereIF(input.ParentId.HasValue, o => o.ParentId == input.ParentId.Value)
-                .Select(o => new QueryOrganizeDto
-                {
-                    KeyId = o.KeyId,
-                    CreateTime = o.CreateTime,
-                    ParentId = o.ParentId,
-                    Name = o.Name,
-                    BizCode = o.BizCode,
-                    Sort = o.Sort,
-                    Status = o.Status,
-                    CreateId = o.CreateId,
-                })
                 .ToPageListAsync(input.PageIndex, input.PageSize, totalNumber);
             list = query.Key;
             totalNumber = query.Value;
-            return new BasePageQueryOutput<QueryOrganizeDto> { CurrentPage = input.PageIndex, Data = list, Total = totalNumber };
+            var result = new List<QueryOrganizeDto>();
+            if (list != null && list.Count > 0)
+            {
+                list.ForEach(o =>
+                {
+                    var parent = _dbContext.Queryable<Organize>().First(it => it.KeyId == o.ParentId);
+                    result.Add(new QueryOrganizeDto
+                    {
+                        ParentName = parent?.Name,
+                        KeyId = o.KeyId,
+                        CreateTime = o.CreateTime,
+                        ParentId = o.ParentId,
+                        Name = o.Name,
+                        BizCode = o.BizCode,
+                        Sort = o.Sort,
+                        Status = o.Status,
+                        CreateId = o.CreateId,
+                        StatusText = o.Status ? "启用" : "停用"
+                    });
+                });
+            }
+            return new BasePageQueryOutput<QueryOrganizeDto> { Page = input.PageIndex, Rows = result, Total = totalNumber };
+        }
+        /// <summary>
+        /// 查询列表
+        /// </summary>
+        public async Task<IEnumerable<QueryOrganizeDto>> GetListAsync(Guid? deptId)
+        {
+            var list = await _dbContext.Queryable<Organize>()
+                                 .WhereIF(deptId.HasValue, o => o.ParentId == deptId.Value)
+                                 .Select(o => new QueryOrganizeDto
+                                 {
+                                     KeyId = o.KeyId,
+                                     CreateTime = o.CreateTime,
+                                     ParentId = o.ParentId,
+                                     Name = o.Name,
+                                     BizCode = o.BizCode,
+                                     Sort = o.Sort,
+                                     Status = o.Status,
+                                     CreateId = o.CreateId,
+                                 })
+                                 .ToListAsync();
+            return list;
+        }
+        /// <summary>
+        /// 编辑信息
+        /// </summary>
+        public async Task EditModel(OrgDto input)
+        {
+            input.KeyId = input.KeyId ?? Guid.Empty;
+            var model = _mapper.Map<OrgDto, Organize>(input);
+            if (model.KeyId != Guid.Empty)
+            {
+                    await _dbContext.Updateable(model)
+                                    .IgnoreColumns(it => new {it.CreateTime })
+                                    .ExecuteCommandAsync();
+            }
+            else
+            {
+                model.CreateTime = DateTime.Now;
+                await _dbContext.Insertable(model).ExecuteCommandAsync();
+            }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public async Task DelModel(Guid input)
+        {
+            await _dbContext.Deleteable<Organize>()
+                .Where(f => f.KeyId == input).ExecuteCommandAsync();
         }
     }
 }

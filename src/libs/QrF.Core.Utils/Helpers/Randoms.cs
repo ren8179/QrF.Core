@@ -11,7 +11,6 @@ namespace QrF.Core.Utils.Helpers
     public class Randoms
     {
         private static Random _random = new Random(); //随机发生器
-        private readonly static string _randomlibrarystr = ""; //随机库
         private static char[] _randomlibrary = "123456789abcdefghjkmnpqrstuvwxy".ToCharArray(); //随机库
         /// <summary>
         /// 对集合随机排序

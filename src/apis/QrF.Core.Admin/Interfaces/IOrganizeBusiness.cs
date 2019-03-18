@@ -14,5 +14,21 @@ namespace QrF.Core.Admin.Interfaces
         /// <param name="input"></param>
         /// <returns></returns>
         Task<BasePageQueryOutput<QueryOrganizeDto>> GetPageList(QueryOrganizesInput input);
+        /// <summary>
+        /// 查询列表
+        /// </summary>
+        /// <param name="deptId"></param>
+        /// <returns></returns>
+        Task<IEnumerable<QueryOrganizeDto>> GetListAsync(Guid? deptId);
+        /// <summary>
+        /// 编辑信息
+        /// </summary>
+        Task EditModel(OrgDto input);
+        /// <summary>
+        /// 删除
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        Task DelModel(Guid input);
     }
 }

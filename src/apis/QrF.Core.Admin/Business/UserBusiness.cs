@@ -29,7 +29,7 @@ namespace QrF.Core.Admin.Business
         /// <returns></returns>
         public async Task<BasePageQueryOutput<QueryUserDto>> GetPageList(QueryUsersInput input)
         {
-            var list = new List<QueryUserDto>();
+            var list = new List<User>();
             var totalNumber = 0;
             var query = await _dbContext.Queryable<User>()
                 .WhereIF(input.DeptId.HasValue, o => o.DeptId == input.DeptId.Value)
@@ -38,30 +38,40 @@ namespace QrF.Core.Admin.Business
                 .WhereIF(input.Mobile.IsNotNullAndWhiteSpace(), o => o.Mobile == input.Mobile)
                 .WhereIF(input.Email.IsNotNullAndWhiteSpace(), o => o.Email == input.Email)
                 .WhereIF(input.Status.HasValue, o => o.Status == input.Status.Value)
-                .Select(o => new QueryUserDto
-                {
-                    KeyId = o.KeyId,
-                    Account = o.Account,
-                    CreateTime = o.CreateTime,
-                    DeptId = o.DeptId,
-                    Email = o.Email,
-                    HeadPic = o.HeadPic,
-                    Mobile = o.Mobile,
-                    NickName = o.NickName,
-                    RealName = o.RealName,
-                    Sex = o.Sex,
-                    Status = o.Status,
-                    UpLoginDate = o.UpLoginDate
-                })
                 .ToPageListAsync(input.PageIndex, input.PageSize, totalNumber);
             list = query.Key;
             totalNumber = query.Value;
-            return new BasePageQueryOutput<QueryUserDto> { CurrentPage = input.PageIndex, Data = list, Total = totalNumber };
+            var result = new List<QueryUserDto>();
+            if (list != null && list.Count > 0)
+            {
+                list.ForEach(o =>
+                {
+                    var parent = _dbContext.Queryable<Organize>().First(it => it.KeyId == o.DeptId);
+                    result.Add(new QueryUserDto
+                    {
+                        DeptName = parent?.Name,
+                        KeyId = o.KeyId,
+                        Account = o.Account,
+                        CreateTime = o.CreateTime,
+                        DeptId = o.DeptId,
+                        Email = o.Email,
+                        HeadPic = o.HeadPic,
+                        Mobile = o.Mobile,
+                        NickName = o.NickName,
+                        RealName = o.RealName,
+                        Sex = o.Sex,
+                        Status = o.Status,
+                        UpLoginDate = o.UpLoginDate,
+                        StatusText = o.Status ? "启用" : "停用"
+                    });
+                });
+            }
+            return new BasePageQueryOutput<QueryUserDto> { Page = input.PageIndex, Rows = result, Total = totalNumber };
         }
         /// <summary>
-        /// 编辑用户信息
+        /// 编辑信息
         /// </summary>
-        public async Task EditUser(UserDto input)
+        public async Task EditModel(UserDto input)
         {
             input.KeyId = input.KeyId ?? Guid.Empty;
             var model = _mapper.Map<UserDto, User>(input);
@@ -91,6 +101,16 @@ namespace QrF.Core.Admin.Business
                 model.Password = $"{model.Password}{model.Salt}".ToMd5();
                 await _dbContext.Insertable(model).ExecuteCommandAsync();
             }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public async Task DelModel(Guid input)
+        {
+            await _dbContext.Deleteable<User>()
+                .Where(f => f.KeyId == input).ExecuteCommandAsync();
         }
     }
 }

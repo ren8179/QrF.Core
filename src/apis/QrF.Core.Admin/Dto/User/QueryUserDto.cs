@@ -15,6 +15,7 @@ namespace QrF.Core.Admin.Dto
         /// 归属部门
         /// </summary>
         public Guid DeptId { get; set; }
+        public string DeptName { get; set; }
         /// <summary>
         /// 登录账号
         /// </summary>
@@ -47,6 +48,7 @@ namespace QrF.Core.Admin.Dto
         /// 
         /// </summary>
         public bool Status { get; set; }
+        public string StatusText { get; set; }
         /// <summary>
         /// 上次登录时间
         /// </summary>

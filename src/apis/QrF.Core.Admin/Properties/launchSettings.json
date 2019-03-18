@@ -9,17 +9,9 @@
     }
   },
   "profiles": {
-    "IIS Express": {
-      "commandName": "IISExpress",
-      "launchBrowser": true,
-      "launchUrl": "api/values",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
-    },
     "QrF.Core.Admin": {
       "commandName": "Project",
-      "launchBrowser": true,
+      "launchBrowser": false,
       "launchUrl": "api/values",
       "applicationUrl": "http://localhost:5000",
       "environmentVariables": {
