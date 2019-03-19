@@ -27,22 +27,35 @@ namespace QrF.Core.GatewayExtension.Configuration
         /// <summary>
         /// Redis连接字符串
         /// </summary>
-        public List<string> RedisConnectionStrings { get; set; }
+        public string RedisConnectionString { get; set; }
+        /// <summary>
+        /// 配置哨兵或分区时使用
+        /// </summary>
+        public string[] RedisSentinelOrPartitionConStr { get; set; }
+
+        /// <summary>
+        /// Redis部署方式，默认使用普通方式
+        /// </summary>
+        public RedisStoreMode RedisStoreMode { get; set; } = RedisStoreMode.Normal;
 
         /// <summary>
         /// Redis存储的key前缀,默认值Gateway,如果分布式缓存多个应用部署，需要修改此值。
         /// </summary>
-        public string RedisKeyPrefix { get; set; } = "Gateway";
+        public string RedisOcelotKeyPrefix { get; set; } = "Ocelot_Gateway_";
+
+        /// <summary>
+        /// 是否启用集群环境，如果非集群环境直接本地缓存+数据库即可
+        /// </summary>
+        public bool ClusterEnvironment { get; set; } = false;
 
         /// <summary>
         /// 是否启用客户端授权,默认不开启
         /// </summary>
         public bool ClientAuthorization { get; set; } = false;
-
         /// <summary>
-        /// 客户端授权缓存时间，默认30分钟，单位：秒
+        /// 服务器缓存时间，默认30分钟
         /// </summary>
-        public int ClientAuthorizationCacheTime { get; set; } = 1800;
+        public int CacheTime { get; set; } = 1800;
         /// <summary>
         /// 客户端标识，默认 client_id
         /// </summary>
@@ -52,10 +65,5 @@ namespace QrF.Core.GatewayExtension.Configuration
         /// 是否开启自定义限流，默认不开启
         /// </summary>
         public bool ClientRateLimit { get; set; } = false;
-
-        /// <summary>
-        /// 客户端限流缓存时间，默认30分钟，单位：秒
-        /// </summary>
-        public int ClientRateLimitCacheTime { get; set; } = 1800;
     }
 }

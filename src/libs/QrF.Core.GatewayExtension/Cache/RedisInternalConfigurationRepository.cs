@@ -1,9 +1,11 @@
-﻿using Ocelot.Configuration;
+﻿using Ocelot.Cache;
+using Ocelot.Configuration;
 using Ocelot.Configuration.Creator;
 using Ocelot.Configuration.Repository;
 using Ocelot.Responses;
 using QrF.Core.GatewayExtension.Configuration;
 using QrF.Core.Utils.Extension;
+using System;
 
 namespace QrF.Core.GatewayExtension.Cache
 {
@@ -12,26 +14,13 @@ namespace QrF.Core.GatewayExtension.Cache
         private readonly CusOcelotConfiguration _options;
         private IFileConfigurationRepository _fileConfigurationRepository;
         private IInternalConfigurationCreator _internalConfigurationCreator;
-        public RedisInternalConfigurationRepository(CusOcelotConfiguration options, IFileConfigurationRepository fileConfigurationRepository, IInternalConfigurationCreator internalConfigurationCreator)
+        private readonly IOcelotCache<InternalConfiguration> _ocelotCache;
+        public RedisInternalConfigurationRepository(CusOcelotConfiguration options, IFileConfigurationRepository fileConfigurationRepository, IInternalConfigurationCreator internalConfigurationCreator, IOcelotCache<InternalConfiguration> ocelotCache)
         {
             _fileConfigurationRepository = fileConfigurationRepository;
             _internalConfigurationCreator = internalConfigurationCreator;
             _options = options;
-            CSRedis.CSRedisClient csredis;
-            if (options.RedisConnectionStrings.Count == 1)
-            {
-                //普通模式
-                csredis = new CSRedis.CSRedisClient(options.RedisConnectionStrings[0]);
-            }
-            else
-            {
-                //集群模式
-                //实现思路：根据key.GetHashCode() % 节点总数量，确定连向的节点
-                //也可以自定义规则(第一个参数设置)
-                csredis = new CSRedis.CSRedisClient(null, options.RedisConnectionStrings.ToArray());
-            }
-            //初始化 RedisHelper
-            RedisHelper.Initialization(csredis);
+            _ocelotCache = ocelotCache;
         }
 
         /// <summary>
@@ -41,8 +30,8 @@ namespace QrF.Core.GatewayExtension.Cache
         /// <returns></returns>
         public Response AddOrReplace(IInternalConfiguration internalConfiguration)
         {
-            var key = _options.RedisKeyPrefix + "-internalConfiguration";
-            RedisHelper.Set(key, internalConfiguration.ToJson());
+            var key = _options.RedisOcelotKeyPrefix + nameof(InternalConfiguration);
+            _ocelotCache.Add(key, (InternalConfiguration)internalConfiguration, TimeSpan.FromSeconds(_options.CacheTime), "");
             return new OkResponse();
         }
 
@@ -52,8 +41,8 @@ namespace QrF.Core.GatewayExtension.Cache
         /// <returns></returns>
         public Response<IInternalConfiguration> Get()
         {
-            var key = _options.RedisKeyPrefix + "-internalConfiguration";
-            var result = RedisHelper.Get<InternalConfiguration>(key);
+            var key = _options.RedisOcelotKeyPrefix + nameof(InternalConfiguration);
+            var result = _ocelotCache.Get(key, "");
             if (result != null)
             {
                 return new OkResponse<IInternalConfiguration>(result);

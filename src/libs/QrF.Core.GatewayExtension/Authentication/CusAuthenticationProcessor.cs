@@ -30,7 +30,7 @@ namespace QrF.Core.GatewayExtension.Authentication
         /// <returns></returns>
         public async Task<bool> CheckClientAuthenticationAsync(string clientid, string path)
         {
-            var enablePrefix = _options.RedisKeyPrefix + "ClientAuthentication";
+            var enablePrefix = _options.RedisOcelotKeyPrefix + "ClientAuthentication";
             var key = CusKeyHelper.ComputeCounterKey(enablePrefix, clientid, "", path);
             var cacheResult = _ocelotCache.Get(key, enablePrefix);
             if (cacheResult != null)
@@ -41,7 +41,7 @@ namespace QrF.Core.GatewayExtension.Authentication
             {//重新获取认证信息
                 var result = await _clientAuthenticationRepository.ClientAuthenticationAsync(clientid, path);
                 //添加到缓存里
-                _ocelotCache.Add(key, new ClientRoleModel() { CacheTime = DateTime.Now, Role = result }, TimeSpan.FromMinutes(_options.ClientAuthorizationCacheTime), enablePrefix);
+                _ocelotCache.Add(key, new ClientRoleModel() { CacheTime = DateTime.Now, Role = result }, TimeSpan.FromMinutes(_options.CacheTime), enablePrefix);
                 return result;
             }
         }
