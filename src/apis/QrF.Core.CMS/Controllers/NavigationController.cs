@@ -13,6 +13,15 @@ namespace QrF.Core.CMS.Controllers
         public NavigationController(INavigationService service)
             : base(service) {}
 
+
+        [HttpGet("GetNavList")]
+        public IActionResult GetNavList()
+        {
+            var navs = Service.Get().OrderBy(m => m.DisplayOrder);
+            var list = navs.ToList();
+            return Ok(list);
+        }
+
         [HttpGet("GetNavTree")]
         public IActionResult GetNavTree()
         {

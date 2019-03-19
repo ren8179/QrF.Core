@@ -40,9 +40,7 @@ namespace QrF.Core.Gateway
             services.AddOcelot(Configuration).AddExtOcelot(option =>
             {
                 option.DbConnectionStrings = Configuration["OcelotConfig:DbConnectionStrings"];
-                option.RedisConnectionStrings = new List<string>() {
-                    Configuration["OcelotConfig:RedisConnectionStrings"]
-                };
+                option.RedisConnectionString = Configuration["OcelotConfig:RedisConnectionStrings"];
                 option.EnableTimer = Convert.ToBoolean(Configuration["OcelotConfig:EnableTimer"]);
                 option.TimerDelay = Convert.ToInt32(Configuration["OcelotConfig:TimerDelay"]);
                 option.ClientAuthorization = true;

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Ocelot.Configuration;
@@ -12,6 +13,7 @@ using Ocelot.Logging;
 using Ocelot.Middleware;
 using Ocelot.Middleware.Pipeline;
 using Ocelot.Responses;
+using QrF.Core.GatewayExtension.Configuration;
 using QrF.Core.GatewayExtension.Middleware.Pipeline;
 using System;
 using System.Diagnostics;
@@ -40,10 +42,28 @@ namespace QrF.Core.GatewayExtension.Middleware
             var configuration = await CreateConfigurationExt(builder);
 
             ConfigureDiagnosticListener(builder);
-
+            CacheChangeListener(builder);
             return CreateOcelotPipeline(builder, pipelineConfiguration);
         }
-
+        /// <summary>
+        /// 添加缓存数据变更订阅
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <returns></returns>
+        private static void CacheChangeListener(IApplicationBuilder builder)
+        {
+            var config = builder.ApplicationServices.GetService<CusOcelotConfiguration>();
+            var _cache = builder.ApplicationServices.GetService<IMemoryCache>();
+            if (config.ClusterEnvironment)
+            {
+                //订阅满足条件的所有事件
+                RedisHelper.PSubscribe(new[] { config.RedisOcelotKeyPrefix + "*" }, message =>
+                {
+                    var key = message.Channel;
+                    _cache.Remove(key); //直接移除，如果有请求从redis里取
+                });
+            }
+        }
         private static IApplicationBuilder CreateOcelotPipeline(IApplicationBuilder builder, OcelotPipelineConfiguration pipelineConfiguration)
         {
             var pipelineBuilder = new OcelotPipelineBuilder(builder.ApplicationServices);

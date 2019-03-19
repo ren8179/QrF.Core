@@ -32,7 +32,7 @@ namespace QrF.Core.IdentityServer4.Dapper
             builder.Services.AddSingleton<TokenCleanup>();
             builder.Services.AddSingleton<IHostedService, TokenCleanupHost>();
             builder.Services.AddSingleton<ITokenResponseGenerator, CusTokenResponseGenerator>();
-            builder.Services.AddTransient(typeof(ICache<>), typeof(RedisCache<>));
+            builder.Services.AddTransient(typeof(ICache<>), typeof(MemoryCache<>));
             builder.Services.AddTransient<IIntrospectionRequestValidator, IntrospectionRequestValidator>();
             return builder;
         }

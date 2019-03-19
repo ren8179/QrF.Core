@@ -69,8 +69,8 @@ namespace QrF.Core.GatewayExtension.RateLimit
         /// <returns></returns>
         private async Task<bool> CheckReRouteRuleAsync(string path)
         {
-            var region = _options.RedisKeyPrefix + "CheckReRouteRuleAsync";
-            var key = region + path;
+            var region = _options.RedisOcelotKeyPrefix + "CheckReRouteRuleAsync";
+            var key = path;
             var cacheResult = _ocelotCache.Get(key, region);
             if (cacheResult != null)
             {//提取缓存数据
@@ -79,7 +79,7 @@ namespace QrF.Core.GatewayExtension.RateLimit
             else
             {//重新获取限流策略
                 var result = await _clientRateLimitRepository.CheckReRouteRuleAsync(path);
-                _ocelotCache.Add(key, new ClientRoleModel() { CacheTime = DateTime.Now, Role = result }, TimeSpan.FromSeconds(_options.ClientRateLimitCacheTime), region);
+                _ocelotCache.Add(key, new ClientRoleModel() { CacheTime = DateTime.Now, Role = result }, TimeSpan.FromSeconds(_options.CacheTime), region);
                 return result;
             }
 
@@ -93,8 +93,8 @@ namespace QrF.Core.GatewayExtension.RateLimit
         /// <returns></returns>
         private async Task<(bool RateLimit, List<DiffClientRateLimitOptions> RateLimitOptions)> CheckClientRateLimitAsync(string clientid, string path)
         {
-            var region = _options.RedisKeyPrefix + "CheckClientRateLimitAsync";
-            var key = region + clientid + path;
+            var region = _options.RedisOcelotKeyPrefix + "CheckClientRateLimitAsync";
+            var key = clientid + path;
             var cacheResult = _rateLimitRuleCache.Get(key, region);
             if (cacheResult != null)
             {//提取缓存数据
@@ -103,7 +103,7 @@ namespace QrF.Core.GatewayExtension.RateLimit
             else
             {//重新获取限流策略
                 var result = await _clientRateLimitRepository.CheckClientRateLimitAsync(clientid, path);
-                _rateLimitRuleCache.Add(key, new RateLimitRuleModel() { RateLimit = result.RateLimit, RateLimitOptions = result.rateLimitOptions }, TimeSpan.FromSeconds(_options.ClientRateLimitCacheTime), region);
+                _rateLimitRuleCache.Add(key, new RateLimitRuleModel() { RateLimit = result.RateLimit, RateLimitOptions = result.rateLimitOptions }, TimeSpan.FromSeconds(_options.CacheTime), region);
                 return result;
             }
         }
@@ -116,7 +116,7 @@ namespace QrF.Core.GatewayExtension.RateLimit
         /// <returns></returns>
         private async Task<bool> CheckClientReRouteWhiteListAsync(string clientid, string path)
         {
-            var region = _options.RedisKeyPrefix + "CheckClientReRouteWhiteListAsync";
+            var region = _options.RedisOcelotKeyPrefix + "CheckClientReRouteWhiteListAsync";
             var key = region + clientid + path;
             var cacheResult = _ocelotCache.Get(key, region);
             if (cacheResult != null)
@@ -126,7 +126,7 @@ namespace QrF.Core.GatewayExtension.RateLimit
             else
             {//重新获取限流策略
                 var result = await _clientRateLimitRepository.CheckClientReRouteWhiteListAsync(clientid, path);
-                _ocelotCache.Add(key, new ClientRoleModel() { CacheTime = DateTime.Now, Role = result }, TimeSpan.FromSeconds(_options.ClientRateLimitCacheTime), region);
+                _ocelotCache.Add(key, new ClientRoleModel() { CacheTime = DateTime.Now, Role = result }, TimeSpan.FromSeconds(_options.CacheTime), region);
                 return result;
             }
         }
@@ -145,7 +145,7 @@ namespace QrF.Core.GatewayExtension.RateLimit
                 {
                     var counter = new DiffClientRateLimitCounter(DateTime.UtcNow, 1);
                     //分别对每个策略校验
-                    var enablePrefix = _options.RedisKeyPrefix + "RateLimitRule";
+                    var enablePrefix = _options.RedisOcelotKeyPrefix + "RateLimitRule";
                     var key = CusKeyHelper.ComputeCounterKey(enablePrefix, op.ClientId, op.Period, op.RateLimitPath);
                     var periodTimestamp = CusKeyHelper.ConvertToSecond(op.Period);
                     lock (_processLocker)

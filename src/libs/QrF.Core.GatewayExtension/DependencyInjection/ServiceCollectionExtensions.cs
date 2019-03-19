@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Ocelot.Cache;
+using Ocelot.Configuration;
 using Ocelot.Configuration.File;
 using Ocelot.Configuration.Repository;
 using Ocelot.DependencyInjection;
@@ -27,20 +28,37 @@ namespace QrF.Core.GatewayExtension.DependencyInjection
             var options = new CusOcelotConfiguration();
             builder.Services.AddSingleton(options);
             option?.Invoke(options);
-            //配置文件仓储注入
-            //builder.Services.AddSingleton<IFileConfigurationRepository, SqlServerFileConfigurationRepository>();
-            //builder.Services.AddSingleton<IClientAuthenticationRepository, SqlServerClientAuthenticationRepository>();
-            //builder.Services.AddSingleton<IClientRateLimitRepository, SqlServerClientRateLimitRepository>();
-            //builder.Services.AddSingleton<IRpcRepository, SqlServerRpcRepository>();
             //注册后端服务
             builder.Services.AddHostedService<DbConfigurationPoller>();
-            //使用Redis重写缓存
-            builder.Services.AddSingleton<IOcelotCache<FileConfiguration>, InRedisCache<FileConfiguration>>();
-            builder.Services.AddSingleton<IOcelotCache<CachedResponse>, InRedisCache<CachedResponse>>();
+            builder.Services.AddMemoryCache(); //添加本地缓存
+            #region 启动Redis缓存，并支持普通模式 官方集群模式  哨兵模式 分区模式
+            if (options.ClusterEnvironment)
+            {
+                //默认使用普通模式
+                var csredis = new CSRedis.CSRedisClient(options.RedisConnectionString);
+                switch (options.RedisStoreMode)
+                {
+                    case RedisStoreMode.Partition:
+                        var NodesIndex = options.RedisSentinelOrPartitionConStr;
+                        Func<string, string> nodeRule = null;
+                        csredis = new CSRedis.CSRedisClient(nodeRule, options.RedisSentinelOrPartitionConStr);
+                        break;
+                    case RedisStoreMode.Sentinel:
+                        csredis = new CSRedis.CSRedisClient(options.RedisConnectionString, options.RedisSentinelOrPartitionConStr);
+                        break;
+                }
+                //初始化 RedisHelper
+                RedisHelper.Initialization(csredis);
+            }
+            #endregion
+            //重写缓存
+            builder.Services.AddSingleton<IOcelotCache<FileConfiguration>, MemoryCache<FileConfiguration>>();
+            builder.Services.AddSingleton<IOcelotCache<InternalConfiguration>, MemoryCache<InternalConfiguration>>();
+            builder.Services.AddSingleton<IOcelotCache<CachedResponse>, MemoryCache<CachedResponse>>();
             builder.Services.AddSingleton<IInternalConfigurationRepository, RedisInternalConfigurationRepository>();
-            builder.Services.AddSingleton<IOcelotCache<ClientRoleModel>, InRedisCache<ClientRoleModel>>();
-            builder.Services.AddSingleton<IOcelotCache<RateLimitRuleModel>, InRedisCache<RateLimitRuleModel>>();
-            builder.Services.AddSingleton<IOcelotCache<DiffClientRateLimitCounter?>, InRedisCache<DiffClientRateLimitCounter?>>();
+            builder.Services.AddSingleton<IOcelotCache<ClientRoleModel>, MemoryCache<ClientRoleModel>>();
+            builder.Services.AddSingleton<IOcelotCache<RateLimitRuleModel>, MemoryCache<RateLimitRuleModel>>();
+            builder.Services.AddSingleton<IOcelotCache<DiffClientRateLimitCounter?>, MemoryCache<DiffClientRateLimitCounter?>>();
             //注入授权
             builder.Services.AddSingleton<ICusAuthenticationProcessor, CusAuthenticationProcessor>();
             //注入限流实现
@@ -48,7 +66,10 @@ namespace QrF.Core.GatewayExtension.DependencyInjection
 
             //重写错误状态码
             builder.Services.AddSingleton<IErrorsToHttpStatusCodeMapper, QrF.Core.GatewayExtension.Responder.ErrorsToHttpStatusCodeMapper>();
-            
+
+            //http输出转换类
+            builder.Services.AddSingleton<IHttpResponder, HttpContextResponder>();
+
             return builder;
         }
 
