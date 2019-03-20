@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Newtonsoft.Json.Serialization;
 using QrF.Core.Admin.Extension;
 using QrF.Core.Admin.Infrastructure.DbContext;
@@ -53,7 +54,11 @@ namespace QrF.Core.Admin
             {
                 app.UseDeveloperExceptionPage();
             }
-            app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(Program.BasePath + "/wwwroot/"),
+                RequestPath = new PathString("/AdminAPI")
+            });
             app.UseErrorHandling();
             app.UseCors(builder => builder
                     .AllowAnyOrigin()

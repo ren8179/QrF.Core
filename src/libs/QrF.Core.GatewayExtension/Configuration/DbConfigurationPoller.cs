@@ -67,10 +67,7 @@ namespace QrF.Core.GatewayExtension.Configuration
 
         private async Task Poll()
         {
-            _logger.LogInformation("Started polling");
-
             var fileConfig = await _repo.Get();
-
             if (fileConfig.IsError)
             {
                 _logger.LogWarning($"error geting file config, errors are {string.Join(",", fileConfig.Errors.Select(x => x.Message))}");
@@ -84,7 +81,6 @@ namespace QrF.Core.GatewayExtension.Configuration
                     _internalConfigRepo.AddOrReplace(config.Data);
                 }
             }
-            _logger.LogInformation("Finished polling");
         }
     }
 }

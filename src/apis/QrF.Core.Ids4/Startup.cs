@@ -13,7 +13,9 @@ using QrF.Core.Ids4.Infrastructure.Repositories;
 using QrF.Core.Ids4.Services;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
 
 namespace QrF.Core.Ids4
 {
@@ -32,7 +34,8 @@ namespace QrF.Core.Ids4
             services.AddSingleton(Configuration);
             services.Configure<ApiOptions>(Configuration);
             services.AddIdentityServer(o => o.PublicOrigin = Configuration["PublicOrigin"])
-                .AddDeveloperSigningCredential()
+                //.AddDeveloperSigningCredential()
+                .AddSigningCredential(new X509Certificate2(Path.Combine(Program.BasePath, Configuration["Cert:CertPath"]),Configuration["Cert:Password"]))
                 .AddDapperStore(o => {
                     o.DbConnectionStrings = Configuration["DbConnectionStrings"];
                     o.EnableForceExpire = true;

@@ -50,7 +50,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QrF.Core.Storage", "src\lib
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QrF.Core.Ids4", "src\apis\QrF.Core.Ids4\QrF.Core.Ids4.csproj", "{576A1190-F1D2-4326-8318-56FA4156B129}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QrF.Core.Admin", "src\apis\QrF.Core.Admin\QrF.Core.Admin.csproj", "{B6A0B15F-ED8C-4AF9-95F8-D89280275018}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QrF.Core.Admin", "src\apis\QrF.Core.Admin\QrF.Core.Admin.csproj", "{B6A0B15F-ED8C-4AF9-95F8-D89280275018}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

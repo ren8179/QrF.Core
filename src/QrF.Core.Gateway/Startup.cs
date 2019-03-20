@@ -27,14 +27,13 @@ namespace QrF.Core.Gateway
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            Action<IdentityServerAuthenticationOptions> config = o =>
-            {
-                o.Authority = Configuration["Auth:ServerUrl"];
-                o.ApiName = "gateway";
-                o.RequireHttpsMetadata = false;
-            };
             services.AddAuthentication()
-                .AddIdentityServerAuthentication(Configuration["Auth:ProviderKey"], config);
+                .AddIdentityServerAuthentication(Configuration["Auth:ProviderKey"], o =>
+                {
+                    o.Authority = Configuration["Auth:ServerUrl"];
+                    o.ApiName = Configuration["Auth:ApiName"];
+                    o.RequireHttpsMetadata = false;
+                });
 
             services.AddCustomSwagger(Configuration);
             services.AddOcelot(Configuration).AddExtOcelot(option =>
@@ -47,7 +46,12 @@ namespace QrF.Core.Gateway
                 option.ClientRateLimit = true;
             })
             .UseSqlServer()
-            .AddAdministration("/ocelot", config);
+            .AddAdministration("/ocelot", o =>
+            {
+                o.Authority = Configuration["Auth:ServerUrl"];
+                o.ApiName = Configuration["OcelotConfig:gatewayadmin"];
+                o.RequireHttpsMetadata = false;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

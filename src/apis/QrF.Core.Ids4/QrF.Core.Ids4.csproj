@@ -48,6 +48,12 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="cert\ids4.pfx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
   <ProjectExtensions><VisualStudio><UserProperties Properties_4launchSettings_1json__JSONSchema="" /></VisualStudio></ProjectExtensions>
 
 </Project>
