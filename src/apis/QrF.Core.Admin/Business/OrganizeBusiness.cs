@@ -79,6 +79,22 @@ namespace QrF.Core.Admin.Business
             return list;
         }
         /// <summary>
+        /// 
+        /// </summary>
+        public async Task<OrgDto> GetModelAsync(Guid id)
+        {
+            var model = await _dbContext.Queryable<Organize>().FirstAsync(o => o.KeyId == id);
+            return new OrgDto
+            {
+                KeyId = model.KeyId,
+                ParentId = model.ParentId,
+                Name = model.Name,
+                BizCode = model.BizCode,
+                Sort = model.Sort,
+                Status = model.Status
+            };
+        }
+        /// <summary>
         /// 编辑信息
         /// </summary>
         public async Task EditModel(OrgDto input)
@@ -87,9 +103,9 @@ namespace QrF.Core.Admin.Business
             var model = _mapper.Map<OrgDto, Organize>(input);
             if (model.KeyId != Guid.Empty)
             {
-                    await _dbContext.Updateable(model)
-                                    .IgnoreColumns(it => new {it.CreateTime })
-                                    .ExecuteCommandAsync();
+                await _dbContext.Updateable(model)
+                                .IgnoreColumns(it => new { it.CreateTime })
+                                .ExecuteCommandAsync();
             }
             else
             {

@@ -34,9 +34,9 @@ namespace QrF.Core.Admin.Business
                 .Select(o => new LogDto
                 {
                     Id = o.Id,
-                    Application=o.Application,
-                    BusinessId=o.BusinessId,
-                    BusinessType =o.BusinessType,
+                    Application = o.Application,
+                    BusinessId = o.BusinessId,
+                    BusinessType = o.BusinessType,
                     Level = o.Level,
                     Message = o.Message,
                     TimeStamp = o.TimeStamp
@@ -45,6 +45,13 @@ namespace QrF.Core.Admin.Business
             list = query.Key;
             totalNumber = query.Value;
             return new BasePageQueryOutput<LogDto> { Page = input.PageIndex, Rows = list, Total = totalNumber };
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public async Task<Log> GetModelAsync(int id)
+        {
+            return await _dbContext.Queryable<Log>().FirstAsync(o => o.Id == id);
         }
     }
 }

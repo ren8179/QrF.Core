@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using QrF.Core.Admin.Domain;
 using QrF.Core.Admin.Dto;
 using QrF.Core.Admin.Interfaces;
 using System.Threading.Tasks;
@@ -27,5 +28,16 @@ namespace QrF.Core.Admin.Controllers
         {
             return await _business.GetPageList(input);
         }
+
+        /// <summary>
+        /// 获取对象信息
+        /// </summary>
+        [HttpGet("GetModel")]
+        public async Task<Log> GetModelAsync(int id)
+        {
+            var model = await _business.GetModelAsync(id);
+            return model;
+        }
+
     }
 }

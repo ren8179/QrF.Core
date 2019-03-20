@@ -21,6 +21,10 @@ namespace QrF.Core.Admin.Interfaces
         /// <returns></returns>
         Task<IEnumerable<QueryOrganizeDto>> GetListAsync(Guid? deptId);
         /// <summary>
+        /// 
+        /// </summary>
+        Task<OrgDto> GetModelAsync(Guid id);
+        /// <summary>
         /// 编辑信息
         /// </summary>
         Task EditModel(OrgDto input);

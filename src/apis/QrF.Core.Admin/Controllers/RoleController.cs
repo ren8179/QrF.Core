@@ -2,6 +2,8 @@
 using QrF.Core.Admin.Dto;
 using QrF.Core.Admin.Interfaces;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace QrF.Core.Admin.Controllers
@@ -14,9 +16,14 @@ namespace QrF.Core.Admin.Controllers
     public class RoleController : ControllerBase
     {
         private readonly IRoleBusiness _business;
-        public RoleController(IRoleBusiness business)
+        private readonly IPermissionsBusiness _perBusiness;
+        private readonly IOrganizeBusiness _orgBusiness;
+        public RoleController(IRoleBusiness business, IPermissionsBusiness perBusiness,
+            IOrganizeBusiness orgBusiness)
         {
             _business = business;
+            _perBusiness = perBusiness;
+            _orgBusiness = orgBusiness;
         }
         /// <summary>
         /// 查询分页列表
@@ -30,10 +37,26 @@ namespace QrF.Core.Admin.Controllers
         }
 
         /// <summary>
+        /// 分页列表
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("GetUserRolePageList")]
+        public async Task<IActionResult> GetUserRolePageListAsync([FromQuery] QueryUserRolesInput input)
+        {
+            var res = await _business.GetPageList(input);
+            var pers = await _perBusiness.GetListByUserTypeAsync(input.UserId);
+            foreach (var item in res.Rows)
+            {
+                var dept = await _orgBusiness.GetModelAsync(item.DeptId);
+                item.DeptName = dept?.Name;
+                item.IsAuth = pers.Count(o => o.RoleId == item.KeyId) > 0;
+            }
+            return Ok(res);
+        }
+        /// <summary>
         /// 编辑
         /// </summary>
-        [HttpPost]
-        [Route("Edit")]
+        [HttpPost("Edit")]
         public async Task<IActionResult> EditAsync([FromBody] RoleDto input)
         {
             await _business.EditModel(input);
@@ -50,6 +73,17 @@ namespace QrF.Core.Admin.Controllers
             if (input == null || !input.KeyId.HasValue) throw new Exception("编号不存在");
             await _business.DelModel(input.KeyId.Value);
             return Ok(new MsgResultDto { Success = true });
+        }
+
+        /// <summary>
+        /// 用户授权角色
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("ToRole")]
+        public async Task<ObjectResult> AdminToRoleAsync([FromBody] ToRoleInput input)
+        {
+            var result = await _perBusiness.ToRole(input);
+            return Ok(result);
         }
 
     }

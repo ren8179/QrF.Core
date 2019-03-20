@@ -32,5 +32,9 @@ namespace QrF.Core.Admin.Dto
         /// 
         /// </summary>
         public DateTime CreateTime { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool IsAuth { get; set; } = false;
     }
 }

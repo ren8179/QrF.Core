@@ -1,4 +1,5 @@
-﻿using QrF.Core.Admin.Dto;
+﻿using QrF.Core.Admin.Domain;
+using QrF.Core.Admin.Dto;
 using System.Threading.Tasks;
 
 namespace QrF.Core.Admin.Interfaces
@@ -11,5 +12,9 @@ namespace QrF.Core.Admin.Interfaces
         /// <param name="input"></param>
         /// <returns></returns>
         Task<BasePageQueryOutput<LogDto>> GetPageList(QueryLogsInput input);
+        /// <summary>
+        /// 
+        /// </summary>
+        Task<Log> GetModelAsync(int id);
     }
 }

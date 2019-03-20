@@ -33,8 +33,7 @@ namespace QrF.Core.Admin.Controllers
         /// <summary>
         /// 获取模块级联列表
         /// </summary>
-        [HttpGet]
-        [Route("GetCascaderList")]
+        [HttpGet("GetCascaderList")]
         public async Task<IEnumerable<CascaderItem>> GetCascaderListAsync()
         {
             var list = await _business.GetListAsync(null);
@@ -53,8 +52,7 @@ namespace QrF.Core.Admin.Controllers
         /// <summary>
         /// 编辑
         /// </summary>
-        [HttpPost]
-        [Route("Edit")]
+        [HttpPost("Edit")]
         public async Task<IActionResult> EditAsync([FromBody] OrgDto input)
         {
             await _business.EditModel(input);
