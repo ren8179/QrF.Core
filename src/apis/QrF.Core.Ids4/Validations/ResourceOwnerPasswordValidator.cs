@@ -1,4 +1,5 @@
 ﻿using IdentityModel;
+using IdentityServer4.Models;
 using IdentityServer4.Validation;
 using QrF.Core.Ids4.Services.Interfaces;
 using System;
@@ -33,6 +34,10 @@ namespace QrF.Core.IdentityServer4.Validations
                     OidcConstants.AuthenticationMethods.Password,
                     DateTime.UtcNow,
                     user.Claims);
+            }
+            else
+            {
+                context.Result = new GrantValidationResult(TokenRequestErrors.InvalidGrant, "Invalid client credential");
             }
             return Task.CompletedTask;
         }

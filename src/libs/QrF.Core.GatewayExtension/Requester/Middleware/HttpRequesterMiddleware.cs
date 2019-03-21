@@ -49,7 +49,7 @@ namespace QrF.Core.GatewayExtension.Requester.Middleware
                 else
                 {
                     var error = new InternalServerError($"请求服务异常");
-                    Logger.LogWarning($"路由地址 {context.HttpContext.Request.Path} 请求服务异常. {error}");
+                    Logger.LogWarning($"路由地址 {context.HttpContext.Request.Path} {error}");
                     SetPipelineError(context, error);
                     return;
                 }

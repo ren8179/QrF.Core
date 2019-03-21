@@ -32,7 +32,8 @@ namespace QrF.Core.Gateway
                 {
                     o.Authority = Configuration["Auth:ServerUrl"];
                     o.ApiName = Configuration["Auth:ApiName"];
-                    o.RequireHttpsMetadata = false;
+                    o.RequireHttpsMetadata = Convert.ToBoolean(Configuration["Auth:UseHttps"]);
+                    o.SupportedTokens = SupportedTokens.Both;
                 });
 
             services.AddCustomSwagger(Configuration);
@@ -50,7 +51,8 @@ namespace QrF.Core.Gateway
             {
                 o.Authority = Configuration["Auth:ServerUrl"];
                 o.ApiName = Configuration["OcelotConfig:gatewayadmin"];
-                o.RequireHttpsMetadata = false;
+                o.RequireHttpsMetadata = Convert.ToBoolean(Configuration["Auth:UseHttps"]);
+                o.SupportedTokens = SupportedTokens.Both;
             });
         }
 
