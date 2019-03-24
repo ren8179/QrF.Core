@@ -362,11 +362,47 @@ namespace QrF.Core.Utils.Extension
                 {
                     sb.Append(hashByte.ToString("X2"));
                 }
-
                 return sb.ToString();
             }
         }
+        /// <summary>
+        /// 使用MD5加密字符串,加密后的字符串由不包含 - 的小写字母组成
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static string GetMd5(this string str)
+        {
+            if (string.IsNullOrEmpty(str)) return str;
+            using (var md5 = MD5.Create())
+            {
+                var result = md5.ComputeHash(Encoding.UTF8.GetBytes(str));
+                return BitConverter.ToString(result).Replace("-", "").ToLower();
+            }
+        }
 
+        /// <summary>
+        /// 根据指定的符号解析字符串，可以用来解析Get请求参数串
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="separator">分隔符号</param>
+        /// <param name="other">二级分割符号</param>
+        /// <returns>参数字典</returns>
+        public static Dictionary<string, string> ToParamsDictionary(this string str, char separator = '&', char other = '=')
+        {
+            if (string.IsNullOrEmpty(str) || str.IndexOf(separator) < 0)
+                throw new Exception($"解析失败，请检查是否包含 '{separator}' 符号");
+            var keys = new Dictionary<string, string>();
+            foreach (var item in str.Split(separator))
+            {
+                if (item.IndexOf(other) > 0)
+                {
+                    var arr = item.Split(other);
+                    keys.Add(arr[0], arr[1]);
+                }
+            }
+
+            return keys;
+        }
         /// <summary>
         /// Converts camelCase string to PascalCase string.
         /// </summary>
