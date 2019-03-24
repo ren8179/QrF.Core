@@ -41,10 +41,10 @@ namespace QrF.Core.Admin.Business
                     Message = o.Message,
                     TimeStamp = o.TimeStamp
                 })
-                .ToPageListAsync(input.PageIndex, input.PageSize, totalNumber);
+                .ToPageListAsync(input.Page, input.PageSize, totalNumber);
             list = query.Key;
             totalNumber = query.Value;
-            return new BasePageQueryOutput<LogDto> { Page = input.PageIndex, Rows = list, Total = totalNumber };
+            return new BasePageQueryOutput<LogDto> { Page = input.Page, Rows = list, Total = totalNumber };
         }
         /// <summary>
         /// 

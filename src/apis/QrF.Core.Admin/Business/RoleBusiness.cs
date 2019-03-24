@@ -33,7 +33,7 @@ namespace QrF.Core.Admin.Business
             var totalNumber = 0;
             var query = await _dbContext.Queryable<Role>()
                 .WhereIF(input.DeptId.HasValue, o => o.DeptId == input.DeptId.Value)
-                .ToPageListAsync(input.PageIndex, input.PageSize, totalNumber);
+                .ToPageListAsync(input.Page, input.PageSize, totalNumber);
             list = query.Key;
             totalNumber = query.Value;
             var result = new List<QueryRoleDto>();
@@ -54,7 +54,7 @@ namespace QrF.Core.Admin.Business
                     });
                 });
             }
-            return new BasePageQueryOutput<QueryRoleDto> { Page = input.PageIndex, Rows = result, Total = totalNumber };
+            return new BasePageQueryOutput<QueryRoleDto> { Page = input.Page, Rows = result, Total = totalNumber };
         }
         /// <summary>
         /// 编辑信息

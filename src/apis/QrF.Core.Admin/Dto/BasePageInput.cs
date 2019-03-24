@@ -9,13 +9,13 @@ namespace QrF.Core.Admin.Dto
     {
         public BasePageInput()
         {
-            this.PageIndex = 1;
+            this.Page = 1;
             this.PageSize = 20;
         }
         /// <summary>
         /// 当前分页
         /// </summary>
-        public int PageIndex { set; get; }
+        public int Page { set; get; }
         /// <summary>
         /// 每页数量
         /// </summary>

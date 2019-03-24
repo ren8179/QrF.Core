@@ -38,7 +38,7 @@ namespace QrF.Core.Admin.Business
                 .WhereIF(input.Mobile.IsNotNullAndWhiteSpace(), o => o.Mobile == input.Mobile)
                 .WhereIF(input.Email.IsNotNullAndWhiteSpace(), o => o.Email == input.Email)
                 .WhereIF(input.Status.HasValue, o => o.Status == input.Status.Value)
-                .ToPageListAsync(input.PageIndex, input.PageSize, totalNumber);
+                .ToPageListAsync(input.Page, input.PageSize, totalNumber);
             list = query.Key;
             totalNumber = query.Value;
             var result = new List<QueryUserDto>();
@@ -66,7 +66,7 @@ namespace QrF.Core.Admin.Business
                     });
                 });
             }
-            return new BasePageQueryOutput<QueryUserDto> { Page = input.PageIndex, Rows = result, Total = totalNumber };
+            return new BasePageQueryOutput<QueryUserDto> { Page = input.Page, Rows = result, Total = totalNumber };
         }
         /// <summary>
         /// 编辑信息
