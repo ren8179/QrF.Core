@@ -264,3 +264,5 @@ __pycache__/
 *.pubxml
 /src/apis/QrF.Core.CMS/wwwroot/UpLoad/Images/201903
 /src/apis/QrF.Core.Admin/Logs
+/src/QrF.Core.Gateway/Logs
+/src/apis/QrF.Core.Ids4/Logs

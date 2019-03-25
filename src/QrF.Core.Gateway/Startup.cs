@@ -35,8 +35,8 @@ namespace QrF.Core.Gateway
                     o.RequireHttpsMetadata = Convert.ToBoolean(Configuration["Auth:UseHttps"]);
                     o.SupportedTokens = SupportedTokens.Both;
                 });
-
-            services.AddCustomSwagger(Configuration);
+            services.AddCors();
+            //services.AddCustomSwagger(Configuration);
             services.AddOcelot(Configuration).AddExtOcelot(option =>
             {
                 option.DbConnectionStrings = Configuration["OcelotConfig:DbConnectionStrings"];
@@ -67,6 +67,11 @@ namespace QrF.Core.Gateway
             {
                 app.UseExceptionHandler("/Error");
             }
+            app.UseCors(builder => builder
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials());
             app.UseExtOcelot().Wait();
         }
     }

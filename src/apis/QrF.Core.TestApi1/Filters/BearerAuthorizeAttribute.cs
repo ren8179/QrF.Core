@@ -3,13 +3,17 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using QrF.Core.TestApi1.Configuration;
 using Serilog;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace QrF.Core.TestApi1.Filters
@@ -19,7 +23,7 @@ namespace QrF.Core.TestApi1.Filters
         /// <summary>
         /// 
         /// </summary>
-        public const string DefaultAuthenticationScheme = "Bearer";
+        public const string DefaultAuthenticationScheme = "BearerAuth";
         /// <summary>
         /// 认证服务器地址
         /// </summary>
@@ -29,11 +33,15 @@ namespace QrF.Core.TestApi1.Filters
         /// </summary>
         private string apiName = "";
         private readonly ILogger _log = Log.ForContext<BearerAuthorizeAttribute>();
-        public BearerAuthorizeAttribute(string IssUrl, string ApiName)
+        private IMemoryCache _cache;
+        private readonly AppSettings _options;
+        public BearerAuthorizeAttribute(IOptions<AppSettings> optionsAccessor, IMemoryCache memoryCache)
         {
-            issUrl = IssUrl;
-            apiName = ApiName;
             this.AuthenticationSchemes = DefaultAuthenticationScheme;
+            _options = optionsAccessor.Value ?? throw new ArgumentNullException(nameof(optionsAccessor));
+            _cache = memoryCache;
+            issUrl = _options.Auth.ServerUrl;
+            apiName = _options.Auth.ApiName;
         }
 
         public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
@@ -42,7 +50,6 @@ namespace QrF.Core.TestApi1.Filters
             {
                 return;
             }
-            var currentuser = context.HttpContext.User;
             var result = await context.HttpContext.AuthenticateAsync(DefaultAuthenticationScheme);
             if (result == null || !result.Succeeded)
             {
@@ -51,20 +58,26 @@ namespace QrF.Core.TestApi1.Filters
                 {
                     try
                     {
-                        var httpclient = new HttpClient();
-                        var jwtKey = await httpclient.GetStringAsync(issUrl + "/.well-known/openid-configuration/jwks");
-                        var Ids4keys = JsonConvert.DeserializeObject<Ids4Keys>(jwtKey);
-                        var jwk = Ids4keys.keys;
-                        var handler = new JwtSecurityTokenHandler();
-                        var claims = handler.ValidateToken(authHeader.Replace("Bearer ", ""), new TokenValidationParameters
+                        var token = authHeader.Replace("Bearer ", "");
+                        ClaimsPrincipal cacheEntry;
+                        if (!_cache.TryGetValue(token, out cacheEntry))
                         {
-                            ValidIssuer = issUrl,
-                            IssuerSigningKeys = jwk,
-                            ValidateLifetime = true,
-                            ValidAudience = apiName
-                        }, out var _);
-                        context.HttpContext.User = claims;
-                        await context.HttpContext.SignInAsync(DefaultAuthenticationScheme, claims);
+                            var httpclient = new HttpClient();
+                            var jwtKey = await httpclient.GetStringAsync(issUrl + "/.well-known/openid-configuration/jwks");
+                            var Ids4keys = JsonConvert.DeserializeObject<Ids4Keys>(jwtKey);
+                            var handler = new JwtSecurityTokenHandler();
+                            cacheEntry = handler.ValidateToken(token, new TokenValidationParameters
+                            {
+                                ValidIssuer = issUrl,
+                                IssuerSigningKeys = Ids4keys.Keys,
+                                ValidateLifetime = true,
+                                ValidAudience = apiName
+                            }, out var _);
+                            _cache.Set(token, cacheEntry, new MemoryCacheEntryOptions()
+                                .SetSlidingExpiration(TimeSpan.FromSeconds(3600)));
+                        }
+                        await context.HttpContext.SignInAsync(DefaultAuthenticationScheme, cacheEntry);
+                        context.HttpContext.User = cacheEntry;
                         return;
                     }
                     catch (Exception ex)
@@ -75,11 +88,18 @@ namespace QrF.Core.TestApi1.Filters
                 }
                 context.Result = new UnauthorizedResult();
             }
+            else
+            {
+                if (result?.Principal != null)
+                {
+                    context.HttpContext.User = result.Principal;
+                }
+            }
             return;
         }
     }
     public class Ids4Keys
     {
-        public JsonWebKey[] keys { get; set; }
+        public JsonWebKey[] Keys { get; set; }
     }
 }
