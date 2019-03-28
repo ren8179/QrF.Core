@@ -8,6 +8,8 @@
     <PackageLicenseUrl></PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/ren8179/QrF.Core/tree/master/src/libs/QrF.Core.ComFr</PackageProjectUrl>
     <RepositoryUrl>https://github.com/ren8179/QrF.Core/tree/master/src/libs/QrF.Core.ComFr</RepositoryUrl>
+    <AssemblyVersion>1.0.1.0</AssemblyVersion>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>

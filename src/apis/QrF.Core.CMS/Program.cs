@@ -18,7 +18,6 @@ namespace QrF.Core.CMS
         public static int Main(string[] args)
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-            var bud = new ConfigurationBuilder();
             var basepath = AppContext.BaseDirectory;
             var config = GetConfiguration(basepath);
             IP = config["IP"];
