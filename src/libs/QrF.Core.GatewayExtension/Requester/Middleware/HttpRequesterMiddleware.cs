@@ -2,10 +2,12 @@
 using Ocelot.Logging;
 using Ocelot.Middleware;
 using Ocelot.Requester;
+using Ocelot.Responses;
 using QrF.Core.GatewayExtension.Errors;
+using QrF.Core.Utils.Extension;
 using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace QrF.Core.GatewayExtension.Requester.Middleware
@@ -35,28 +37,41 @@ namespace QrF.Core.GatewayExtension.Requester.Middleware
                 SetPipelineError(context, response.Errors);
                 return;
             }
-            else if (response.Data.StatusCode != System.Net.HttpStatusCode.OK)
-            {//如果后端未处理异常，设置异常信息，统一输出，防止暴露敏感信息
-                if (response.Data.StatusCode == System.Net.HttpStatusCode.BadRequest)
-                {//提取Ids4相关的异常(400)
-                    var result = await response.Data.Content.ReadAsStringAsync();
-                    JObject jobj = JObject.Parse(result);
-                    var errorMsg = jobj["error"]?.ToString();
-                    var error = new IdentityServer4Error(errorMsg ?? "未知异常");
-                    SetPipelineError(context, error);
-                    return;
-                }
-                else
-                {
-                    var error = new InternalServerError($"请求服务异常");
-                    Logger.LogWarning($"路由地址 {context.HttpContext.Request.Path} {error}");
-                    SetPipelineError(context, error);
-                    return;
-                }
+            else if (response.Data.StatusCode != HttpStatusCode.OK)//如果后端未处理异常，设置异常信息，统一输出，防止暴露敏感信息
+            {
+                var result = await response.Data.Content.ReadAsStringAsync();
+                Logger.LogDebug($"response content：{result}");
+                SetPipelineError(context, GetError(response.Data.StatusCode, result, context.HttpContext.Request.Path.Value));
+                return;
             }
             Logger.LogDebug("setting http response message");
-
             context.DownstreamResponse = new DownstreamResponse(response.Data);
+        }
+
+        private Ocelot.Errors.Error GetError(HttpStatusCode code, string response, string requestPath)
+        {
+            try
+            {
+                JObject jobj = JObject.Parse(response);
+                var errorMsg = jobj["error"]?.ToString();
+                if (errorMsg.IsNullOrEmpty())
+                    errorMsg = jobj["msg"]?.ToString();
+                Logger.LogWarning($"路由地址 {requestPath} {errorMsg}");
+                switch (code)
+                {
+                    case HttpStatusCode.BadRequest://提取Ids4相关的异常(400)
+                        return new IdentityServer4Error(errorMsg ?? "未知异常");
+                    case HttpStatusCode.Unauthorized:
+                        return new IdentityServer4UnauthorizedError(errorMsg ?? "未授权");
+                    default:
+                        return new InternalServerError($"请求服务异常");
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError("解析响应内容失败", ex);
+                return new InternalServerError($"请求服务异常");
+            }
         }
     }
 }
