@@ -30,7 +30,7 @@ namespace QrF.Core.Ids4.Infrastructure.Repositories
                 var result = connection.QueryFirstOrDefault<SysUser>(sql, new { uaccount });
                 if (result != null)
                 {
-                    var pwd = $"{upassword}{result.Salt}".ToMd5();
+                    var pwd = $"{upassword}+_(QVQ)_+{result.Salt}".ToMd5();
                     if (result.Password != pwd) return null;
                 }
                 return result;

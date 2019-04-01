@@ -81,7 +81,7 @@ namespace QrF.Core.Admin.Business
                 if (model.Password.IsNotNullAndWhiteSpace())
                 {
                     model.Salt = Randoms.CreateRandomValue(8, false);
-                    model.Password = $"{model.Password}{model.Salt}".ToMd5();
+                    model.Password = $"{model.Password}+_(QVQ)_+{model.Salt}".ToMd5();
                     await _dbContext.Updateable(model)
                                     .IgnoreColumns(it => new { it.Account, it.CreateTime })
                                     .ExecuteCommandAsync();
