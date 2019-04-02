@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.ServiceProcess;
 
-namespace QrF.Core.Admin
+namespace QrF.Core.Config
 {
     internal class QrfWebHostService : WebHostService
     {
