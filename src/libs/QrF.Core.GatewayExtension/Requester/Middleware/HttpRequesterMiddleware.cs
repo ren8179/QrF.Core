@@ -27,20 +27,24 @@ namespace QrF.Core.GatewayExtension.Requester.Middleware
         public async Task Invoke(DownstreamContext context)
         {
             var response = await _requester.GetResponse(context);
-
             if (response.IsError)
             {
                 Logger.LogDebug("IHttpRequester returned an error, setting pipeline error");
                 SetPipelineError(context, response.Errors);
                 return;
             }
-            else if (response.Data.StatusCode != HttpStatusCode.OK)//如果后端未处理异常，设置异常信息，统一输出，防止暴露敏感信息
+            else if ((int)response.Data.StatusCode >= (int)HttpStatusCode.BadRequest)//如果后端未处理异常，设置异常信息，统一输出，防止暴露敏感信息
             {
+                var path = context.HttpContext.Request.Path.Value;
+                if (IsFile(path))
+                {
+                    context.DownstreamResponse = new DownstreamResponse(response.Data);
+                    return;
+                }
                 var result = await response.Data.Content.ReadAsStringAsync();
-                SetPipelineError(context, GetError(response.Data.StatusCode, result, context.HttpContext.Request.Path.Value));
+                SetPipelineError(context, GetError(response.Data.StatusCode, result, path));
                 return;
             }
-            Logger.LogDebug("setting http response message");
             context.DownstreamResponse = new DownstreamResponse(response.Data);
         }
 
@@ -56,7 +60,7 @@ namespace QrF.Core.GatewayExtension.Requester.Middleware
                     if (errorMsg.IsNullOrEmpty())
                         errorMsg = jobj["msg"]?.ToString();
                 }
-                Logger.LogWarning($"路由地址 {requestPath} {errorMsg}");
+                Logger.LogWarning($"路由地址 {requestPath} {code} {errorMsg}");
                 switch (code)
                 {
                     case HttpStatusCode.BadRequest://提取Ids4相关的异常(400)
@@ -74,6 +78,13 @@ namespace QrF.Core.GatewayExtension.Requester.Middleware
                 Logger.LogError($"无法解析响应内容:{response}", ex);
                 return new InternalServerError($"请求服务异常");
             }
+        }
+
+        private bool IsFile(string path, string fileFilt = ".jpg|.png|.ico|.txt|.gif|.jpeg")
+        {
+            if (path.IndexOf(".") < 0) return false;
+            var ext = path.Substring(path.LastIndexOf("."));
+            return fileFilt.IndexOf(ext.ToLower(), StringComparison.Ordinal) > -1;
         }
     }
 }

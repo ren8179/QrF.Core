@@ -36,6 +36,12 @@ namespace QrF.Core.Gateway
                     o.SupportedTokens = SupportedTokens.Both;
                 });
             services.AddCors();
+            services.AddHsts(options =>
+            {
+                options.Preload = true;
+                options.IncludeSubDomains = true;
+                options.MaxAge = TimeSpan.FromDays(60);
+            });
             //services.AddCustomSwagger(Configuration);
             services.AddOcelot(Configuration).AddExtOcelot(option =>
             {
@@ -66,7 +72,9 @@ namespace QrF.Core.Gateway
             else
             {
                 app.UseExceptionHandler("/Error");
+                app.UseHsts();
             }
+            app.UseHttpsRedirection();
             app.UseCors(builder => builder
                     .AllowAnyOrigin()
                     .AllowAnyMethod()
