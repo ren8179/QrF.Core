@@ -11,7 +11,7 @@ namespace QrF.Core.Config.Interfaces
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        Task<BasePageOutput<ClientsDto>> GetPageList(BasePageInput input);
+        Task<BasePageOutput<ClientsDto>> GetPageList(PageInput input);
         /// <summary>
         /// 编辑信息
         /// </summary>

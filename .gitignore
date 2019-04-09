@@ -266,3 +266,4 @@ __pycache__/
 /src/apis/QrF.Core.Admin/Logs
 /src/QrF.Core.Gateway/Logs
 /src/apis/QrF.Core.Ids4/Logs
+/src/apis/QrF.Core.Config/Logs

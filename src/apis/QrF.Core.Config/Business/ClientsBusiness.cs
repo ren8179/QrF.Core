@@ -5,6 +5,7 @@ using QrF.Core.Config.Infrastructure.DbContext;
 using QrF.Core.Config.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using QrF.Core.Utils.Extension;
 
 namespace QrF.Core.Config.Business
 {
@@ -24,11 +25,12 @@ namespace QrF.Core.Config.Business
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public async Task<BasePageOutput<ClientsDto>> GetPageList(BasePageInput input)
+        public async Task<BasePageOutput<ClientsDto>> GetPageList(PageInput input)
         {
             var list = new List<Clients>();
             var totalNumber = 0;
             var query = await _dbContext.Queryable<Clients>()
+                .WhereIF(!input.Name.IsNullOrEmpty(), o => o.ClientId.Contains(input.Name))
                 .ToPageListAsync(input.Page, input.PageSize, totalNumber);
             list = query.Key;
             totalNumber = query.Value;

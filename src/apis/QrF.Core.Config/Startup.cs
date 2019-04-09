@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
+using QrF.Core.Config.Extension;
 using QrF.Core.Config.Infrastructure.DbContext;
 using QrF.Core.Config.Interfaces;
 using System;
@@ -34,7 +35,10 @@ namespace QrF.Core.Config
             services.AddSqlSugarDbContext();
             services.AddAutoMapper();
             services.AddCors();
-            services.AddMvc().AddJsonOptions(options =>
+            services.AddMvc(options =>
+            {
+                options.Filters.Add(typeof(WebApiResultMiddleware));
+            }).AddJsonOptions(options =>
             {
                 options.SerializerSettings.DateFormatString = "yyyy-MM-dd HH:mm:ss";
             }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);

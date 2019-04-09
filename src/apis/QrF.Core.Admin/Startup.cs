@@ -59,7 +59,6 @@ namespace QrF.Core.Admin
                 FileProvider = new PhysicalFileProvider(Program.BasePath + "/wwwroot/"),
                 RequestPath = new PathString("/AdminAPI")
             });
-            app.UseErrorHandling();
             app.UseCors(builder => builder
                     .AllowAnyOrigin()
                     .AllowAnyMethod()
