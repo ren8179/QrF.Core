@@ -23,8 +23,6 @@ namespace QrF.Core.Config.Business
         /// <summary>
         /// 分页列表
         /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
         public async Task<BasePageOutput<ClientsDto>> GetPageList(PageInput input)
         {
             var list = new List<Clients>();
@@ -67,8 +65,6 @@ namespace QrF.Core.Config.Business
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
         public async Task DelModel(int input)
         {
             await _dbContext.Deleteable<Clients>()

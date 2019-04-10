@@ -1,18 +1,19 @@
-﻿using QrF.Core.Config.Dto;
+﻿using QrF.Core.Config.Domain;
+using QrF.Core.Config.Dto;
 using System.Threading.Tasks;
 
 namespace QrF.Core.Config.Interfaces
 {
-    public interface IClientsBusiness
+    public interface IReRouteBusiness
     {
         /// <summary>
         /// 分页查询
         /// </summary>
-        Task<BasePageOutput<ClientsDto>> GetPageList(PageInput input);
+        Task<BasePageOutput<ReRoute>> GetPageList(PageInput input);
         /// <summary>
         /// 编辑信息
         /// </summary>
-        Task EditModel(ClientsDto input);
+        Task EditModel(ReRoute input);
         /// <summary>
         /// 删除
         /// </summary>

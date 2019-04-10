@@ -91,7 +91,30 @@ export const asyncRoutes = [
       }
     ]
   },
-
+  {
+    path: '/globalConfiguration',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/globalConfiguration/index'),
+        name: 'GlobalConfiguration',
+        meta: { title: '网关全局配置', icon: 'list', noCache: true }
+      }
+    ]
+  },
+  {
+    path: '/reRoute',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/reRoute/index'),
+        name: 'ReRoute',
+        meta: { title: '路由配置', icon: 'list', noCache: true }
+      }
+    ]
+  },
   {
     path: '/icon',
     component: Layout,

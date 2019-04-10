@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using QrF.Core.Config.Domain;
 using QrF.Core.Config.Dto;
 using QrF.Core.Config.Interfaces;
 using System;
@@ -11,10 +12,10 @@ namespace QrF.Core.Config.Controllers
     /// </summary>
     [Route("ConfigAPI/[controller]")]
     [ApiController]
-    public class ClientsController : ControllerBase
+    public class GlobalConfigurationController : ControllerBase
     {
-        private readonly IClientsBusiness _business;
-        public ClientsController(IClientsBusiness business)
+        private readonly IGlobalConfigurationBusiness _business;
+        public GlobalConfigurationController(IGlobalConfigurationBusiness business)
         {
             _business = business;
         }
@@ -31,7 +32,7 @@ namespace QrF.Core.Config.Controllers
         /// 编辑
         /// </summary>
         [HttpPost("Edit")]
-        public async Task<IActionResult> EditAsync([FromBody] ClientsDto input)
+        public async Task<IActionResult> EditAsync([FromBody] GlobalConfiguration input)
         {
             await _business.EditModel(input);
             return Ok(new MsgResultDto { Success = true });
