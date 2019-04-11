@@ -50,15 +50,23 @@
         <el-button type="primary" @click="updateData">保存</el-button>
       </div>
     </el-dialog>
+    <!-- 路由配置 -->
+    <el-dialog :visible.sync="dialogReRouteVisible" title="网关路由配置">
+      <el-row :gutter="20" style="min-height:500px;">
+        <accroute :current="current" />
+      </el-row>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import { getPageList, edit, del } from '@/api/globalconfiguration'
 import waves from '@/directive/waves'
+import { Accroute } from './components'
 
 export default {
   directives: { waves },
+  components: { Accroute },
   data() {
     return {
       total: 0,
@@ -83,14 +91,17 @@ export default {
       btns: [
         { DomId: 'btnAdd', Name: '新增', Type: 'button', Class: 'primary', Icon: 'plus' },
         { DomId: 'btnEdit', Name: '编辑', Type: 'inline', Class: 'success', Icon: 'edit' },
-        { DomId: 'btnDel', Name: '删除', Type: 'inline', Class: 'danger', Icon: 'delete' }
+        { DomId: 'btnDel', Name: '删除', Type: 'inline', Class: 'danger', Icon: 'delete' },
+        { DomId: 'btnAccess', Name: '路由配置', Type: 'inline', Class: 'warning', Icon: 'tickets' }
       ],
       dialogFormVisible: false,
       temp: { infoStatus: 1 },
       editTitle: '',
       rules: {
         gatewayName: [{ required: true, message: '网关名称', trigger: 'blur' }]
-      }
+      },
+      current: null,
+      dialogReRouteVisible: false
     }
   },
   created() {
@@ -117,7 +128,7 @@ export default {
       this.getList()
     },
     handleCurrentChange(val) {
-      this.listQuery.page = val === 0 ? 0 : (val - 1)
+      this.listQuery.page = val
       this.getList()
     },
     handleBtnClick(domid, row) {
@@ -140,6 +151,10 @@ export default {
           break
         case 'btnDel':
           this.handleDelete(row)
+          break
+        case 'btnAccess':
+          this.current = row.keyId
+          this.dialogReRouteVisible = true
           break
       }
     },

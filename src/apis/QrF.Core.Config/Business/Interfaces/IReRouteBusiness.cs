@@ -9,7 +9,7 @@ namespace QrF.Core.Config.Interfaces
         /// <summary>
         /// 分页查询
         /// </summary>
-        Task<BasePageOutput<ReRoute>> GetPageList(PageInput input);
+        Task<BasePageOutput<ReRoute>> GetPageList(ReRoutePageInput input);
         /// <summary>
         /// 编辑信息
         /// </summary>

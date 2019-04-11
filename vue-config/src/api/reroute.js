@@ -9,11 +9,43 @@ export function getCascaderList() {
   })
 }
 
+export function editType(data) {
+  return request({
+    url: base_url + 'EditType',
+    method: 'post',
+    data
+  })
+}
+
+export function delType(id) {
+  return request({
+    url: base_url + 'DelType',
+    method: 'post',
+    data: { id }
+  })
+}
+
 export function getPageList(params) {
   return request({
     url: base_url + 'GetPageList',
     method: 'get',
     params
+  })
+}
+
+export function getAccReRouteList(params) {
+  return request({
+    url: base_url + 'GetAccReRouteList',
+    method: 'get',
+    params
+  })
+}
+
+export function toAccReRoute(data) {
+  return request({
+    url: base_url + 'ToAccReRoute',
+    method: 'post',
+    data
   })
 }
 
@@ -32,4 +64,3 @@ export function del(id) {
     data: { id }
   })
 }
-

@@ -4,7 +4,15 @@
       <template slot="paneL">
         <div class="left-container">
           <div class="tree-nav-title">路由分类</div>
-          <el-tree :data="casOrgs" :props="defaultProps" :expand-on-click-node="false" default-expand-all highlight-current class="left-tree" @node-click="handleNodeClick">
+          <div style="float:right;margin-top:-50px;padding: 0 5px">
+            <el-tooltip class="item" effect="dark" content="添加分类" placement="top-start">
+              <el-button v-waves round type="success" icon="el-icon-plus" size="mini" style="padding: 7px 8px;" @click="handleBtnClick('btnAddItem')" />
+            </el-tooltip>
+            <el-tooltip class="item" effect="dark" content="删除分类" placement="top-start">
+              <el-button v-waves round type="danger" icon="el-icon-delete" size="mini" style="padding: 7px 8px;" @click="handleItemDel" />
+            </el-tooltip>
+          </div>
+          <el-tree :data="cases" :props="defaultProps" :expand-on-click-node="false" default-expand-all highlight-current class="left-tree" @node-click="handleNodeClick">
             <span slot-scope="{ node, data }" class="custom-tree-node">
               <span> <svg-icon :icon-class="data.children && data.children.length > 0 ? 'folder':'doc'" class="el-tree-icon" />{{ node.label }}</span>
             </span>
@@ -15,8 +23,8 @@
         <el-card class="box-card">
           <div slot="header" class="clearfix">
             <el-form ref="queryForm" :inline="true" :model="listQuery">
-              <el-form-item label="机构名称:" prop="name">
-                <el-input v-model="listQuery.name" size="small" class="filter-item" placeholder="机构名称" />
+              <el-form-item label="上游路径:" prop="name">
+                <el-input v-model="listQuery.name" size="small" class="filter-item" placeholder="上游路径" />
               </el-form-item>
               <el-form-item>
                 <el-button v-waves type="primary" class="filter-item" icon="el-icon-search" size="small" @click="handleFilter">查询</el-button>
@@ -47,19 +55,46 @@
     <!-- 编辑页 -->
     <el-dialog :visible.sync="dialogFormVisible" :title="editTitle">
       <el-form ref="formModel" :model="temp" :rules="rules" label-position="right" label-width="120px" style="width: 400px; margin-left:50px;">
-        <el-form-item label="名称:" prop="name"><el-input v-model="temp.name" /></el-form-item>
-        <el-form-item label="上级组织:" prop="parentId">
-          <el-cascader v-model="selectedOptions" :options="casOrgs" change-on-select placeholder="请选择" style="width:100%" @change="handleCascaderChange" />
+        <el-form-item label="路由分类:" prop="itemId">
+          <el-cascader v-model="selectedOptions" :options="cases" change-on-select placeholder="请选择" style="width:100%" @change="handleCascaderChange" />
         </el-form-item>
-        <el-form-item label="业务编码:" prop="bizCode"><el-input v-model="temp.bizCode" /></el-form-item>
-        <el-form-item label="状态:" prop="status">
-          <el-switch v-model="temp.status" active-text="启用" inactive-text="停用" />
+        <el-form-item label="请求Key:" prop="requestIdKey"><el-input v-model="temp.requestIdKey" /></el-form-item>
+        <el-form-item label="上游域名:" prop="upstreamHost"><el-input v-model="temp.upstreamHost" /></el-form-item>
+        <el-form-item label="上游路径:" prop="upstreamPathTemplate"><el-input v-model="temp.upstreamPathTemplate" /></el-form-item>
+        <el-form-item label="上游请求方法:" prop="upstreamHttpMethod"><el-input v-model="temp.upstreamHttpMethod" /></el-form-item>
+        <el-form-item label="下游请求架构:" prop="downstreamScheme"><el-input v-model="temp.downstreamScheme" /></el-form-item>
+        <el-form-item label="下游路径:" prop="downstreamPathTemplate"><el-input v-model="temp.downstreamPathTemplate" /></el-form-item>
+        <el-form-item label="下游地址:" prop="downstreamHostAndPorts"><el-input v-model="temp.downstreamHostAndPorts" /></el-form-item>
+        <el-form-item label="授权配置:" prop="authenticationOptions"><el-input v-model="temp.authenticationOptions" /></el-form-item>
+        <el-form-item label="缓存配置:" prop="cacheOptions"><el-input v-model="temp.cacheOptions" /></el-form-item>
+        <el-form-item label="服务发现名称:" prop="serviceName"><el-input v-model="temp.serviceName" /></el-form-item>
+        <el-form-item label="负载均衡配置:" prop="loadBalancerOptions"><el-input v-model="temp.loadBalancerOptions" /></el-form-item>
+        <el-form-item label="请求安全配置:" prop="qoSOptions"><el-input v-model="temp.qoSOptions" /></el-form-item>
+        <el-form-item label="路由优先级:" prop="priority"><el-input v-model="temp.priority" /></el-form-item>
+        <el-form-item label="状态:" prop="infoStatus">
+          <el-switch v-model="temp.infoStatus" :active-value="1" active-text="有效" inactive-text="无效" />
         </el-form-item>
-        <el-form-item label="序号:" prop="sort"><el-input v-model="temp.sort" /></el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取消</el-button>
         <el-button type="primary" @click="updateData">保存</el-button>
+      </div>
+    </el-dialog>
+    <!-- 编辑页 -->
+    <el-dialog :visible.sync="dialogItemFormVisible">
+      <el-form ref="itemModel" :model="itemModel" label-position="right" label-width="120px" style="width: 400px; margin-left:50px;">
+        <el-form-item label="上级分类:" prop="ItemParentId">
+          <el-cascader v-model="selectedOptions" :options="cases" change-on-select placeholder="请选择" style="width:100%" @change="handleItemCascaderChange" />
+        </el-form-item>
+        <el-form-item label="分类名称:" prop="itemName"><el-input v-model="itemModel.itemName" /></el-form-item>
+        <el-form-item label="分类描述:" prop="itemDetail"><el-input v-model="itemModel.itemDetail" type="textarea" /></el-form-item>
+        <el-form-item label="状态:" prop="infoStatus">
+          <el-switch v-model="itemModel.infoStatus" :active-value="1" active-text="有效" inactive-text="无效" />
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogItemFormVisible = false">取消</el-button>
+        <el-button type="primary" @click="updateItem">保存</el-button>
       </div>
     </el-dialog>
   </div>
@@ -67,7 +102,7 @@
 
 <script>
 import splitPane from 'vue-splitpane'
-import { getPageList, getCascaderList, edit, del } from '@/api/reroute'
+import { getPageList, getCascaderList, edit, del, editType, delType } from '@/api/reroute'
 import waves from '@/directive/waves'
 
 export default {
@@ -83,10 +118,11 @@ export default {
         draw: 0,
         page: 0,
         pageSize: 10,
-        deptId: null,
+        itemId: null,
         name: ''
       },
       columns: [
+        { data: 'requestIdKey', name: '请求Key', searchable: true, orderable: true },
         { data: 'upstreamPathTemplate', name: '上游路径', searchable: true, orderable: true },
         { data: 'upstreamHttpMethod', name: '上游请求方法', searchable: true, orderable: true },
         { data: 'downstreamScheme', name: '下游请求架构', searchable: true, orderable: true },
@@ -99,32 +135,27 @@ export default {
         { DomId: 'btnEdit', Name: '编辑', Type: 'inline', Class: 'success', Icon: 'edit' },
         { DomId: 'btnDel', Name: '删除', Type: 'inline', Class: 'danger', Icon: 'delete' }
       ],
-      defaultProps: {
-        children: 'children',
-        label: 'label'
-      },
+      defaultProps: { children: 'children', label: 'label' },
       dialogFormVisible: false,
-      temp: {
-        keyId: null,
-        name: '',
-        bizCode: '',
-        status: true,
-        sort: 0,
-        parentId: null
-      },
+      temp: {},
       rules: {
-        name: [{ required: true, message: '请输入名称', trigger: 'blur' }],
-        bizCode: [{ required: true, message: '请输入业务编码', trigger: 'blur' }],
-        parentId: [{ required: true, message: '请选择上级组织', trigger: 'change' }]
+        upstreamPathTemplate: [{ required: true, message: '上游路径', trigger: 'blur' }],
+        downstreamPathTemplate: [{ required: true, message: '下游路径', trigger: 'blur' }],
+        upstreamHttpMethod: [{ required: true, message: '上游请求方法', trigger: 'blur' }],
+        downstreamScheme: [{ required: true, message: '下游请求架构', trigger: 'blur' }],
+        downstreamHostAndPorts: [{ required: true, message: '下游地址', trigger: 'blur' }],
+        itemId: [{ required: true, message: '请选择上级组织', trigger: 'change' }]
       },
       editTitle: '',
-      casOrgs: [],
-      selectedOptions: []
+      cases: [],
+      selectedOptions: [],
+      itemModel: {},
+      dialogItemFormVisible: false
     }
   },
   created() {
     this.handleFilter()
-    getCascaderList().then(r => { this.casOrgs = r.result })
+    getCascaderList().then(r => { this.cases = r.result })
   },
   methods: {
     getList() {
@@ -154,19 +185,23 @@ export default {
       this.$refs[formName].resetFields()
     },
     handleNodeClick(data) {
-      this.listQuery.deptId = data.value
+      this.listQuery.itemId = data.value
       this.getList()
     },
     handleCascaderChange(val) {
       if (!val || val.length < 1) return
-      this.temp.parentId = val[val.length - 1]
+      this.temp.itemId = val[val.length - 1]
+    },
+    handleItemCascaderChange(val) {
+      if (!val || val.length < 1) return
+      this.itemModel.itemParentId = val[val.length - 1]
     },
     handleBtnClick(domid, row) {
       switch (domid) {
         case 'btnAdd':
           this.editTitle = '新增'
-          this.selectedOptions = [this.listQuery.deptId]
-          this.temp = { parentId: this.listQuery.deptId }
+          this.selectedOptions = [this.listQuery.itemId]
+          this.temp = { itemId: this.listQuery.itemId, infoStatus: 1 }
           this.dialogFormVisible = true
           this.$nextTick(() => {
             this.$refs['formModel'].clearValidate()
@@ -179,13 +214,21 @@ export default {
         case 'btnDel':
           this.handleDelete(row)
           break
+        case 'btnAddItem':
+          this.selectedOptions = [this.listQuery.itemId]
+          this.itemModel = { itemParentId: this.listQuery.itemId, infoStatus: 1 }
+          this.dialogItemFormVisible = true
+          this.$nextTick(() => {
+            this.$refs['itemModel'].clearValidate()
+          })
+          break
       }
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row)
       this.selectedOptions = []
       try {
-        this.casOrgs.filter(item => {
+        this.cases.filter(item => {
           this.getNodePath(item)
         })
       } catch (e) {
@@ -198,7 +241,7 @@ export default {
     },
     getNodePath(node) {
       this.selectedOptions.push(node.value)
-      if (node.value === this.temp.parentId) { // 找到符合条件的节点，终止掉递归
+      if (node.value === this.temp.itemId) { // 找到符合条件的节点，终止掉递归
         throw new Error('end node path')
       }
       if (node.children && node.children.length > 0) {
@@ -213,41 +256,62 @@ export default {
     handleDelete(row) {
       this.$confirm('删除操作不可逆，请问是否删除?', '提示', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }).then(() => {
         this.listLoading = true
-        del(row.keyId).then(response => {
+        del(row.reRouteId).then(response => {
           this.listLoading = false
-          if (response && response.data.success) {
+          if (response && response.success) {
+            this.handleFilter()
             this.$notify({ title: '成功', message: '删除成功', type: 'success', duration: 2000 })
-            this.refreshView()
           } else {
-            this.$message({ type: 'error', message: response.Message || '删除失败' })
+            this.$message({ type: 'error', message: response.msg || '删除失败' })
           }
         }).catch(() => { this.listLoading = false })
+      })
+    },
+    handleItemDel() {
+      if (!this.listQuery.itemId) {
+        this.$message({ type: 'error', message: '请选择要删除的分类' })
+      }
+      this.$confirm('删除操作不可逆，请问是否删除?', '提示', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }).then(() => {
+        delType(this.listQuery.itemId).then(response => {
+          if (response && response.success) {
+            getCascaderList().then(r => { this.cases = r.result })
+            this.$notify({ title: '成功', message: '删除成功', type: 'success', duration: 2000 })
+          } else {
+            this.$message({ type: 'error', message: response.msg || '删除失败' })
+          }
+        })
       })
     },
     updateData() {
       this.$refs['formModel'].validate((valid) => {
         if (valid) {
           const tempData = Object.assign({}, this.temp)
-          tempData.keyId = tempData.keyId || '00000000-0000-0000-0000-000000000000'
           edit(tempData).then(response => {
             this.dialogFormVisible = false
-            if (response && response.data.success) {
-              this.refreshView()
+            if (response && response.success) {
+              this.handleFilter()
               this.$notify({ title: '成功', message: '更新成功', type: 'success', duration: 2000 })
             } else {
-              this.$message({ type: 'error', message: response.data.msg || '更新失败' })
+              this.$message({ type: 'error', message: response.msg || '更新失败' })
             }
           }).catch(() => { this.dialogFormVisible = false })
         }
       })
     },
-    refreshView() {
-      this.$store.dispatch('delAllCachedViews', this.$route)
-      const { fullPath } = this.$route
-      this.$nextTick(() => {
-        this.$router.replace({
-          path: '/redirect' + fullPath
-        })
+    updateItem() {
+      this.$refs['itemModel'].validate((valid) => {
+        if (valid) {
+          const tempData = Object.assign({}, this.itemModel)
+          editType(tempData).then(response => {
+            this.dialogItemFormVisible = false
+            if (response && response.success) {
+              getCascaderList().then(r => { this.cases = r.result })
+              this.$notify({ title: '成功', message: '更新成功', type: 'success', duration: 2000 })
+            } else {
+              this.$message({ type: 'error', message: response.msg || '更新失败' })
+            }
+          })
+        }
       })
     }
   }

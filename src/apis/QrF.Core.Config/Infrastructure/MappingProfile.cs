@@ -9,6 +9,7 @@ namespace QrF.Core.Config.Infrastructure
         public MappingProfile()
         {
             CreateMap<ClientsDto, Clients>();
+            CreateMap<ReRoute, ReRouteAccDto>();
         }
     }
 }

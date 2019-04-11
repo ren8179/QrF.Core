@@ -23,12 +23,13 @@ namespace QrF.Core.Config.Business
         /// <summary>
         /// 分页列表
         /// </summary>
-        public async Task<BasePageOutput<ReRoute>> GetPageList(PageInput input)
+        public async Task<BasePageOutput<ReRoute>> GetPageList(ReRoutePageInput input)
         {
             var list = new List<ReRoute>();
             var totalNumber = 0;
             var query = await _dbContext.Queryable<ReRoute>()
                 .WhereIF(!input.Name.IsNullOrEmpty(), o => o.UpstreamPathTemplate.Contains(input.Name))
+                .WhereIF(input.ItemId.HasValue, o => o.ItemId==input.ItemId.Value)
                 .ToPageListAsync(input.Page, input.PageSize, totalNumber);
             list = query.Key;
             totalNumber = query.Value;

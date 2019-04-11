@@ -62,7 +62,7 @@ namespace QrF.Core.Config.Domain
         [StringLength(300)]
         public string AuthenticationOptions { get; set; }
         /// <summary>
-        /// 全局请求默认key
+        /// 请求默认key
         /// </summary>
         [StringLength(100)]
         public string RequestIdKey { get; set; }

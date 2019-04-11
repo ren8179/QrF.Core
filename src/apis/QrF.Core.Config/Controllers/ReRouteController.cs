@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using QrF.Core.Config.Domain;
 using QrF.Core.Config.Dto;
 using QrF.Core.Config.Interfaces;
@@ -18,10 +19,16 @@ namespace QrF.Core.Config.Controllers
     {
         private readonly IReRouteBusiness _business;
         private readonly IReRoutesItemBusiness _itemBusiness;
-        public ReRouteController(IReRouteBusiness business, IReRoutesItemBusiness itemBusiness)
+        private readonly IConfigReRoutesBusiness _cfgReRouteBusiness;
+        private readonly IMapper _mapper;
+        public ReRouteController(IReRouteBusiness business, IReRoutesItemBusiness itemBusiness,
+            IConfigReRoutesBusiness cfgReRouteBusiness,
+            IMapper mapper)
         {
             _business = business;
             _itemBusiness = itemBusiness;
+            _cfgReRouteBusiness = cfgReRouteBusiness;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -54,13 +61,50 @@ namespace QrF.Core.Config.Controllers
             return Ok(new MsgResultDto { Success = true });
         }
         /// <summary>
+        /// 删除
+        /// </summary>
+        [HttpPost("DelType")]
+        public async Task<IActionResult> DelTypeAsync([FromBody] DelInput input)
+        {
+            if (input == null || !input.Id.HasValue) throw new Exception("编号不存在");
+            await _itemBusiness.DelModel(input.Id.Value);
+            return Ok(new MsgResultDto { Success = true });
+        }
+
+        /// <summary>
         /// 查询分页列表
         /// </summary>
         [HttpGet("GetPageList")]
-        public async Task<IActionResult> GetPageListAsync([FromQuery] PageInput input)
+        public async Task<IActionResult> GetPageListAsync([FromQuery] ReRoutePageInput input)
         {
             var list = await _business.GetPageList(input);
             return Ok(list);
+        }
+        /// <summary>
+        /// 查询路由配置
+        /// </summary>
+        [HttpGet("GetAccReRouteList")]
+        public async Task<IActionResult> GetAccReRouteListAsync([FromQuery] ReRoutePageInput input)
+        {
+            var list = await _business.GetPageList(input);
+            var pers = await _cfgReRouteBusiness.GetList(input.ConfigId);
+            var rows = new List<ReRouteAccDto>();
+            foreach (var item in list.Rows)
+            {
+                var dto = _mapper.Map<ReRouteAccDto>(item);
+                dto.IsAuth = pers.Count(o => o.ReRouteId == item.ReRouteId) > 0;
+                rows.Add(dto);
+            }
+            return Ok(new BasePageOutput<ReRouteAccDto> { Page = input.Page, Rows = rows, Total = list.Total });
+        }
+        /// <summary>
+        /// 分配路由
+        /// </summary>
+        [HttpPost("ToAccReRoute")]
+        public async Task<IActionResult> ToAccReRouteAsync([FromBody] ToAccReRouteInput input)
+        {
+            var result = await _cfgReRouteBusiness.ToAccReRouteAsync(input);
+            return Ok(new MsgResultDto { Success = result });
         }
         /// <summary>
         /// 编辑
@@ -83,7 +127,7 @@ namespace QrF.Core.Config.Controllers
             await _business.DelModel(input.Id.Value);
             return Ok(new MsgResultDto { Success = true });
         }
-        
+
         private IEnumerable<CascaderItem> GetCascaderItem(int pid, IEnumerable<ReRoutesItem> all)
         {
             if (all.Count(o => o.ItemParentId == pid) < 1)
