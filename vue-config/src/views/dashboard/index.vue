@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard-container">
-    <el-alert title="欢迎使用配置中心" type="success" />
+    <el-alert title="欢迎使用网关配置中心" type="success" />
   </div>
 </template>
 

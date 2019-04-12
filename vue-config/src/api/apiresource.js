@@ -1,28 +1,12 @@
 import request from '@/utils/request'
 
-const base_url = '/Clients/'
+const base_url = '/ApiResource/'
 
 export function getPageList(params) {
   return request({
     url: base_url + 'GetPageList',
     method: 'get',
     params
-  })
-}
-
-export function getAccGroupList(params) {
-  return request({
-    url: base_url + 'GetAccGroupList',
-    method: 'get',
-    params
-  })
-}
-
-export function toAccClient(data) {
-  return request({
-    url: base_url + 'ToAccClient',
-    method: 'post',
-    data
   })
 }
 

@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-const base_url = '/Clients/'
+const base_url = '/AuthGroup/'
 
 export function getPageList(params) {
   return request({
@@ -10,17 +10,9 @@ export function getPageList(params) {
   })
 }
 
-export function getAccGroupList(params) {
+export function toAccReRoute(data) {
   return request({
-    url: base_url + 'GetAccGroupList',
-    method: 'get',
-    params
-  })
-}
-
-export function toAccClient(data) {
-  return request({
-    url: base_url + 'ToAccClient',
+    url: base_url + 'ToAccReRoute',
     method: 'post',
     data
   })

@@ -41,6 +41,14 @@ export function getAccReRouteList(params) {
   })
 }
 
+export function getAccGroupList(params) {
+  return request({
+    url: base_url + 'GetAccGroupList',
+    method: 'get',
+    params
+  })
+}
+
 export function toAccReRoute(data) {
   return request({
     url: base_url + 'ToAccReRoute',

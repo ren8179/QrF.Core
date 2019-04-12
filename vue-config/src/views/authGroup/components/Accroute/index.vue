@@ -31,7 +31,8 @@
 
 <script>
 import splitPane from 'vue-splitpane'
-import { getCascaderList, getAccReRouteList, toAccReRoute } from '@/api/reroute'
+import { getCascaderList, getAccGroupList } from '@/api/reroute'
+import { toAccReRoute } from '@/api/authgroup'
 
 export default {
   name: 'Accroute',
@@ -79,7 +80,7 @@ export default {
     getList() {
       this.listLoading = true
       this.list = []
-      getAccReRouteList(this.listQuery).then(response => {
+      getAccGroupList(this.listQuery).then(response => {
         this.listLoading = false
         this.list = response.result.rows
         this.total = response.result.total

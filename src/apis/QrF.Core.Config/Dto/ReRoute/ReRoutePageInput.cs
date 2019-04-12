@@ -8,6 +8,6 @@ namespace QrF.Core.Config.Dto
     public class ReRoutePageInput: PageInput
     {
         public int? ItemId { get; set; }
-        public int? ConfigId { get; set; }
+        public int? KeyId { get; set; }
     }
 }

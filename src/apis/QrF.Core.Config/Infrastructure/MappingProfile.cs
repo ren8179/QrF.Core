@@ -10,6 +10,7 @@ namespace QrF.Core.Config.Infrastructure
         {
             CreateMap<ClientsDto, Clients>();
             CreateMap<ReRoute, ReRouteAccDto>();
+            
         }
     }
 }

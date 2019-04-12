@@ -20,14 +20,17 @@ namespace QrF.Core.Config.Controllers
         private readonly IReRouteBusiness _business;
         private readonly IReRoutesItemBusiness _itemBusiness;
         private readonly IConfigReRoutesBusiness _cfgReRouteBusiness;
+        private readonly IReRouteGroupAuthBusiness _reRouteGroupbusiness;
         private readonly IMapper _mapper;
         public ReRouteController(IReRouteBusiness business, IReRoutesItemBusiness itemBusiness,
             IConfigReRoutesBusiness cfgReRouteBusiness,
+            IReRouteGroupAuthBusiness reRouteGroupbusiness,
             IMapper mapper)
         {
             _business = business;
             _itemBusiness = itemBusiness;
             _cfgReRouteBusiness = cfgReRouteBusiness;
+            _reRouteGroupbusiness = reRouteGroupbusiness;
             _mapper = mapper;
         }
 
@@ -81,13 +84,30 @@ namespace QrF.Core.Config.Controllers
             return Ok(list);
         }
         /// <summary>
-        /// 查询路由配置
+        /// 查询网关路由配置
         /// </summary>
         [HttpGet("GetAccReRouteList")]
         public async Task<IActionResult> GetAccReRouteListAsync([FromQuery] ReRoutePageInput input)
         {
             var list = await _business.GetPageList(input);
-            var pers = await _cfgReRouteBusiness.GetList(input.ConfigId);
+            var pers = await _cfgReRouteBusiness.GetList(input.KeyId);
+            var rows = new List<ReRouteAccDto>();
+            foreach (var item in list.Rows)
+            {
+                var dto = _mapper.Map<ReRouteAccDto>(item);
+                dto.IsAuth = pers.Count(o => o.ReRouteId == item.ReRouteId) > 0;
+                rows.Add(dto);
+            }
+            return Ok(new BasePageOutput<ReRouteAccDto> { Page = input.Page, Rows = rows, Total = list.Total });
+        }
+        /// <summary>
+        /// 查询授权组路由配置
+        /// </summary>
+        [HttpGet("GetAccGroupList")]
+        public async Task<IActionResult> GetAccGroupListAsync([FromQuery] ReRoutePageInput input)
+        {
+            var list = await _business.GetPageList(input);
+            var pers = await _reRouteGroupbusiness.GetList(input.KeyId);
             var rows = new List<ReRouteAccDto>();
             foreach (var item in list.Rows)
             {

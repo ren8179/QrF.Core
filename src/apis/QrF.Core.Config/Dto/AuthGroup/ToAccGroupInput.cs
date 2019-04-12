@@ -5,16 +5,16 @@ using System.Threading.Tasks;
 
 namespace QrF.Core.Config.Dto
 {
-    public class ToAccReRouteInput
+    public class ToAccGroupInput
     {
         /// <summary>
         /// 
         /// </summary>
         public int? KeyId { get; set; }
         /// <summary>
-        /// 路由主键
+        /// 授权组主键
         /// </summary>
-        public int? ReRouteId { get; set; }
+        public int? GroupId { get; set; }
         /// <summary>
         /// 类型 1 授权；0 取消授权
         /// </summary>

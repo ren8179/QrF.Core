@@ -38,6 +38,14 @@ namespace QrF.Core.CMS.Controllers
             }
             return result;
         }
+        [HttpGet("View")]
+        public IActionResult View(int id)
+        {
+            var entity = Service.Get(id);
+            entity.Counter = (entity.Counter ?? 0) + 1;
+            Service.Update(entity);
+            return Ok(entity.Counter);
+        }
         [HttpGet("GetList")]
         public IActionResult GetList(int typeId)
         {

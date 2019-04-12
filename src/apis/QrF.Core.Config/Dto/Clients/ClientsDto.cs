@@ -24,5 +24,6 @@ namespace QrF.Core.Config.Dto
         /// 客户端描述
         /// </summary>
         public string Description { get; set; }
+        public bool IsAuth { get; set; }
     }
 }

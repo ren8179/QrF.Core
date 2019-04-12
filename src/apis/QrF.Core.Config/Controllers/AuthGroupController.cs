@@ -1,10 +1,8 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using QrF.Core.Config.Domain;
 using QrF.Core.Config.Dto;
 using QrF.Core.Config.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace QrF.Core.Config.Controllers
@@ -14,17 +12,14 @@ namespace QrF.Core.Config.Controllers
     /// </summary>
     [Route("ConfigAPI/[controller]")]
     [ApiController]
-    public class ClientsController : ControllerBase
+    public class AuthGroupController : ControllerBase
     {
-        private readonly IClientsBusiness _business;
-        private readonly IClientGroupBusiness _clientGroupbusiness;
-        private readonly IMapper _mapper;
-        public ClientsController(IClientsBusiness business, IClientGroupBusiness clientGroupbusiness,
-            IMapper mapper)
+        private readonly IAuthGroupBusiness _business;
+        private readonly IReRouteGroupAuthBusiness _reRouteGroupbusiness;
+        public AuthGroupController(IAuthGroupBusiness business, IReRouteGroupAuthBusiness reRouteGroupbusiness)
         {
             _business = business;
-            _clientGroupbusiness = clientGroupbusiness;
-            _mapper = mapper;
+            _reRouteGroupbusiness = reRouteGroupbusiness;
         }
         /// <summary>
         /// 查询分页列表
@@ -36,33 +31,19 @@ namespace QrF.Core.Config.Controllers
             return Ok(list);
         }
         /// <summary>
-        /// 查询授权组授权客户端
+        /// 分配路由
         /// </summary>
-        [HttpGet("GetAccGroupList")]
-        public async Task<IActionResult> GetAccGroupListAsync([FromQuery] ReRoutePageInput input)
+        [HttpPost("ToAccReRoute")]
+        public async Task<IActionResult> ToAccReRouteAsync([FromBody] ToAccReRouteInput input)
         {
-            var list = await _business.GetPageList(input);
-            var pers = await _clientGroupbusiness.GetList(input.KeyId);
-            foreach (var item in list.Rows)
-            {
-                item.IsAuth = pers.Count(o => o.Id == item.Id) > 0;
-            }
-            return Ok(list);
-        }
-        /// <summary>
-        /// 分配客户端
-        /// </summary>
-        [HttpPost("ToAccClient")]
-        public async Task<IActionResult> ToAccClientAsync([FromBody] ToAccGroupInput input)
-        {
-            var result = await _clientGroupbusiness.ToAccReRouteAsync(input);
+            var result = await _reRouteGroupbusiness.ToAccReRouteAsync(input);
             return Ok(new MsgResultDto { Success = result });
         }
         /// <summary>
         /// 编辑
         /// </summary>
         [HttpPost("Edit")]
-        public async Task<IActionResult> EditAsync([FromBody] ClientsDto input)
+        public async Task<IActionResult> EditAsync([FromBody] AuthGroup input)
         {
             await _business.EditModel(input);
             return Ok(new MsgResultDto { Success = true });

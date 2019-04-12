@@ -68,7 +68,7 @@ export const constantRoutes = [
         path: 'dashboard',
         component: () => import('@/views/dashboard/index'),
         name: 'Dashboard',
-        meta: { title: 'dashboard', icon: 'dashboard', noCache: true, affix: true }
+        meta: { title: '首页', icon: 'dashboard', noCache: true, affix: true }
       }
     ]
   }
@@ -87,7 +87,7 @@ export const asyncRoutes = [
         path: 'index',
         component: () => import('@/views/clients/index'),
         name: 'Clients',
-        meta: { title: '客户端管理', icon: 'list', noCache: true }
+        meta: { title: '客户端列表', icon: 'list', noCache: true }
       }
     ]
   },
@@ -99,7 +99,7 @@ export const asyncRoutes = [
         path: 'index',
         component: () => import('@/views/globalConfiguration/index'),
         name: 'GlobalConfiguration',
-        meta: { title: '网关全局配置', icon: 'list', noCache: true }
+        meta: { title: '全局配置', icon: 'list', noCache: true }
       }
     ]
   },
@@ -112,6 +112,30 @@ export const asyncRoutes = [
         component: () => import('@/views/reRoute/index'),
         name: 'ReRoute',
         meta: { title: '路由配置', icon: 'list', noCache: true }
+      }
+    ]
+  },
+  {
+    path: '/authGroup',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/authGroup/index'),
+        name: 'AuthGroup',
+        meta: { title: '授权组列表', icon: 'list', noCache: true }
+      }
+    ]
+  },
+  {
+    path: '/apiResource',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/apiResource/index'),
+        name: 'ApiResource',
+        meta: { title: '接口资源', icon: 'list', noCache: true }
       }
     ]
   },
