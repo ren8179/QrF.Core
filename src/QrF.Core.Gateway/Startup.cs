@@ -35,7 +35,16 @@ namespace QrF.Core.Gateway
                     o.RequireHttpsMetadata = Convert.ToBoolean(Configuration["Auth:UseHttps"]);
                     o.SupportedTokens = SupportedTokens.Both;
                 });
-            services.AddCors();
+            services.AddCors(options =>
+            {
+                options.AddPolicy("allow_all", builder =>
+                {
+                    builder.AllowAnyOrigin() //允许任何来源的主机访问
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials();//指定处理cookie
+                });
+            });
             services.AddHsts(options =>
             {
                 options.Preload = true;
@@ -75,11 +84,7 @@ namespace QrF.Core.Gateway
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
-            app.UseCors(builder => builder
-                    .AllowAnyOrigin()
-                    .AllowAnyMethod()
-                    .AllowAnyHeader()
-                    .AllowCredentials());
+            app.UseCors("allow_all");
             app.UseExtOcelot().Wait();
         }
     }

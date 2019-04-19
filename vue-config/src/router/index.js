@@ -14,7 +14,7 @@ import Layout from '@/layout'
  * alwaysShow: true               if set true, will always show the root menu
  *                                if not set alwaysShow, when item has more than one children route,
  *                                it will becomes nested mode, otherwise not show the root menu
- * redirect: noredirect           if `redirect:noredirect` will no redirect in the breadcrumb
+ * redirect: noRedirect           if `redirect:noRedirect` will no redirect in the breadcrumb
  * name:'router-name'             the name is used by <keep-alive> (must set!!!)
  * meta : {
     roles: ['admin','editor']    control the page roles (you can set multiple roles)
@@ -145,7 +145,7 @@ export const asyncRoutes = [
     children: [
       {
         path: 'index',
-        component: () => import('@/views/svg-icons/index'),
+        component: () => import('@/views/icons/index'),
         name: 'Icons',
         meta: { title: 'icons', icon: 'icon', noCache: true }
       }
@@ -155,7 +155,7 @@ export const asyncRoutes = [
   {
     path: '/theme',
     component: Layout,
-    redirect: 'noredirect',
+    redirect: 'noRedirect',
     children: [
       {
         path: 'index',
