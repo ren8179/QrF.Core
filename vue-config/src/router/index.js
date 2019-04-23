@@ -46,6 +46,7 @@ export const constantRoutes = [
   },
   {
     path: '/login',
+    meta: { title: '系统登录' },
     component: () => import('@/views/login/index'),
     hidden: true
   },

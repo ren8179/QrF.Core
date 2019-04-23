@@ -17,6 +17,14 @@
       <el-table-column v-for="col in columns" :key="col.data" :label="col.name" :sortable="col.orderable">
         <template slot-scope="scope">{{ scope.row[col.data] }}</template>
       </el-table-column>
+      <el-table-column align="center" label="授权类型" width="420">
+        <template slot-scope="scope">
+          <el-checkbox-group v-model="scope.row.allowedGrantTypes" size="mini" disabled>
+            <el-checkbox v-for="item in grantTypes" :key="item.value" :label="item.value" border>{{ item.label }}</el-checkbox>
+          </el-checkbox-group>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="授权域"><template slot-scope="scope">{{ scope.row.allowedScopes.join(' | ') }}</template></el-table-column>
       <el-table-column align="center" label="是否有效" width="100">
         <template slot-scope="scope">
           <el-tag :type="scope.row.enabled ? 'success' : 'danger'">{{ scope.row.enabled ? '是' : '否' }}</el-tag>
@@ -35,6 +43,17 @@
         <el-form-item label="客户端编号:" prop="clientId"><el-input v-model="temp.clientId" /></el-form-item>
         <el-form-item label="客户端名称:" prop="clientName"><el-input v-model="temp.clientName" /></el-form-item>
         <el-form-item label="是否有效:" prop="enabled"><el-switch v-model="temp.enabled" /></el-form-item>
+        <el-form-item label="授权类型:" prop="allowedGrantTypes">
+          <el-checkbox-group v-model="temp.allowedGrantTypes" size="small">
+            <el-checkbox v-for="item in grantTypes" :key="item.value" :label="item.value">{{ item.label }}</el-checkbox>
+          </el-checkbox-group>
+        </el-form-item>
+        <el-form-item label="授权域:" prop="allowedScopes">
+          <el-checkbox-group v-model="temp.allowedScopes" size="small">
+            <el-checkbox v-for="item in scopes" :key="item.name" :label="item.name" border>{{ item.displayName }}</el-checkbox>
+          </el-checkbox-group>
+        </el-form-item>
+        <el-form-item label="客户端密钥:" prop="clientSecrets"><el-input v-model="temp.clientSecrets" /></el-form-item>
         <el-form-item label="客户端描述:" prop="description"><el-input v-model="temp.description" /></el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -47,6 +66,7 @@
 
 <script>
 import { getPageList, edit, del } from '@/api/clients'
+import { getScopeList } from '@/api/apiresource'
 import waves from '@/directive/waves'
 
 export default {
@@ -67,8 +87,8 @@ export default {
       selectTimes: [],
       columns: [
         { data: 'clientId', name: '客户端编号', searchable: true, orderable: true },
-        { data: 'clientName', name: '客户端名称', searchable: true, orderable: true },
-        { data: 'description', name: '客户端描述', searchable: true, orderable: true }
+        { data: 'clientName', name: '客户端名称', searchable: true, orderable: false },
+        { data: 'description', name: '客户端描述', searchable: true, orderable: false }
       ],
       btns: [
         { DomId: 'btnAdd', Name: '新增', Type: 'button', Class: 'primary', Icon: 'plus' },
@@ -80,11 +100,20 @@ export default {
       editTitle: '',
       rules: {
         clientId: [{ required: true, message: '客户端编号', trigger: 'blur' }]
-      }
+      },
+      grantTypes: [
+        { label: '授权码模式', value: 'authorization_code' },
+        { label: '混合模式', value: 'hybrid' },
+        { label: '简化模式', value: 'implicit' },
+        { label: '密码模式', value: 'password' },
+        { label: '客户端模式', value: 'client_credentials' }
+      ],
+      scopes: []
     }
   },
   created() {
     this.handleFilter()
+    getScopeList().then(r => { this.scopes = r.result })
   },
   methods: {
     getList() {
@@ -120,7 +149,7 @@ export default {
       switch (domid) {
         case 'btnAdd':
           this.editTitle = '新增'
-          this.temp = { enabled: true }
+          this.temp = { enabled: true, allowedGrantTypes: [], allowedScopes: [] }
           this.dialogFormVisible = true
           this.$nextTick(() => {
             this.$refs['formModel'].clearValidate()

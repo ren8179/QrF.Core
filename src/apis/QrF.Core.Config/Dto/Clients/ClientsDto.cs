@@ -1,7 +1,5 @@
-﻿using System;
+﻿using QrF.Core.Config.Domain;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace QrF.Core.Config.Dto
 {
@@ -20,6 +18,9 @@ namespace QrF.Core.Config.Dto
         /// 客户端名称
         /// </summary>
         public string ClientName { get; set; }
+        public List<string> AllowedGrantTypes { get; set; }
+        public List<string> AllowedScopes { get; set; }
+        public string ClientSecrets { get; set; }
         /// <summary>
         /// 客户端描述
         /// </summary>

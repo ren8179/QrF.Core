@@ -29,6 +29,15 @@ namespace QrF.Core.Config.Controllers
             return Ok(list);
         }
         /// <summary>
+        /// 获取授权域列表
+        /// </summary>
+        [HttpGet("GetScopeList")]
+        public async Task<IActionResult> GetScopeListAsync()
+        {
+            var list = await _business.GetScopeList();
+            return Ok(list);
+        }
+        /// <summary>
         /// 编辑
         /// </summary>
         [HttpPost("Edit")]

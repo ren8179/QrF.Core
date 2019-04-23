@@ -10,6 +10,13 @@ export function getPageList(params) {
   })
 }
 
+export function getScopeList() {
+  return request({
+    url: base_url + 'GetScopeList',
+    method: 'get'
+  })
+}
+
 export function edit(data) {
   return request({
     url: base_url + 'Edit',
