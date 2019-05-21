@@ -60,13 +60,13 @@ namespace QrF.Core.GatewayExtension.Requester.Middleware
                     if (errorMsg.IsNullOrEmpty())
                         errorMsg = jobj["msg"]?.ToString();
                 }
-                Logger.LogWarning($"路由地址 {requestPath} {code} {errorMsg}");
+                errorMsg = $"路由地址 {requestPath} {code} {errorMsg}";
                 switch (code)
                 {
                     case HttpStatusCode.BadRequest://提取Ids4相关的异常(400)
-                        return new IdentityServer4Error(errorMsg ?? "未知异常");
+                        return new IdentityServer4Error(errorMsg);
                     case HttpStatusCode.Unauthorized:
-                        return new IdentityServer4UnauthorizedError(errorMsg ?? "未授权");
+                        return new IdentityServer4UnauthorizedError(errorMsg);
                     case HttpStatusCode.NotFound:
                         return new NotFindDataError("未找到资源");
                     default:
