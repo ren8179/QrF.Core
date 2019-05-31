@@ -141,6 +141,18 @@ export const asyncRoutes = [
     ]
   },
   {
+    path: '/encryption',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/encryption/index'),
+        name: 'Encryption',
+        meta: { title: '文件加密', icon: 'list' }
+      }
+    ]
+  },
+  {
     path: '/icon',
     component: Layout,
     children: [
@@ -152,7 +164,6 @@ export const asyncRoutes = [
       }
     ]
   },
-
   {
     path: '/theme',
     component: Layout,
