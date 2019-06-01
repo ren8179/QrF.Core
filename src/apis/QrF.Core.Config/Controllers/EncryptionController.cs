@@ -27,6 +27,7 @@ namespace QrF.Core.Config.Controllers
             if (input == null && string.IsNullOrEmpty(input.FileName))
                 return BadRequest("缺少文件名");
             var files = Request.Form.Files;
+            var key = $"_{DateTime.Now:yyyyMMddHHmmss}_{Guid.NewGuid()}";
             if (!_cache.TryGetValue(input.FileName, out byte[] cacheEntry))
             {
                 foreach (var file in files)
@@ -42,16 +43,18 @@ namespace QrF.Core.Config.Controllers
                     }
                     break;
                 }
-                _cache.Set(input.FileName, cacheEntry, new MemoryCacheEntryOptions()
-                    .SetSlidingExpiration(TimeSpan.FromHours(2)));
+                _cache.Set(input.FileName + key, cacheEntry, new MemoryCacheEntryOptions()
+                    .SetSlidingExpiration(TimeSpan.FromHours(1)));
             }
-            return Ok();
+            return Ok(key);
         }
 
         [HttpGet("GetFile")]
-        public IActionResult GetFile(string name)
+        public IActionResult GetFile(string name, string key)
         {
-            var bytes = _cache.Get<byte[]>(name);
+            var token = name + key;
+            var bytes = _cache.Get<byte[]>(token);
+            if (bytes == null) return BadRequest("加密文件已失效，请重新上传");
             return File(bytes, System.Net.Mime.MediaTypeNames.Application.Octet, name);
         }
     }

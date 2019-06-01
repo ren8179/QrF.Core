@@ -16,7 +16,7 @@
             <div class="bottom clearfix">
               <el-button v-if="canUpload" type="primary" class="button" @click="submitUpload">上传加密</el-button>
               <template v-else>
-                <el-link type="success" icon="el-icon-download" :href="download + '?name=' + temp.fileName">下载加密文件</el-link>
+                <el-link type="success" icon="el-icon-download" :href="download + '?name=' + temp.fileName + '&key='+ key">下载加密文件</el-link>
                 <el-link type="warning" icon="el-icon-refresh-right" style="margin-left:30px;" @click="onReload">重新上传</el-link>
               </template>
             </div>
@@ -34,15 +34,17 @@ export default {
     return {
       url: process.env.VUE_APP_BASE_API + '/Encryption/UploadConfig',
       download: process.env.VUE_APP_BASE_API + '/Encryption/GetFile',
-      temp: { fileName: '', fileList: [] },
+      temp: { fileName: 'app.ept', fileList: [] },
       rules: {
         fileName: [{ required: true, message: '文件名称', trigger: 'blur' }]
       },
-      canUpload: true
+      canUpload: true,
+      key: ''
     }
   },
   methods: {
-    onSuccess() {
+    onSuccess(data) {
+      this.key = data.result
       this.canUpload = false
       this.$notify({ title: '成功', message: '已加密，请点击下载', type: 'success', duration: 2000 })
     },
