@@ -23,6 +23,7 @@ namespace QrF.Core.Admin
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             var isService = !(Debugger.IsAttached || args.Contains("--console"));
+            isService = false;
             var bud = new ConfigurationBuilder();
             BasePath = AppContext.BaseDirectory;
             if (isService)

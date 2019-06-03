@@ -85,6 +85,30 @@ namespace QrF.Core.Admin.Controllers
             var result = await _perBusiness.ToRole(input);
             return Ok(result);
         }
+        /// <summary>
+        /// 获取角色已授权的菜单编号
+        /// </summary>
+        /// <param name="roleId"></param>
+        /// <returns></returns>
+        [HttpGet("GetAccessMenuIds")]
+        public async Task<IActionResult> GetAccessMenuIdsAsync(Guid roleId)
+        {
+            var list = await _perBusiness.GetListByRoleTypeAsync(roleId);
+            if (list != null && list.Count() > 0)
+                return Ok(list.Select(o => o.MenuId).Distinct());
+            return Ok(list);
+        }
+
+        /// <summary>
+        /// 角色授权
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("SaveRoleMenu")]
+        public async Task<ObjectResult> SaveRoleMenuAsync([FromBody] RoleMenuDto input)
+        {
+            var result = await _perBusiness.SaveRoleMenu(input);
+            return Ok(result);
+        }
 
     }
 }

@@ -54,10 +54,14 @@ namespace QrF.Core.Admin
             {
                 app.UseDeveloperExceptionPage();
             }
+            var defaultFilesOptions = new DefaultFilesOptions();
+            defaultFilesOptions.DefaultFileNames.Clear();
+            defaultFilesOptions.DefaultFileNames.Add("index.html");
+            app.UseDefaultFiles(defaultFilesOptions);
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new PhysicalFileProvider(Program.BasePath + "/wwwroot/"),
-                RequestPath = new PathString("/AdminAPI")
+                //RequestPath = new PathString("/AdminAPI")
             });
             app.UseCors(builder => builder
                     .AllowAnyOrigin()

@@ -1,4 +1,5 @@
-﻿using QrF.Core.Admin.Dto;
+﻿using QrF.Core.Admin.Domain;
+using QrF.Core.Admin.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,5 +25,16 @@ namespace QrF.Core.Admin.Interfaces
         /// <param name="input"></param>
         /// <returns></returns>
         Task DelModel(Guid input);
+        /// <summary>
+        /// 根据账号密码获取用户实体
+        /// </summary>
+        /// <param name="uaccount">账号</param>
+        /// <param name="upassword">密码</param>
+        /// <returns></returns>
+        User FindUserByuAccount(string uaccount, string upassword);
+        /// <summary>
+        /// 获取用户实体
+        /// </summary>
+        User GetByKeyId(Guid keyId);
     }
 }

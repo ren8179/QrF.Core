@@ -98,7 +98,7 @@ namespace QrF.Core.Admin.Business
                 model.CreateTime = DateTime.Now;
                 model.UpdateTime = DateTime.Now;
                 model.Salt = Randoms.CreateRandomValue(8, false);
-                model.Password = $"{model.Password}{model.Salt}".ToMd5();
+                model.Password = $"{model.Password}+_(QVQ)_+{model.Salt}".ToMd5();
                 await _dbContext.Insertable(model).ExecuteCommandAsync();
             }
         }
@@ -112,5 +112,31 @@ namespace QrF.Core.Admin.Business
             await _dbContext.Deleteable<User>()
                 .Where(f => f.KeyId == input).ExecuteCommandAsync();
         }
+
+        /// <summary>
+        /// 根据账号密码获取用户实体
+        /// </summary>
+        /// <param name="uaccount">账号</param>
+        /// <param name="upassword">密码</param>
+        /// <returns></returns>
+        public User FindUserByuAccount(string uaccount, string upassword)
+        {
+            var user = _dbContext.Queryable<User>().First(it => it.Account == uaccount && it.Status == true);
+            if (user != null)
+            {
+                var pwd = $"{upassword}+_(QVQ)_+{user.Salt}".ToMd5();
+                if (user.Password != pwd) return null;
+            }
+            return user;
+        }
+        /// <summary>
+        /// 获取用户实体
+        /// </summary>
+        public User GetByKeyId(Guid keyId)
+        {
+            var user = _dbContext.Queryable<User>().First(it => it.KeyId == keyId);
+            return user;
+        }
+
     }
 }

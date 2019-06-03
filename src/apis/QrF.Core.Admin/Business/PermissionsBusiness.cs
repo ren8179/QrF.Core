@@ -34,6 +34,17 @@ namespace QrF.Core.Admin.Business
             return query;
         }
         /// <summary>
+        /// 查询列表
+        /// </summary>
+        public async Task<IEnumerable<Permissions>> GetListByRoleTypeAsync(Guid roleId, int type = 1)
+        {
+            var query = await _dbContext.Queryable<Permissions>()
+                .Where(o => o.RoleId == roleId)
+                .Where(o => o.Types == type)
+                .ToListAsync();
+            return query;
+        }
+        /// <summary>
         /// 用户授权角色
         /// </summary>
         public async Task<bool> ToRole(ToRoleInput input)
@@ -66,6 +77,28 @@ namespace QrF.Core.Admin.Business
                         break;
                 }
             }
+            return true;
+        }
+        /// <summary>
+        /// 角色授权
+        /// </summary>
+        public async Task<bool> SaveRoleMenu(RoleMenuDto input)
+        {
+            await _dbContext.Deleteable<Permissions>()
+                            .Where(m => m.RoleId == input.RoleId && m.Types == input.Types)
+                            .ExecuteCommandAsync();
+            var list = new List<Permissions>();
+            foreach (var item in input.MenuIds)
+            {
+                list.Add(new Permissions
+                {
+                    RoleId = input.RoleId,
+                    MenuId = item,
+                    Types = input.Types,
+                    CreateTime = DateTime.Now
+                });
+            }
+            await _dbContext.Insertable(list).ExecuteCommandAsync();
             return true;
         }
     }
