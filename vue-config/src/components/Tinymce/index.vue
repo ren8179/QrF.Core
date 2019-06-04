@@ -11,6 +11,10 @@
 import editorImage from './components/EditorImage'
 import plugins from './plugins'
 import toolbar from './toolbar'
+import load from './dynamicLoadScript'
+
+// why use this cdn, detail see https://github.com/PanJiaChen/tinymce-all-in-one
+const tinymceCDN = 'https://cdn.jsdelivr.net/npm/tinymce-all-in-one@4.9.3/tinymce.min.js'
 
 export default {
   name: 'Tinymce',
@@ -62,7 +66,7 @@ export default {
   },
   computed: {
     language() {
-      return this.languageTypeList[this.$store.getters.language]
+      return this.languageTypeList['zh']
     },
     containerWidth() {
       const width = this.width
@@ -78,17 +82,15 @@ export default {
         this.$nextTick(() =>
           window.tinymce.get(this.tinymceId).setContent(val || ''))
       }
-    },
-    language() {
-      this.destroyTinymce()
-      this.$nextTick(() => this.initTinymce())
     }
   },
   mounted() {
-    this.initTinymce()
+    this.init()
   },
   activated() {
-    this.initTinymce()
+    if (window.tinymce) {
+      this.initTinymce()
+    }
   },
   deactivated() {
     this.destroyTinymce()
@@ -97,6 +99,16 @@ export default {
     this.destroyTinymce()
   },
   methods: {
+    init() {
+      // dynamic load tinymce from cdn
+      load(tinymceCDN, (err) => {
+        if (err) {
+          this.$message.error(err.message)
+          return
+        }
+        this.initTinymce()
+      })
+    },
     initTinymce() {
       const _this = this
       window.tinymce.init({
@@ -133,39 +145,6 @@ export default {
             _this.fullscreen = e.state
           })
         }
-        // 整合七牛上传
-        // images_dataimg_filter(img) {
-        //   setTimeout(() => {
-        //     const $image = $(img);
-        //     $image.removeAttr('width');
-        //     $image.removeAttr('height');
-        //     if ($image[0].height && $image[0].width) {
-        //       $image.attr('data-wscntype', 'image');
-        //       $image.attr('data-wscnh', $image[0].height);
-        //       $image.attr('data-wscnw', $image[0].width);
-        //       $image.addClass('wscnph');
-        //     }
-        //   }, 0);
-        //   return img
-        // },
-        // images_upload_handler(blobInfo, success, failure, progress) {
-        //   progress(0);
-        //   const token = _this.$store.getters.token;
-        //   getToken(token).then(response => {
-        //     const url = response.data.qiniu_url;
-        //     const formData = new FormData();
-        //     formData.append('token', response.data.qiniu_token);
-        //     formData.append('key', response.data.qiniu_key);
-        //     formData.append('file', blobInfo.blob(), url);
-        //     upload(formData).then(() => {
-        //       success(url);
-        //       progress(100);
-        //     })
-        //   }).catch(err => {
-        //     failure('出现未知问题，刷新页面，或者联系程序员')
-        //     console.log(err);
-        //   });
-        // },
       })
     },
     destroyTinymce() {

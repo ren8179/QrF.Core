@@ -12,12 +12,9 @@
 
         <screenfull id="screenfull" class="right-menu-item hover-effect" />
 
-        <el-tooltip :content="$t('navbar.size')" effect="dark" placement="bottom">
+        <el-tooltip content="布局大小" effect="dark" placement="bottom">
           <size-select id="size-select" class="right-menu-item hover-effect" />
         </el-tooltip>
-
-        <lang-select class="right-menu-item hover-effect" />
-
       </template>
 
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
@@ -27,17 +24,10 @@
         </div>
         <el-dropdown-menu slot="dropdown">
           <router-link to="/">
-            <el-dropdown-item>
-              {{ $t('navbar.dashboard') }}
-            </el-dropdown-item>
+            <el-dropdown-item>首页</el-dropdown-item>
           </router-link>
-          <a target="_blank" href="https://github.com/PanJiaChen/vue-element-admin/">
-            <el-dropdown-item>
-              {{ $t('navbar.github') }}
-            </el-dropdown-item>
-          </a>
           <el-dropdown-item divided>
-            <span style="display:block;" @click="logout">{{ $t('navbar.logOut') }}</span>
+            <span style="display:block;" @click="logout">退出登录</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -52,7 +42,6 @@ import Hamburger from '@/components/Hamburger'
 import ErrorLog from '@/components/ErrorLog'
 import Screenfull from '@/components/Screenfull'
 import SizeSelect from '@/components/SizeSelect'
-import LangSelect from '@/components/LangSelect'
 import Search from '@/components/HeaderSearch'
 
 export default {
@@ -62,7 +51,6 @@ export default {
     ErrorLog,
     Screenfull,
     SizeSelect,
-    LangSelect,
     Search
   },
   computed: {

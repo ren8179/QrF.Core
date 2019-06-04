@@ -1,12 +1,9 @@
 <template>
   <div class="login-container">
-    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
+    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" autocomplete="on" label-position="left">
 
       <div class="title-container">
-        <h3 class="title">
-          {{ $t('login.title') }}
-        </h3>
-        <lang-select class="set-language" />
+        <h3 class="title">系统登录</h3>
       </div>
 
       <el-form-item prop="username">
@@ -16,11 +13,11 @@
         <el-input
           ref="username"
           v-model="loginForm.username"
-          :placeholder="$t('login.username')"
+          placeholder="账号"
           name="username"
           type="text"
           tabindex="1"
-          auto-complete="on"
+          autocomplete="on"
         />
       </el-form-item>
 
@@ -34,10 +31,10 @@
             ref="password"
             v-model="loginForm.password"
             :type="passwordType"
-            :placeholder="$t('login.password')"
+            placeholder="密码"
             name="password"
             tabindex="2"
-            auto-complete="on"
+            autocomplete="on"
             @keyup.native="checkCapslock"
             @blur="capsTooltip = false"
             @keyup.enter.native="handleLogin"
@@ -48,31 +45,27 @@
         </el-form-item>
       </el-tooltip>
 
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">
-        {{ $t('login.logIn') }}
-      </el-button>
+      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
     </el-form>
   </div>
 </template>
 
 <script>
 import { validUsername } from '@/utils/validate'
-import LangSelect from '@/components/LangSelect'
 
 export default {
   name: 'Login',
-  components: { LangSelect },
   data() {
     const validateUsername = (rule, value, callback) => {
       if (!validUsername(value)) {
-        callback(new Error('Please enter the correct user name'))
+        callback(new Error('请输入正确的账号'))
       } else {
         callback()
       }
     }
     const validatePassword = (rule, value, callback) => {
       if (value.length < 6) {
-        callback(new Error('The password can not be less than 6 digits'))
+        callback(new Error('密码不能少于6位'))
       } else {
         callback()
       }
@@ -90,13 +83,18 @@ export default {
       capsTooltip: false,
       loading: false,
       showDialog: false,
-      redirect: undefined
+      redirect: undefined,
+      otherQuery: {}
     }
   },
   watch: {
     $route: {
       handler: function(route) {
-        this.redirect = route.query && route.query.redirect
+        const query = route.query
+        if (query) {
+          this.redirect = query.redirect
+          this.otherQuery = this.getOtherQuery(query)
+        }
       },
       immediate: true
     }
@@ -143,7 +141,7 @@ export default {
           this.loading = true
           this.$store.dispatch('user/login', this.loginForm)
             .then(() => {
-              this.$router.push({ path: this.redirect || '/' })
+              this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
               this.loading = false
             })
             .catch(() => {
@@ -154,12 +152,41 @@ export default {
           return false
         }
       })
+    },
+    getOtherQuery(query) {
+      return Object.keys(query).reduce((acc, cur) => {
+        if (cur !== 'redirect') {
+          acc[cur] = query[cur]
+        }
+        return acc
+      }, {})
     }
+    // afterQRScan() {
+    //   if (e.key === 'x-admin-oauth-code') {
+    //     const code = getQueryObject(e.newValue)
+    //     const codeMap = {
+    //       wechat: 'code',
+    //       tencent: 'code'
+    //     }
+    //     const type = codeMap[this.auth_type]
+    //     const codeName = code[type]
+    //     if (codeName) {
+    //       this.$store.dispatch('LoginByThirdparty', codeName).then(() => {
+    //         this.$router.push({ path: this.redirect || '/' })
+    //       })
+    //     } else {
+    //       alert('第三方登录失败')
+    //     }
+    //   }
+    // }
   }
 }
 </script>
 
 <style lang="scss">
+/* 修复input 背景不协调 和光标变色 */
+/* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
+
 $bg:#283443;
 $light_gray:#fff;
 $cursor: #fff;
@@ -252,15 +279,6 @@ $light_gray:#eee;
       margin: 0px auto 40px auto;
       text-align: center;
       font-weight: bold;
-    }
-
-    .set-language {
-      color: #fff;
-      position: absolute;
-      top: 3px;
-      font-size: 18px;
-      right: 0px;
-      cursor: pointer;
     }
   }
 
