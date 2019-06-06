@@ -34,9 +34,12 @@ namespace QrF.Core.Config.Extension
             finally
             {
                 var statusCode = context.Response.StatusCode;
-                var msg = GetMsg(statusCode);
-                if (!string.IsNullOrEmpty(msg))
-                    HandleException(context, statusCode, msg);
+                if (statusCode >= 400)
+                {
+                    var msg = GetMsg(statusCode);
+                    if (!string.IsNullOrEmpty(msg))
+                        HandleException(context, statusCode, msg);
+                }
             }
         }
 
@@ -54,13 +57,10 @@ namespace QrF.Core.Config.Extension
         {
             switch (statusCode)
             {
-                case 200:
-                case 204:
-                case 101:
-                    return "";
+                case 400: return "请求失败";
                 case 401: return "未授权";
                 case 404: return "未找到服务";
-                case 502: return "请求错误";
+                case 502: return "无效响应";
                 default: return "未知错误";
             }
         }

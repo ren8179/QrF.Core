@@ -41,8 +41,8 @@ namespace QrF.Core.Gateway
                 {
                     builder.AllowAnyOrigin() //允许任何来源的主机访问
                     .AllowAnyMethod()
-                    .AllowAnyHeader()
-                    .AllowCredentials();//指定处理cookie
+                    .AllowAnyHeader();
+                    //.AllowCredentials();//指定处理cookie
                 });
             });
             services.AddHsts(options =>
@@ -83,8 +83,8 @@ namespace QrF.Core.Gateway
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
-            app.UseHttpsRedirection();
             app.UseCors("allow_all");
+            app.UseHttpsRedirection();
             app.UseExtOcelot().Wait();
         }
     }
