@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26730.16
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29123.88
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BDE10C47-B60E-4CA8-A77A-E8DA7889A2D7}"
 	ProjectSection(SolutionItems) = preProject
@@ -50,7 +50,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QrF.Core.Admin", "src\apis\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QrF.Core.Config", "src\apis\QrF.Core.Config\QrF.Core.Config.csproj", "{A108725A-A8C2-4D3C-BBD1-7CF5B80595B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Extensions.Configuration.Encryption", "src\libs\Microsoft.Extensions.Configuration.Encryption\Microsoft.Extensions.Configuration.Encryption.csproj", "{46F32C00-CDF6-4E85-81D5-ECCF3DCCCA90}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Extensions.Configuration.Encryption", "src\libs\Microsoft.Extensions.Configuration.Encryption\Microsoft.Extensions.Configuration.Encryption.csproj", "{46F32C00-CDF6-4E85-81D5-ECCF3DCCCA90}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
