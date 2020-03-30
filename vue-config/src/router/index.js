@@ -153,6 +153,18 @@ export const asyncRoutes = [
     ]
   },
   {
+    path: '/decryption',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/decryption/index'),
+        name: 'Decryption',
+        meta: { title: '文件解密', icon: 'list' }
+      }
+    ]
+  },
+  {
     path: '/icon',
     component: Layout,
     children: [
